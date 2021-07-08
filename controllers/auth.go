@@ -5,10 +5,12 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/tekab-dev/tekab-test/models"
 	"github.com/tekab-dev/tekab-test/services"
+	"log"
 )
 
 func Login(ctx *fiber.Ctx) error {
 	var user models.User
+	log.Println("omar")
 	validate := validator.New()
 	err := ctx.BodyParser(&user)
 	validationError := validate.Struct(user)

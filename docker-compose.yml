@@ -1,10 +1,40 @@
 version: "3"
 services:
-  tekab-test:
+  rest-api:
     build:
-      context: .
+      context: ./
     volumes:
-      - .:/go/src/app:rw
+      - .:/go/src/tekab-test
     ports:
       - "8080:8080"
-    container_name: my-go-app
+    depends_on:
+      - mysql_rest
+    networks:
+        - rest-api
+    container_name: my-go
+  mysql_rest:
+    image: mysql:5.7
+    environment:
+      - MYSQL_DATABASE=rest_default
+      - MYSQL_USER=rest_default
+      - MYSQL_PASSWORD=11
+      - MYSQL_ROOT_PASSWORD=11
+    volumes:
+    - .:/go/src/tekab-test/bd
+    networks:
+      - rest-api
+    restart: always
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_HOST=mysql_rest
+    networks:
+      - rest-api
+    ports:
+      - "7011:80"
+    depends_on:
+      - mysql_rest
+    restart: always
+networks:
+  rest-api:
+    external: true

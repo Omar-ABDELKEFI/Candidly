@@ -5,6 +5,6 @@ import (
 )
 
 func GetUser() (user models.User) {
-	User := models.User{"admin@gmail.com", "adminadmin"}
+	User := models.User{"fff", "adminadmin"}
 	return User
 }
