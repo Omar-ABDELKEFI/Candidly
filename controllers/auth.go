@@ -21,5 +21,14 @@ func Login(ctx *fiber.Ctx) error {
 		})
 		return nil
 	}
-	return ctx.Status(fiber.StatusOK).JSON("succes")
+	token, err := services.CreateToken(body.Email)
+	if err != nil {
+		ctx.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{
+			"error": err,
+		})
+	}
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status": "succes",
+		"token":  token,
+	})
 }
