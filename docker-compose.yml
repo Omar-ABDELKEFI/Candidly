@@ -10,8 +10,10 @@ services:
     depends_on:
       - mysql_rest
     networks:
-        - rest-api
-    container_name: my-go
+      - rest-api
+    container_name: my-go-app
+
+
   mysql_rest:
     image: mysql:5.7
     environment:
@@ -20,7 +22,7 @@ services:
       - MYSQL_PASSWORD=11
       - MYSQL_ROOT_PASSWORD=11
     volumes:
-    - .:/go/src/tekab-test/bd
+    - ./test :/var/lib/mysql:rw
     networks:
       - rest-api
     restart: always

@@ -10,9 +10,10 @@ import (
 
 func Login(ctx *fiber.Ctx) error {
 	var user models.User
-	log.Println("omar")
+	log.Println("ffffffffffffffffffffff")
 	validate := validator.New()
 	err := ctx.BodyParser(&user)
+
 	validationError := validate.Struct(user)
 	if err != nil || validationError != nil {
 		ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
