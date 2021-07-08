@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func ValidLogin(email string, password string) (valid bool) {
+func ValidateLogin(email string, password string) (valid bool) {
 	user := repositories.GetUser()
 	if user.Email == email && user.Password == password {
 		return true

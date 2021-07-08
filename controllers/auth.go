@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"github.com/go-playground/validator"
-	_ "github.com/go-playground/validator"
 	"github.com/gofiber/fiber/v2"
 	"github.com/tekab-dev/tekab-test/models"
 	"github.com/tekab-dev/tekab-test/services"
@@ -19,7 +18,7 @@ func Login(ctx *fiber.Ctx) error {
 		})
 		return nil
 	}
-	if !services.ValidLogin(user.Email, user.Password) {
+	if !services.ValidateLogin(user.Email, user.Password) {
 		ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"error": "Bad Credentials",
 		})
