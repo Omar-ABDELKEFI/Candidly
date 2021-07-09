@@ -11,19 +11,13 @@ import (
 
 func ValidateLogin(email string, password string) (valid bool) {
 	user := repositories.GetUser()
-	hashedPass, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	pass := string(hashedPass)
-	if err != nil {
 
-		log.Println("\"unable to hash password\"", err)
+	errHash := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	log.Println(errHash, "error")
+	log.Println(password, "password")
+	log.Println(user.Password, "passwordHash")
 
-		return
-	}
-	errHash := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(pass))
-	log.Println(errHash)
-	log.Println(user.Password)
-	log.Println(password)
-	if user.Email == email && err == nil {
+	if user.Email == email && errHash == nil {
 		return true
 	}
 	return false
