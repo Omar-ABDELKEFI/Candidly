@@ -6,6 +6,7 @@ import (
 )
 
 func Router(app *fiber.App) {
+
 	app.Post("/login", controllers.Login)
 
 }

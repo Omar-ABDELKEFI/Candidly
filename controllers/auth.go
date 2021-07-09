@@ -10,7 +10,7 @@ import (
 
 func Login(ctx *fiber.Ctx) error {
 	var user models.User
-	log.Println("ffffffffffffffffffffff")
+	log.Println("test111")
 	validate := validator.New()
 	err := ctx.BodyParser(&user)
 

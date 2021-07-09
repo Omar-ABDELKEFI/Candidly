@@ -3,13 +3,27 @@ package services
 import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/tekab-dev/tekab-test/repositories"
+	"golang.org/x/crypto/bcrypt"
+	"log"
 	"os"
 	"time"
 )
 
 func ValidateLogin(email string, password string) (valid bool) {
 	user := repositories.GetUser()
-	if user.Email == email && user.Password == password {
+	hashedPass, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	pass := string(hashedPass)
+	if err != nil {
+
+		log.Println("\"unable to hash password\"", err)
+
+		return
+	}
+	errHash := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(pass))
+	log.Println(errHash)
+	log.Println(user.Password)
+	log.Println(password)
+	if user.Email == email && err == nil {
 		return true
 	}
 	return false
