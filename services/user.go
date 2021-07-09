@@ -10,7 +10,8 @@ import (
 )
 
 func ValidateLogin(email string, password string) (valid bool) {
-	user := repositories.GetUser()
+	user := repositories.GetUser(email)
+	log.Println(user)
 
 	errHash := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 	log.Println(errHash, "error")

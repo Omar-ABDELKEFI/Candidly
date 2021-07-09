@@ -21,11 +21,17 @@ services:
       - MYSQL_USER=rest_default
       - MYSQL_PASSWORD=11
       - MYSQL_ROOT_PASSWORD=11
+      - MYSQL_TCP_PORT=3306
+    #command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci','--default-time-zone=+01:00','--max_allowed_packet=512M']
     volumes:
     - ./test :/var/lib/mysql:rw
     networks:
       - rest-api
     restart: always
+    ports:
+      - 3306:3306
+
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     environment:
@@ -36,7 +42,6 @@ services:
       - "7011:80"
     depends_on:
       - mysql_rest
-    restart: always
 networks:
   rest-api:
     external: true
