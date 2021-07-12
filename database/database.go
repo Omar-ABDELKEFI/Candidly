@@ -15,10 +15,8 @@ func GetDb() (*gorm.DB, error) {
 		log.Println(err.Error())
 		panic("Cannot connect to Database")
 		return nil, err
-	} else {
-		log.Println("Connected to database")
 	}
-
+	log.Println("Connected to database")
 	MigrateDatabase(db)
 	return db, err
 }
@@ -30,6 +28,8 @@ func MigrateDatabase(db *gorm.DB) {
 		&models.Text{},
 		&models.MultipleChoiceQuestion{},
 		&models.Choices{},
+		&models.Test{},
+		&models.NotifyEmails{},
 	)
 
 }
