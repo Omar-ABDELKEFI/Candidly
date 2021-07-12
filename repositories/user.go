@@ -11,5 +11,6 @@ func GetUser(email string) models.User {
 	db, _ := database.GetDb()
 	var user models.User
 	db.First(&user, "email = ?", email)
+	log.Println(user.Password)
 	return user
 }

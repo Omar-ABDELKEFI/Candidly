@@ -25,6 +25,7 @@ func MigrateDatabase(db *gorm.DB) {
 	db.AutoMigrate(
 		&models.Skill{},
 		&models.Question{},
+		&models.Num{},
 		&models.Text{},
 		&models.MultipleChoiceQuestion{},
 		&models.Choices{},

@@ -8,6 +8,8 @@ import (
 func Router(app *fiber.App) {
 
 	app.Post("/login", controllers.Login)
+	app.Post("/num", controllers.CreateNum)
+	app.Post("/skill", controllers.CreateSkill)
 	app.Post("/test", controllers.CreateTest)
 
 }
