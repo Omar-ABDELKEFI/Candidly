@@ -18,11 +18,18 @@ func GetDb() (*gorm.DB, error) {
 	} else {
 		log.Println("Connected to database")
 	}
+
 	MigrateDatabase(db)
 	return db, err
 }
 func MigrateDatabase(db *gorm.DB) {
+
 	db.AutoMigrate(
-		&models.User{},
+		&models.Skill{},
+		&models.Question{},
+		&models.Text{},
+		&models.MultipleChoiceQuestion{},
+		&models.Choices{},
 	)
+
 }
