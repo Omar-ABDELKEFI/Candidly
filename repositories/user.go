@@ -3,9 +3,7 @@ package repositories
 import (
 	"github.com/tekab-dev/tekab-test/database"
 	"github.com/tekab-dev/tekab-test/models"
-	_ "golang.org/x/crypto/bcrypt"
 	"log"
-	_ "log"
 )
 
 func GetUser(email string) models.User {

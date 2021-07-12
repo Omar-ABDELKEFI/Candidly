@@ -1,6 +1,7 @@
 package services
 
 import (
+	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/tekab-dev/tekab-test/repositories"
 	"golang.org/x/crypto/bcrypt"
@@ -9,19 +10,21 @@ import (
 	"time"
 )
 
-func ValidateLogin(email string, password string) (valid bool) {
+func ValidateLogin(email string, password string) (string, error) {
 	user := repositories.GetUser(email)
-	log.Println(user)
-
 	errHash := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 	log.Println(errHash, "error")
-	log.Println(password, "password")
-	log.Println(user.Password, "passwordHash")
-
-	if user.Email == email && errHash == nil {
-		return true
+	var err error
+	if user.Email != email || errHash != nil {
+		err = errors.New("Bad Credentials")
+		return "", err
 	}
-	return false
+	token, err := CreateToken(email)
+	if err != nil {
+		return "", err
+	}
+	return token, err
+
 }
 func CreateToken(userEmail string) (string, error) {
 	var err error

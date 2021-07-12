@@ -19,10 +19,9 @@ services:
     environment:
       - MYSQL_DATABASE=rest_default
       - MYSQL_USER=rest_default
-      - MYSQL_PASSWORD=11
-      - MYSQL_ROOT_PASSWORD=11
+      - MYSQL_PASSWORD=8z7bf64Qi1
+      - MYSQL_ROOT_PASSWORD=dnVh9M9g3Q
       - MYSQL_TCP_PORT=3306
-    #command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci','--default-time-zone=+01:00','--max_allowed_packet=512M']
     volumes:
     - ./test:/var/lib/mysql:rw
     - .:/docker-entrypoint-initdb.d/:ro
@@ -43,6 +42,7 @@ services:
       - "7011:80"
     depends_on:
       - mysql_rest
+    restart: always
 networks:
   rest-api:
     external: true
