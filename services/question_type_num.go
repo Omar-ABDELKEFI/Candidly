@@ -6,8 +6,8 @@ import (
 	"log"
 )
 
-func CreateNum(question models.Question) (err error) {
-	err = repositories.CreateNum(question)
+func CreateQuestionNum(question models.Question) (err error) {
+	err = repositories.CreateQuestionNum(question)
 	log.Println("test")
 	if err != nil {
 		return err

@@ -2,14 +2,13 @@ package controllers
 
 import (
 	"github.com/go-playground/validator"
-	//"github.com/go-playground/validator"
 	"github.com/gofiber/fiber/v2"
 	"github.com/tekab-dev/tekab-test/models"
 	"github.com/tekab-dev/tekab-test/services"
 	"log"
 )
 
-func CreateNum(ctx *fiber.Ctx) error {
+func CreateQuestionNum(ctx *fiber.Ctx) error {
 	var question models.Question
 	validate := validator.New()
 	log.Println("Hello from server")
@@ -29,7 +28,7 @@ func CreateNum(ctx *fiber.Ctx) error {
 	}
 	// Create skill
 
-	if err := services.CreateNum(question); err != nil {
+	if err := services.CreateQuestionNum(question); err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": err,
 		})

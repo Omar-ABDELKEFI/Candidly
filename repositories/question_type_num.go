@@ -6,7 +6,7 @@ import (
 	"log"
 )
 
-func CreateNum(question models.Question) error {
+func CreateQuestionNum(question models.Question) error {
 	db, err := database.GetDb()
 
 	if err != nil {
