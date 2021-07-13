@@ -6,28 +6,37 @@ import (
 	"github.com/tekab-dev/tekab-test/models"
 	"github.com/tekab-dev/tekab-test/services"
 	"log"
+	"strconv"
 )
 
-func CreateTest(ctx *fiber.Ctx) error {
-	var test models.Test
+func CreateTestQuestion(ctx *fiber.Ctx) error {
+	var testQuestion models.TestQuestion
 	log.Println("Hello from server")
-	err := ctx.BodyParser(&test)
-	validate := validator.New()
+	err := ctx.BodyParser(&testQuestion)
 	if err != nil {
 		log.Println("Error : Invalid Json format")
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "cannot parse json",
 		})
 	}
-	validationError := validate.Struct(test)
+	id, err := strconv.ParseUint(ctx.Params("id"), 10, 64)
+	if err != nil {
+		log.Println("Error ", err.Error())
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	testQuestion.TestId = id
+	validate := validator.New()
+	validationError := validate.Struct(testQuestion)
 	if validationError != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": validationError.Error(),
 		})
 	}
 
-	// Create Test
-	newTest, err := services.CreateTest(test)
+	// Create testQuestion
+	newTestQuestion, err := services.CreateTestQuestion(testQuestion)
 	if err != nil {
 		log.Println("Error ", err.Error())
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -36,6 +45,6 @@ func CreateTest(ctx *fiber.Ctx) error {
 	}
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status": "SUCCESS",
-		"test":   newTest,
+		"test":   newTestQuestion,
 	})
 }

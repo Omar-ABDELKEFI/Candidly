@@ -8,10 +8,10 @@ import (
 	"log"
 )
 
-func CreateTest(ctx *fiber.Ctx) error {
-	var test models.Test
-	log.Println("Hello from server")
-	err := ctx.BodyParser(&test)
+func CreateCandidat(ctx *fiber.Ctx) error {
+	var candidat models.Candidat
+	log.Println("server is running")
+	err := ctx.BodyParser(&candidat)
 	validate := validator.New()
 	if err != nil {
 		log.Println("Error : Invalid Json format")
@@ -19,15 +19,14 @@ func CreateTest(ctx *fiber.Ctx) error {
 			"error": "cannot parse json",
 		})
 	}
-	validationError := validate.Struct(test)
+	validationError := validate.Struct(candidat)
 	if validationError != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": validationError.Error(),
 		})
 	}
-
-	// Create Test
-	newTest, err := services.CreateTest(test)
+	// Create Candidat
+	candidat, err = services.CreateCandidat(candidat)
 	if err != nil {
 		log.Println("Error ", err.Error())
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -35,7 +34,7 @@ func CreateTest(ctx *fiber.Ctx) error {
 		})
 	}
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
-		"status": "SUCCESS",
-		"test":   newTest,
+		"status":   "SUCCESS",
+		"candidat": candidat,
 	})
 }
