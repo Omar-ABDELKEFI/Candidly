@@ -8,7 +8,7 @@ import (
 	"log"
 )
 
-func CreateQuestionNum(ctx *fiber.Ctx) error {
+func CreateQuestion(ctx *fiber.Ctx) error {
 	var question models.Question
 	validate := validator.New()
 	log.Println("Hello from server")
@@ -28,7 +28,7 @@ func CreateQuestionNum(ctx *fiber.Ctx) error {
 	}
 	// Create skill
 
-	if err := services.CreateQuestionNum(question); err != nil {
+	if err := services.CreateQuestion(question); err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": err,
 		})
