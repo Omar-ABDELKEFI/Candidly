@@ -11,7 +11,9 @@ type Test struct {
 	Archived     *bool          `json:"archived" validate:"required"`
 	PassingScore *uint16        `json:"passingScore" validate:"required"`
 	NotifyEmails []NotifyEmails `json:"notifyEmails"`
+	TestQuestion []TestQuestion `json:"test_questions"`
 }
+
 type NotifyEmails struct {
 	gorm.Model
 	TestId uint64 `json:"testId"`
