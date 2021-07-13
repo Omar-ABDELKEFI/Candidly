@@ -16,5 +16,6 @@ func Router(app *fiber.App) {
 	//app.Get("/question/:type?")
 	app.Post("/skill", controllers.CreateSkill)
 	app.Post("/test", controllers.CreateTest)
+	app.Post("/candidat", controllers.CreateCandidat)
 
 }

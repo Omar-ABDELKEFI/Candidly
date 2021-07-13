@@ -30,6 +30,8 @@ func MigrateDatabase(db *gorm.DB) {
 		&models.Choices{},
 		&models.Test{},
 		&models.NotifyEmails{},
+		&models.Candidat{},
+		&models.Note{},
 	)
 
 }
