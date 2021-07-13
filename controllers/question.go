@@ -8,6 +8,16 @@ import (
 	"log"
 )
 
+// CreateQuestion godoc
+// @Summary add new  question
+// @Description create new question by json
+// @Param question body models.Question true "Add question"
+// @Tags question
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} models.Question
+// @Security Authorization
+// @Router /questions [post]
 func CreateQuestion(ctx *fiber.Ctx) error {
 	var question models.Question
 	validate := validator.New()

@@ -23,3 +23,21 @@ func CreateQuestion(question models.Question) error {
 
 	return nil
 }
+
+//func FindQuestion(sort string) ([]models.Question,error) {
+//	db, err := database.GetDb()
+//
+//	if err != nil {
+//		log.Println("error db")
+//		return nil,err
+//	}
+//
+//	if err := db.Table("questions").Where("ty"); err != nil {
+//		log.Println("question", err)
+//
+//		return err
+//
+//	}
+//
+//	return nil
+//}

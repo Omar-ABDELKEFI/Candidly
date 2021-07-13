@@ -9,6 +9,7 @@ import (
 )
 
 func Login(ctx *fiber.Ctx) error {
+
 	var user models.User
 	log.Println("Hello from server")
 	validate := validator.New()

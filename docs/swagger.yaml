@@ -1,0 +1,75 @@
+basePath: /
+definitions:
+  gorm.DeletedAt:
+    $ref: '#/definitions/sql.NullTime'
+  models.Question:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+        type: object
+      difficulty:
+        type: string
+      expected_time:
+        type: integer
+      file_read_me:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      points:
+        type: integer
+      question_text:
+        type: string
+      skill_id:
+        type: integer
+      type:
+        type: string
+      updatedAt:
+        type: string
+    required:
+    - difficulty
+    - expected_time
+    - name
+    - points
+    type: object
+  sql.NullTime:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+info:
+  contact:
+    email: fiber@swagger.io
+    name: API Support
+  description: interview assessment tests for interviewing out of the box
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: tekab-test
+  version: "1.0"
+paths:
+  /questions:
+    post:
+      consumes:
+      - application/json
+      description: add by json question
+      parameters:
+      - description: Add question
+        in: body
+        name: question
+        required: true
+        schema:
+          $ref: '#/definitions/models.Question'
+      produces:
+      - application/json
+      summary: add an question
+      tags:
+      - question
+swagger: "2.0"
