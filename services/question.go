@@ -14,3 +14,13 @@ func CreateQuestion(question models.Question) (err error) {
 	}
 	return nil
 }
+func FindQuestion(sort []string, difficulty []string) ([]models.Question, error) {
+	questions, err := repositories.FindQuestion(sort, difficulty)
+
+	if err != nil {
+		log.Println("error db")
+		return nil, err
+	}
+
+	return questions, nil
+}

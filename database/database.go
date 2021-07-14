@@ -8,7 +8,7 @@ import (
 )
 
 func GetDb() (*gorm.DB, error) {
-	const DNS = "root:dnVh9M9g3Q@tcp(mysql_rest:3306)/tekabTest"
+	const DNS = "root:dnVh9M9g3Q@tcp(mysql_rest:3306)/tekabTest?parseTime=true"
 	log.Println("before connection ..")
 	db, err := gorm.Open(mysql.Open(DNS), &gorm.Config{})
 	if err != nil {
