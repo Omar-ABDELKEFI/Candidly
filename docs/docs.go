@@ -18,15 +18,7 @@ var doc = `{
     "info": {
         "description": "{{.Description}}",
         "title": "{{.Title}}",
-        "termsOfService": "http://swagger.io/terms/",
-        "contact": {
-            "name": "API Support",
-            "email": "fiber@swagger.io"
-        },
-        "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-        },
+        "contact": {},
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
@@ -34,7 +26,12 @@ var doc = `{
     "paths": {
         "/questions": {
             "post": {
-                "description": "add by json question",
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
+                "description": "create new question by json",
                 "consumes": [
                     "application/json"
                 ],
@@ -44,7 +41,7 @@ var doc = `{
                 "tags": [
                     "question"
                 ],
-                "summary": "add an question",
+                "summary": "add new  question",
                 "parameters": [
                     {
                         "description": "Add question",
@@ -55,13 +52,61 @@ var doc = `{
                             "$ref": "#/definitions/models.Question"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Question"
+                        }
+                    }
+                }
             }
         }
     },
     "definitions": {
         "gorm.DeletedAt": {
-            "$ref": "#/definitions/sql.NullTime"
+            "type": "object",
+            "properties": {
+                "time": {
+                    "type": "string"
+                },
+                "valid": {
+                    "description": "Valid is true if Time is not NULL",
+                    "type": "boolean"
+                }
+            }
+        },
+        "models.Answer": {
+            "type": "object",
+            "required": [
+                "candidat_id",
+                "point",
+                "test_id"
+            ],
+            "properties": {
+                "candidat_id": {
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "point": {
+                    "type": "integer"
+                },
+                "test_id": {
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
         },
         "models.Question": {
             "type": "object",
@@ -76,7 +121,6 @@ var doc = `{
                     "type": "string"
                 },
                 "deletedAt": {
-                    "type": "object",
                     "$ref": "#/definitions/gorm.DeletedAt"
                 },
                 "difficulty": {
@@ -103,6 +147,12 @@ var doc = `{
                 "skill_id": {
                     "type": "integer"
                 },
+                "test_questions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.TestQuestion"
+                    }
+                },
                 "type": {
                     "type": "string"
                 },
@@ -111,17 +161,45 @@ var doc = `{
                 }
             }
         },
-        "sql.NullTime": {
+        "models.TestQuestion": {
             "type": "object",
+            "required": [
+                "question_id",
+                "test_id"
+            ],
             "properties": {
-                "time": {
+                "answer": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Answer"
+                    }
+                },
+                "createdAt": {
                     "type": "string"
                 },
-                "valid": {
-                    "description": "Valid is true if Time is not NULL",
-                    "type": "boolean"
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "question_id": {
+                    "type": "integer"
+                },
+                "test_id": {
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`
@@ -139,10 +217,10 @@ type swaggerInfo struct {
 var SwaggerInfo = swaggerInfo{
 	Version:     "1.0",
 	Host:        "",
-	BasePath:    "/",
+	BasePath:    "/api",
 	Schemes:     []string{},
-	Title:       "tekab-test",
-	Description: "interview assessment tests for interviewing out of the box",
+	Title:       "",
+	Description: "This is an application web of interview assessment tests for interviewing out of the box .",
 }
 
 type s struct{}

@@ -1,14 +1,40 @@
-basePath: /
+basePath: /api
 definitions:
   gorm.DeletedAt:
-    $ref: '#/definitions/sql.NullTime'
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+  models.Answer:
+    properties:
+      candidat_id:
+        type: integer
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: integer
+      point:
+        type: integer
+      test_id:
+        type: integer
+      updatedAt:
+        type: string
+    required:
+    - candidat_id
+    - point
+    - test_id
+    type: object
   models.Question:
     properties:
       createdAt:
         type: string
       deletedAt:
         $ref: '#/definitions/gorm.DeletedAt'
-        type: object
       difficulty:
         type: string
       expected_time:
@@ -25,6 +51,10 @@ definitions:
         type: string
       skill_id:
         type: integer
+      test_questions:
+        items:
+          $ref: '#/definitions/models.TestQuestion'
+        type: array
       type:
         type: string
       updatedAt:
@@ -35,31 +65,39 @@ definitions:
     - name
     - points
     type: object
-  sql.NullTime:
+  models.TestQuestion:
     properties:
-      time:
+      answer:
+        items:
+          $ref: '#/definitions/models.Answer'
+        type: array
+      createdAt:
         type: string
-      valid:
-        description: Valid is true if Time is not NULL
-        type: boolean
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: integer
+      question_id:
+        type: integer
+      test_id:
+        type: integer
+      updatedAt:
+        type: string
+    required:
+    - question_id
+    - test_id
     type: object
 info:
-  contact:
-    email: fiber@swagger.io
-    name: API Support
-  description: interview assessment tests for interviewing out of the box
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  termsOfService: http://swagger.io/terms/
-  title: tekab-test
+  contact: {}
+  description: This is an application web of interview assessment tests for interviewing
+    out of the box .
   version: "1.0"
 paths:
   /questions:
     post:
       consumes:
       - application/json
-      description: add by json question
+      description: create new question by json
       parameters:
       - description: Add question
         in: body
@@ -69,7 +107,19 @@ paths:
           $ref: '#/definitions/models.Question'
       produces:
       - application/json
-      summary: add an question
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Question'
+      security:
+      - Authorization: []
+      summary: add new  question
       tags:
       - question
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"
