@@ -39,3 +39,28 @@ func CreateTest(ctx *fiber.Ctx) error {
 		"test":   newTest,
 	})
 }
+
+// FindTests godoc
+// @Summary get tests
+// @Description get tests by skill
+// @Param type query uint64 false "tests search by type"
+// @Tags tests
+// @Accept  json
+// @Produce  json
+// @Success 200 {array} models.Test
+// @Security Authorization
+// @Router /questions [get]
+func FindTests(ctx *fiber.Ctx) error {
+	skillsId := ctx.Query("skills")
+	tests, err := services.FindTests(skillsId)
+	if err != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status": "succes",
+		"data":   tests,
+	})
+
+}

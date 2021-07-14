@@ -25,6 +25,51 @@ var doc = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/questions": {
+            "get": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
+                "description": "find a question by type or difficulty",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "question"
+                ],
+                "summary": "find a question",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "question search by type",
+                        "name": "type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "question search by difficulty",
+                        "name": "difficulty",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Question"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/questions/edit": {
             "post": {
                 "security": [
                     {
@@ -220,7 +265,7 @@ var SwaggerInfo = swaggerInfo{
 	BasePath:    "/api",
 	Schemes:     []string{},
 	Title:       "",
-	Description: "This is an application web of interview assessment tests for interviewing out of the box .",
+	Description: "is an application web of interview assessment tests for interviewing out of the box .",
 }
 
 type s struct{}

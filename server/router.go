@@ -15,7 +15,8 @@ func Router(app *fiber.App) {
 
 	//app.Get("/question/:type?")
 	app.Post("/skill", controllers.CreateSkill)
-	app.Post("/test", controllers.CreateTest)
+	app.Post("/test", controllers.CreateTest) // todo path:/my-tests
+	app.Get("/tests", controllers.FindTests)
 	app.Post("/candidat", controllers.CreateCandidat)
 	app.Post("/my-tests/:id/questions", controllers.CreateTestQuestion)
 	questionController := new(controllers.QuestionController)

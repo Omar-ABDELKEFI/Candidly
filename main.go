@@ -4,9 +4,9 @@ import (
 	"github.com/tekab-dev/tekab-test/server"
 )
 
-// @tekab-test
+// @title tekab-test
 // @version 1.0
-// @description This is an application web of interview assessment tests for interviewing out of the box .
+// @description is an application web of interview assessment tests for interviewing out of the box .
 // @securityDefinitions.apikey ApiKeyAuth
 // @in header
 // @name Authorization

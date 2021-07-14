@@ -89,11 +89,39 @@ definitions:
     type: object
 info:
   contact: {}
-  description: This is an application web of interview assessment tests for interviewing
+  description: is an application web of interview assessment tests for interviewing
     out of the box .
   version: "1.0"
 paths:
   /questions:
+    get:
+      consumes:
+      - application/json
+      description: find a question by type or difficulty
+      parameters:
+      - description: question search by type
+        in: query
+        name: type
+        type: string
+      - description: question search by difficulty
+        in: query
+        name: difficulty
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Question'
+            type: array
+      security:
+      - Authorization: []
+      summary: find a question
+      tags:
+      - question
+  /questions/edit:
     post:
       consumes:
       - application/json
