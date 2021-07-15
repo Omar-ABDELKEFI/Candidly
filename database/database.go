@@ -34,8 +34,6 @@ func MigrateDatabase() {
 		&models.Skill{},
 		//todo  migrate user
 		&models.Question{},
-		&models.Text{},
-		&models.MultipleChoiceQuestion{},
 		&models.Choices{},
 		&models.Test{},
 		&models.NotifyEmails{},

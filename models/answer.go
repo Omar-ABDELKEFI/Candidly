@@ -11,3 +11,10 @@ type Answer struct {
 	AnswerFile     string  `json:"answer_file"`
 	Point          float64 `json:"point"`
 }
+type AnswerDbResponse struct {
+	Id       uint64
+	Type     string
+	Points   int
+	IsAnswer bool
+	ChoiceId uint64
+}

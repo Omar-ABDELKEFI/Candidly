@@ -12,7 +12,6 @@ func CreateAnswer(ctx *fiber.Ctx) error {
 	var answer models.Answer
 	log.Println("Hello from server")
 	err := ctx.BodyParser(&answer)
-	log.Println("answerr", answer)
 	validate := validator.New()
 	if err != nil {
 		log.Println("Error : Invalid Json format")
@@ -26,7 +25,6 @@ func CreateAnswer(ctx *fiber.Ctx) error {
 			"error": validationError.Error(),
 		})
 	}
-
 	// Create Answer
 	newAnswer, err := services.CreateAnswer(answer)
 	if err != nil {
