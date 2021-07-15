@@ -1,14 +1,14 @@
 package models
 
-import "gorm.io/gorm"
-
 type Choices struct {
-	Id         uint64  `json:"id" gorm:"primaryKey;autoIncrement"`
-	ChoiceText *string `json:"choise_text"`
-	McqId      uint64  `json:"mcq_id"`
-	IsAnswer   *bool   `json:"is_answer"`
+	Id         uint64   `json:"id" gorm:"primaryKey;autoIncrement"`
+	ChoiceText *string  `json:"choice_text"`
+	QuestionId uint64   `json:"mcq_id"`
+	IsAnswer   *bool    `json:"is_answer" validate:"required"`
+	Answer     []Answer `json:"answer"`
 }
-type QuestionTypeNum struct {
+
+/*type QuestionTypeNum struct {
 	gorm.Model
 	id                uint64 `json:"num_id" gorm:"primaryKey;autoIncrement"`
 	Default           *int   `json:"default" gorm:"column:default"`
@@ -33,3 +33,4 @@ type Text struct {
 	QuestionId     uint64 `json:"question_id"`
 	AnswerTemplate string `json:"answer_template"`
 }
+*/

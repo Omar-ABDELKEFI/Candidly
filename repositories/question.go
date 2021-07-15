@@ -35,7 +35,6 @@ func FindQuestion(sort []string, difficulty []string) ([]models.Question, error)
 	if len(sort) == 0 && len(difficulty) == 0 {
 		if err := db.Table("questions").Find(&question).Error; err != nil {
 			log.Println("question", err)
-
 			return nil, err
 
 		}
