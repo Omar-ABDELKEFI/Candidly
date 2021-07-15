@@ -13,4 +13,5 @@ import (
 // @BasePath /api
 func main() {
 	server.Init()
+
 }

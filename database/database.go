@@ -17,13 +17,22 @@ func GetDb() (*gorm.DB, error) {
 		return nil, err
 	}
 	log.Println("Connected to database")
-	MigrateDatabase(db)
+
 	return db, err
 }
-func MigrateDatabase(db *gorm.DB) {
+func MigrateDatabase() {
+	const DNS = "root:dnVh9M9g3Q@tcp(mysql_rest:3306)/tekabTest?parseTime=true"
+	log.Println("before connection ..")
+	db, err := gorm.Open(mysql.Open(DNS), &gorm.Config{})
+	if err != nil {
+		log.Println(err.Error())
+		panic("Cannot connect to Database")
 
+	}
+	log.Println("Connected to database")
 	db.AutoMigrate(
 		&models.Skill{},
+		//todo  migrate user
 		&models.Question{},
 		&models.Text{},
 		&models.MultipleChoiceQuestion{},
