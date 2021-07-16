@@ -10,13 +10,7 @@ type Test struct {
 	ShowScore     *bool           `json:"showScore" validate:"required"`
 	Archived      *bool           `json:"archived" validate:"required"`
 	PassingScore  *uint16         `json:"passingScore" validate:"required"`
-	NotifyEmails  []NotifyEmails  `json:"notifyEmails"`
+	NotifyEmails  string          `json:"notifyEmails"`
 	TestQuestion  []TestQuestion  `json:"test_questions"`
 	TestCandidate []TestCandidate `json:"test_candidate"`
-}
-
-type NotifyEmails struct {
-	gorm.Model
-	TestId uint64 `json:"testId"`
-	Email  string `json:"email" validate:"required,email"`
 }
