@@ -6,8 +6,8 @@ import (
 	"log"
 )
 
-func CreateCandidat(candidat models.Candidat) (models.Candidat, error) {
-	log.Println("Creating Candidat ...")
+func CreateCandidate(candidat models.Candidate) (models.Candidate, error) {
+	log.Println("Creating Candidate ...")
 	db, err := database.GetDb()
 	if err != nil {
 		return candidat, err
@@ -17,7 +17,7 @@ func CreateCandidat(candidat models.Candidat) (models.Candidat, error) {
 	if err != nil {
 		return candidat, err
 	}
-	log.Println("created candidat : ", candidat)
+	log.Println("created candidate : ", candidat)
 
 	return candidat, nil
 }

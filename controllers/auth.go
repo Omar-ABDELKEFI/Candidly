@@ -28,7 +28,7 @@ func Login(ctx *fiber.Ctx) error {
 		})
 	}
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
-		"status": "succes",
+		"status": "success",
 		"token":  token,
 	})
 }

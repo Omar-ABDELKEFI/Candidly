@@ -32,15 +32,15 @@ func MigrateDatabase() {
 	log.Println("Connected to database")
 	db.AutoMigrate(
 		&models.Skill{},
-		//todo  migrate user
 		&models.Question{},
 		&models.Choices{},
 		&models.Test{},
 		&models.NotifyEmails{},
-		&models.Candidat{},
+		&models.Candidate{},
 		&models.Note{},
 		&models.TestQuestion{},
 		&models.Answer{},
+		&models.TestCandidate{},
 	)
 
 }

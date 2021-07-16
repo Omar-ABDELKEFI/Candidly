@@ -8,6 +8,15 @@ import (
 	"log"
 )
 
+// CreateSkill godoc
+// @Summary add new  skill
+// @Description create new skill by json
+// @Param skill body models.Skill true "Add Skill"
+// @Tags skill
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} models.Question
+// @Router /skill [post]
 func CreateSkill(ctx *fiber.Ctx) error {
 	var skill models.Skill
 	validate := validator.New()

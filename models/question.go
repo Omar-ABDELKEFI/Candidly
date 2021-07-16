@@ -17,7 +17,7 @@ type Question struct {
 	SkillId       *uint64        `json:"skill_id"`
 	Type          string         `json:"type"`
 	ExpectedTime  *int           `json:"expected_time" validate:"required,oneof=1 2 3 5 7 10 15 20 30 40 60"`
-	QuestionText  string         `json:"question_text" valiate:"required" `
+	QuestionText  string         `json:"question_text" validate:"required" `
 	FileReadMe    string         `json:"file_read_me"`
 	TestQuestions []TestQuestion `json:"test_questions"`
 	Choices       []Choices      `json:"choices"`

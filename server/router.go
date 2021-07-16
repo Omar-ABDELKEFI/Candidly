@@ -17,10 +17,11 @@ func Router(app *fiber.App) {
 	app.Post("/skill", controllers.CreateSkill)
 	app.Post("/test", controllers.CreateTest) // todo path:/my-tests
 	app.Get("/tests", controllers.FindTests)
-	app.Post("/candidat", controllers.CreateCandidat)
+	app.Post("/candidate", controllers.CreateCandidate)
 	app.Post("/my-tests/:id/questions", controllers.CreateTestQuestion)
 	app.Post("/answers", controllers.CreateAnswer)
 
+	app.Post("/my-tests/candidates/:id", controllers.CreateTestCandidate)
 	questionController := new(controllers.QuestionController)
 	question := app.Group("/question")
 	{

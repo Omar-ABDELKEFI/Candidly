@@ -20,7 +20,6 @@ type QuestionController struct{}
 // @Accept  json
 // @Produce  json
 // @Success 200 {object} models.Question
-// @Security Authorization
 // @Router /questions/edit [post]
 func (h QuestionController) CreateQuestion(ctx *fiber.Ctx) error {
 	var question models.Question
@@ -49,7 +48,7 @@ func (h QuestionController) CreateQuestion(ctx *fiber.Ctx) error {
 	}
 
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
-		"status": "succes",
+		"status": "success",
 		"data":   question,
 	})
 }
@@ -63,7 +62,6 @@ func (h QuestionController) CreateQuestion(ctx *fiber.Ctx) error {
 // @Accept  json
 // @Produce  json
 // @Success 200 {array} models.Question
-// @Security Authorization
 // @Router /questions [get]
 func (h QuestionController) FindQuestion(ctx *fiber.Ctx) error {
 	var tabSort []string

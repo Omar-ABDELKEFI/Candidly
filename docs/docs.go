@@ -26,11 +26,6 @@ var doc = `{
     "paths": {
         "/questions": {
             "get": {
-                "security": [
-                    {
-                        "Authorization": []
-                    }
-                ],
                 "description": "find a question by type or difficulty",
                 "consumes": [
                     "application/json"
@@ -71,11 +66,6 @@ var doc = `{
         },
         "/questions/edit": {
             "post": {
-                "security": [
-                    {
-                        "Authorization": []
-                    }
-                ],
                 "description": "create new question by json",
                 "consumes": [
                     "application/json"
@@ -153,6 +143,32 @@ var doc = `{
                 }
             }
         },
+        "models.NotifyEmails": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "testId": {
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Question": {
             "type": "object",
             "required": [
@@ -200,6 +216,94 @@ var doc = `{
                 },
                 "type": {
                     "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Test": {
+            "type": "object",
+            "required": [
+                "archived",
+                "description",
+                "name",
+                "passingScore",
+                "showScore",
+                "timingPolicy"
+            ],
+            "properties": {
+                "archived": {
+                    "type": "boolean"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "notifyEmails": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.NotifyEmails"
+                    }
+                },
+                "passingScore": {
+                    "type": "integer"
+                },
+                "showScore": {
+                    "type": "boolean"
+                },
+                "testCondidat": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.TestCondidat"
+                    }
+                },
+                "test_questions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.TestQuestion"
+                    }
+                },
+                "timingPolicy": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.TestCondidat": {
+            "type": "object",
+            "required": [
+                "question_id",
+                "test_id"
+            ],
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "question_id": {
+                    "type": "integer"
+                },
+                "test_id": {
+                    "type": "integer"
                 },
                 "updatedAt": {
                     "type": "string"
@@ -264,7 +368,7 @@ var SwaggerInfo = swaggerInfo{
 	Host:        "",
 	BasePath:    "/api",
 	Schemes:     []string{},
-	Title:       "",
+	Title:       "tekab-test",
 	Description: "is an application web of interview assessment tests for interviewing out of the box .",
 }
 

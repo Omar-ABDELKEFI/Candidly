@@ -4,7 +4,7 @@ import "gorm.io/gorm"
 
 type Answer struct {
 	gorm.Model
-	CandidatId     uint64  `json:"candidat_id" validate:"required"`
+	CandidateId    uint64  `json:"candidate_id" validate:"required"`
 	TestQuestionId uint64  `json:"test_question_id" validate:"required"`
 	ChoicesId      uint64  `json:"choices_id"`
 	AnswerText     string  `json:"answer_text"`

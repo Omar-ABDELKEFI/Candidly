@@ -1,0 +1,60 @@
+package controllers
+
+import (
+	"github.com/go-playground/validator"
+	"github.com/gofiber/fiber/v2"
+	"github.com/tekab-dev/tekab-test/models"
+	"github.com/tekab-dev/tekab-test/services"
+	"log"
+	"strconv"
+)
+
+// CreateTestCandidate godoc
+// @Summary add new  test_candidate
+// @Description create test_candidate by json and path
+// @Param test_id path int true "Add candidate"
+// @Param test_candidate body models.TestCandidate true "Add candidate"
+// @Tags test_candidate
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} models.TestCandidate
+// @Router /my-tests/candidates/:id [post]
+func CreateTestCandidate(ctx *fiber.Ctx) error {
+	var testCandidate models.TestCandidate
+	log.Println("Hello from testCandidate")
+	err := ctx.BodyParser(&testCandidate)
+	if err != nil {
+		log.Println("Error : Invalid Json format")
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "cannot parse json",
+		})
+	}
+	id, err := strconv.ParseUint(ctx.Params("id"), 10, 64)
+	if err != nil {
+		log.Println("Error ", err.Error())
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	testCandidate.TestId = id
+	validate := validator.New()
+	validationError := validate.Struct(testCandidate)
+	if validationError != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": validationError.Error(),
+		})
+	}
+
+	// Create testCandidate
+	newTestCandidat, err := services.CreateTestCandidate(testCandidate)
+	if err != nil {
+		log.Println("Error ", err.Error())
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status": "SUCCESS",
+		"test":   newTestCandidat,
+	})
+}
