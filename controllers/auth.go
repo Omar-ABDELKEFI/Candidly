@@ -8,6 +8,17 @@ import (
 	"log"
 )
 
+// Login godoc
+// @Summary Login
+// @Description login using email and password
+// @Param user body models.User true "login"
+// @Tags question
+// @Accept  json
+// @Produce  json
+// @Success 200 {string} string	"ok"
+// @Security Authorization
+// @Router /login [post]
+
 func Login(ctx *fiber.Ctx) error {
 	var user models.User
 	log.Println("Hello from server")

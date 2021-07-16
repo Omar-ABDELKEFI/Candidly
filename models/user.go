@@ -8,5 +8,4 @@ type User struct {
 	gorm.Model
 	Email    string `json:"email" validate:"required,email"`
 	Password string `json:"password" validate:"required"`
-	Note     []Note `json:"note"`
 }

@@ -6,7 +6,7 @@ import (
 )
 
 func CreateCandidate(candidate models.Candidate) (models.Candidate, error) {
-	//Create new candidat
+	//Create new candidate
 	candidate, err := repositories.CreateCandidate(candidate)
 	if err != nil {
 		return candidate, err

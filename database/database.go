@@ -35,12 +35,11 @@ func MigrateDatabase() {
 		&models.Question{},
 		&models.Choices{},
 		&models.Test{},
-		&models.NotifyEmails{},
 		&models.Candidate{},
-		&models.Note{},
 		&models.TestQuestion{},
 		&models.Answer{},
 		&models.TestCandidate{},
+		&models.AnswerChoices{},
 	)
 
 }
