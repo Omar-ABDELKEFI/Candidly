@@ -13,7 +13,7 @@ func GetDb() (*gorm.DB, error) {
 	db, err := gorm.Open(mysql.Open(DNS), &gorm.Config{})
 	if err != nil {
 		log.Println(err.Error())
-		panic("Cannot connect to Database")
+		log.Println("Cannot connect to Database")
 		return nil, err
 	}
 	log.Println("Connected to database")

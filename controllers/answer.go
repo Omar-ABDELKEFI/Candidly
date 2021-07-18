@@ -13,7 +13,6 @@ func CreateAnswer(ctx *fiber.Ctx) error {
 	log.Println("Hello from server")
 	err := ctx.BodyParser(&answer)
 	validate := validator.New()
-	log.Println(err)
 	if err != nil {
 		log.Println("Error : Invalid Json format")
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{

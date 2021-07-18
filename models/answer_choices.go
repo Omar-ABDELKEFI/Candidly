@@ -11,7 +11,6 @@ type AnswerChoices struct {
 type QuestionChoices struct {
 	QuestionId uint64
 	Type       string
-	Points     int
 	IsAnswer   bool
 	ChoiceId   uint64
 }

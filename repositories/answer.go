@@ -6,6 +6,25 @@ import (
 	"log"
 )
 
+func GetQuestionChoices(answer models.Answer) ([]models.QuestionChoices, error) {
+	log.Println("getting question choices")
+	var questionChoices []models.QuestionChoices
+	db, err := database.GetDb()
+	if err != nil {
+		return questionChoices, err
+	}
+	err = db.Table("questions").
+		Select("questions.id as question_id, questions.type, choices.is_answer, choices.id as choice_id").
+		Joins("inner join choices on choices.question_id = questions.id").
+		Where("choices.question_id = (?)", answer.QuestionId).
+		Find(&questionChoices).Error
+	if err != nil {
+		return questionChoices, err
+	}
+	return questionChoices, err
+
+}
+
 func CreateAnswer(answer models.Answer) (models.Answer, error) {
 
 	log.Println("Creating Answer ...")
