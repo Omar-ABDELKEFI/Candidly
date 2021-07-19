@@ -11,7 +11,9 @@ import (
 // @in header
 // @name Authorization
 // @BasePath /api
+
 func main() {
+
 	server.Init()
 
 }

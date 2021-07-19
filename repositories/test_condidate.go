@@ -8,11 +8,9 @@ import (
 
 func CreateTestCandidate(testCandidate models.TestCandidate) (models.TestCandidate, error) {
 	log.Println("Creating testCandidate ...")
-	db, err := database.GetDb()
-	if err != nil {
-		return testCandidate, err
-	}
-	err = db.Create(&testCandidate).Error
+	db := database.DB
+
+	err := db.Create(&testCandidate).Error
 
 	if err != nil {
 		return testCandidate, err
@@ -28,12 +26,8 @@ type sum struct {
 }
 
 func CalculateScore(idTestCandidate uint64) (models.TestCandidate, error) {
-	db, err := database.GetDb()
+	db := database.DB
 	var testCandidate models.TestCandidate
-	if err != nil {
-		log.Println("error db")
-		return testCandidate, err
-	}
 	if err := db.Exec("UPDATE test_candidates AS dest ,"+
 		"(SELECT score,CASE WHEN `src`.`score`<src.passing_score THEN 'failed' ELSE 'passed' END AS test_status FROM "+
 		"(SELECT ROUND(sum(answers.point * questions.max_points) / sum(max_points)) AS score, tests.passing_score AS passing_score "+

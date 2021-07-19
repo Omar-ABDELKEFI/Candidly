@@ -8,11 +8,9 @@ import (
 
 func CreateCandidate(candidate models.Candidate) (models.Candidate, error) {
 	log.Println("Creating Candidate ...")
-	db, err := database.GetDb()
-	if err != nil {
-		return candidate, err
-	}
-	err = db.Create(&candidate).Error
+	db := database.DB
+
+	err := db.Create(&candidat).Error
 
 	if err != nil {
 		return candidate, err

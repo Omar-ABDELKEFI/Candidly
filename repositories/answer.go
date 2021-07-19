@@ -9,11 +9,9 @@ import (
 func GetQuestionChoices(answer models.Answer) ([]models.QuestionChoices, error) {
 	log.Println("getting question choices")
 	var questionChoices []models.QuestionChoices
-	db, err := database.GetDb()
-	if err != nil {
-		return questionChoices, err
-	}
-	err = db.Table("questions").
+	db := database.DB
+
+	err := db.Table("questions").
 		Select("questions.id as question_id, questions.type, choices.is_answer, choices.id as choice_id").
 		Joins("inner join choices on choices.question_id = questions.id").
 		Where("choices.question_id = (?)", answer.QuestionId).
@@ -28,12 +26,9 @@ func GetQuestionChoices(answer models.Answer) ([]models.QuestionChoices, error) 
 func CreateAnswer(answer models.Answer) (models.Answer, error) {
 
 	log.Println("Creating Answer ...")
-	db, err := database.GetDb()
-	if err != nil {
-		return answer, err
-	}
+	db := database.DB
 
-	err = db.Create(&answer).Error
+	err := db.Create(&answer).Error
 	if err != nil {
 		return answer, err
 	}

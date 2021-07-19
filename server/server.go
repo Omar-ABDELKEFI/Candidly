@@ -7,6 +7,7 @@ import (
 
 func Init() {
 	app := fiber.New()
+	database.GetDb()
 	Router(app)
 	database.MigrateDatabase()
 	app.Listen(":8080")

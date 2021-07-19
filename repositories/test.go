@@ -8,11 +8,9 @@ import (
 
 func CreateTest(test models.Test) (models.Test, error) {
 	log.Println("Creating test ...")
-	db, err := database.GetDb()
-	if err != nil {
-		return test, err
-	}
-	err = db.Create(&test).Error
+	db := database.DB
+
+	err := db.Create(&test).Error
 
 	if err != nil {
 		return test, err
@@ -23,13 +21,8 @@ func CreateTest(test models.Test) (models.Test, error) {
 }
 
 func FindTests(skillsID []int64) ([]models.Test, error) {
-	db, err := database.GetDb()
+	db := database.DB
 	var tests []models.Test
-	if err != nil {
-		log.Println("error db")
-		return nil, err
-	}
-
 	if len(skillsID) == 0 {
 		if err := db.Table("tests").Find(&tests).Error; err != nil {
 			log.Println("question", err)

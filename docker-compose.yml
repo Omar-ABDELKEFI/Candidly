@@ -17,7 +17,7 @@ services:
   mysql_rest:
     image: mysql:5.7
     environment:
-      - MYSQL_DATABASE=rest_default
+      - MYSQL_DATABASE=tekabTest
       - MYSQL_USER=rest_default
       - MYSQL_PASSWORD=8z7bf64Qi1
       - MYSQL_ROOT_PASSWORD=dnVh9M9g3Q

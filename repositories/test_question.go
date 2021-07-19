@@ -8,11 +8,9 @@ import (
 
 func CreateTestQuestion(testQuestion models.TestQuestion) (models.TestQuestion, error) {
 	log.Println("Creating testQuestion ...")
-	db, err := database.GetDb()
-	if err != nil {
-		return testQuestion, err
-	}
-	err = db.Create(&testQuestion).Error
+	db := database.DB
+
+	err := db.Create(&testQuestion).Error
 
 	if err != nil {
 		return testQuestion, err

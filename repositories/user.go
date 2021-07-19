@@ -8,7 +8,7 @@ import (
 
 func GetUser(email string) models.User {
 	log.Println("getting user from db ...")
-	db, _ := database.GetDb()
+	db := database.DB
 	var user models.User
 	db.First(&user, "email = ?", email)
 	log.Println(user.Password)

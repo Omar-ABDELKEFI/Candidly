@@ -7,11 +7,8 @@ import (
 )
 
 func CreateQuestion(question models.Question) (models.Question, error) {
-	db, err := database.GetDb()
-	if err != nil {
-		log.Println("error db")
-		return question, err
-	}
+	db := database.DB
+
 	if err := db.Create(&question).Error; err != nil {
 		log.Println("question", err)
 		return question, err
@@ -20,12 +17,9 @@ func CreateQuestion(question models.Question) (models.Question, error) {
 }
 
 func FindQuestion(sort []string, difficulty []string) ([]models.Question, error) {
-	db, err := database.GetDb()
+	db := database.DB
 	var question []models.Question
-	if err != nil {
-		log.Println("error db")
-		return nil, err
-	}
+
 	log.Println(sort, len(sort))
 	if len(sort) == 0 && len(difficulty) == 0 {
 		if err := db.Table("questions").Find(&question).Error; err != nil {
