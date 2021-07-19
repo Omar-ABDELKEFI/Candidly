@@ -11,16 +11,16 @@ import (
 // CreateTest godoc
 // @Summary add new Test
 // @Description create new Test by json
-// @Param Test body models.Test true "Add Test"
+// @Param Test body models.CreateTestInput true "Add Test"
 // @Tags test
 // @Accept  json
 // @Produce  json
 // @Success 200 {object} models.Test
 // @Router /my-tests [post]
 func CreateTest(ctx *fiber.Ctx) error {
-	var test models.Test
+	var input models.CreateTestInput
 	log.Println("Hello from server")
-	err := ctx.BodyParser(&test)
+	err := ctx.BodyParser(&input)
 	validate := validator.New()
 	if err != nil {
 		log.Println("Error : Invalid Json format")
@@ -28,15 +28,14 @@ func CreateTest(ctx *fiber.Ctx) error {
 			"error": "cannot parse json",
 		})
 	}
-	validationError := validate.Struct(test)
+	validationError := validate.Struct(input)
 	if validationError != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": validationError.Error(),
 		})
 	}
-
 	// Create Test
-	newTest, err := services.CreateTest(test)
+	newTest, err := services.CreateTest(input)
 	if err != nil {
 		log.Println("Error ", err.Error())
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
