@@ -15,18 +15,18 @@ type QuestionController struct{}
 // CreateQuestion godoc
 // @Summary add new  question
 // @Description create new question by json
-// @Param question body models.Question true "Add question"
+// @Param question body models.CreateQuestionInput true "Add question"
 // @Tags question
 // @Accept  json
 // @Produce  json
 // @Success 200 {object} models.Question
 // @Router /questions/edit [post]
 func (h QuestionController) CreateQuestion(ctx *fiber.Ctx) error {
-	var question models.Question
+	var input models.CreateQuestionInput
 	validate := validator.New()
 	log.Println("Hello from server")
-	err := ctx.BodyParser(&question)
-	validationError := validate.Struct(question)
+	err := ctx.BodyParser(&input)
+	validationError := validate.Struct(input)
 	log.Println(validationError, "validationError")
 	if validationError != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -40,13 +40,12 @@ func (h QuestionController) CreateQuestion(ctx *fiber.Ctx) error {
 		})
 	}
 	// Create skill
-
-	if err := services.CreateQuestion(question); err != nil {
+	question, err := services.CreateQuestion(input)
+	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": err,
 		})
 	}
-
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status": "success",
 		"data":   question,

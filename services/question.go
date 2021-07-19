@@ -6,13 +6,14 @@ import (
 	"log"
 )
 
-func CreateQuestion(question models.Question) (err error) {
-	err = repositories.CreateQuestion(question)
+func CreateQuestion(input models.CreateQuestionInput) (models.Question, error) {
+	question := models.NewQuestion(input)
+	newQuestion, err := repositories.CreateQuestion(question)
 	log.Println("test")
 	if err != nil {
-		return err
+		return question, err
 	}
-	return nil
+	return newQuestion, err
 }
 func FindQuestion(sort []string, difficulty []string) ([]models.Question, error) {
 	questions, err := repositories.FindQuestion(sort, difficulty)

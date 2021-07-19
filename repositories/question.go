@@ -6,22 +6,17 @@ import (
 	"log"
 )
 
-func CreateQuestion(question models.Question) error {
+func CreateQuestion(question models.Question) (models.Question, error) {
 	db, err := database.GetDb()
-
 	if err != nil {
 		log.Println("error db")
-		return err
+		return question, err
 	}
-
 	if err := db.Create(&question).Error; err != nil {
 		log.Println("question", err)
-
-		return err
-
+		return question, err
 	}
-
-	return nil
+	return question, nil
 }
 
 func FindQuestion(sort []string, difficulty []string) ([]models.Question, error) {
