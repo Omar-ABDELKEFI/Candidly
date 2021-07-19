@@ -11,13 +11,14 @@ import (
 // Login godoc
 // @Summary Login to the app
 // @Description Login to the app
-// @Param user body models.User true "Login"
+// @Param user body models.LoginInput true "Login"
+// @Tags Login
 // @Accept  json
 // @Produce  json
 // @Success 200 {string} string "ok"
 // @Router /login [post]
 func Login(ctx *fiber.Ctx) error {
-	var user models.User
+	var user models.LoginInput
 	log.Println("Hello from server")
 	validate := validator.New()
 	err := ctx.BodyParser(&user)

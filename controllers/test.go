@@ -8,6 +8,15 @@ import (
 	"log"
 )
 
+// CreateTest godoc
+// @Summary add new Test
+// @Description create new Test by json
+// @Param Test body models.Test true "Add Test"
+// @Tags test
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} models.Test
+// @Router /my-tests [post]
 func CreateTest(ctx *fiber.Ctx) error {
 	var test models.Test
 	log.Println("Hello from server")
@@ -44,7 +53,7 @@ func CreateTest(ctx *fiber.Ctx) error {
 // @Summary get tests
 // @Description get tests by skill
 // @Param type query uint64 false "tests search by type"
-// @Tags tests
+// @Tags test
 // @Accept  json
 // @Produce  json
 // @Success 200 {array} models.Test

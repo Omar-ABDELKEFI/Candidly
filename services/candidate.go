@@ -5,11 +5,12 @@ import (
 	"github.com/tekab-dev/tekab-test/repositories"
 )
 
-func CreateCandidate(candidate models.Candidate) (models.Candidate, error) {
+func CreateCandidate(input models.CreateCandidateInput) (models.Candidate, error) {
 	//Create new candidate
-	candidate, err := repositories.CreateCandidate(candidate)
+	candidate := models.NewCandidate(input)
+	newCandidate, err := repositories.CreateCandidate(candidate)
 	if err != nil {
 		return candidate, err
 	}
-	return candidate, nil
+	return newCandidate, nil
 }

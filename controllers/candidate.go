@@ -9,18 +9,18 @@ import (
 )
 
 // CreateCandidate godoc
-// @Summary add new  candidate
-// @Description create new candidate by json
-// @Param candidate body models.Candidate true "Add candidate"
-// @Tags candidate
+// @Summary add new  Candidate
+// @Description create new Candidate by json
+// @Param candidate body models.CreateCandidateInput true "candidate data"
+// @Tags Candidate
 // @Accept  json
 // @Produce  json
 // @Success 200 {object} models.Candidate
 // @Router /candidate [post]
 func CreateCandidate(ctx *fiber.Ctx) error {
-	var candidate models.Candidate
+	var input models.CreateCandidateInput
 	log.Println("server is running")
-	err := ctx.BodyParser(&candidate)
+	err := ctx.BodyParser(&input)
 	validate := validator.New()
 	if err != nil {
 		log.Println("Error : Invalid Json format")
@@ -28,14 +28,14 @@ func CreateCandidate(ctx *fiber.Ctx) error {
 			"error": "cannot parse json",
 		})
 	}
-	validationError := validate.Struct(candidate)
+	validationError := validate.Struct(input)
 	if validationError != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": validationError.Error(),
 		})
 	}
 	// Create candidate
-	candidate, err = services.CreateCandidate(candidate)
+	candidate, err := services.CreateCandidate(input)
 	if err != nil {
 		log.Println("Error ", err.Error())
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
