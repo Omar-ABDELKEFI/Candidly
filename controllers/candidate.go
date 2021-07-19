@@ -8,6 +8,15 @@ import (
 	"log"
 )
 
+// CreateCandidate godoc
+// @Summary add new  candidate
+// @Description create new candidate by json
+// @Param candidate body models.Candidate true "Add candidate"
+// @Tags candidate
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} models.Candidate
+// @Router /candidate [post]
 func CreateCandidate(ctx *fiber.Ctx) error {
 	var candidate models.Candidate
 	log.Println("server is running")

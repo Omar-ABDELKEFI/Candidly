@@ -13,3 +13,12 @@ func CreateTestCandidate(testCandidate models.TestCandidate) (models.TestCandida
 	}
 	return newTestCandidate, err
 }
+
+func CalculateScore(idTestCandidate uint64) (models.TestCandidate, error) {
+	var TestCandidate models.TestCandidate
+	TestCandidate, err := repositories.CalculateScore(idTestCandidate)
+	if err != nil {
+		return TestCandidate, err
+	}
+	return TestCandidate, err
+}

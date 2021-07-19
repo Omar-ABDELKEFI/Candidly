@@ -24,6 +24,112 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/candidate": {
+            "post": {
+                "description": "create new candidate by json",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "candidate"
+                ],
+                "summary": "add new  candidate",
+                "parameters": [
+                    {
+                        "description": "Add candidate",
+                        "name": "candidate",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Candidate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Candidate"
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "description": "Login to the app",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Login to the app",
+                "parameters": [
+                    {
+                        "description": "Login",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/my-tests/candidates/:id": {
+            "post": {
+                "description": "create test_candidate by json and path",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "test_candidate"
+                ],
+                "summary": "add new  test_candidate",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Add candidate",
+                        "name": "test_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Add candidate",
+                        "name": "test_candidate",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.TestCandidate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.TestCandidate"
+                        }
+                    }
+                }
+            }
+        },
         "/questions": {
             "get": {
                 "description": "find a question by type or difficulty",
@@ -97,6 +203,79 @@ var doc = `{
                     }
                 }
             }
+        },
+        "/skill": {
+            "post": {
+                "description": "create new skill by json",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "skill"
+                ],
+                "summary": "add new  skill",
+                "parameters": [
+                    {
+                        "description": "Add Skill",
+                        "name": "skill",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Skill"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Question"
+                        }
+                    }
+                }
+            }
+        },
+        "/tests": {
+            "get": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
+                "description": "get tests by skill",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tests"
+                ],
+                "summary": "get tests",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "tests search by type",
+                        "name": "type",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Test"
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -115,13 +294,21 @@ var doc = `{
         "models.Answer": {
             "type": "object",
             "required": [
-                "candidat_id",
-                "point",
-                "test_id"
+                "question_id",
+                "test_candidate_id"
             ],
             "properties": {
-                "candidat_id": {
-                    "type": "integer"
+                "answer_choices": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.AnswerChoices"
+                    }
+                },
+                "answer_file": {
+                    "type": "string"
+                },
+                "answer_text": {
+                    "type": "string"
                 },
                 "createdAt": {
                     "type": "string"
@@ -133,9 +320,12 @@ var doc = `{
                     "type": "integer"
                 },
                 "point": {
+                    "type": "number"
+                },
+                "question_id": {
                     "type": "integer"
                 },
-                "test_id": {
+                "test_candidate_id": {
                     "type": "integer"
                 },
                 "updatedAt": {
@@ -143,7 +333,34 @@ var doc = `{
                 }
             }
         },
-        "models.NotifyEmails": {
+        "models.AnswerChoices": {
+            "type": "object",
+            "required": [
+                "answer_id",
+                "choices_id"
+            ],
+            "properties": {
+                "answer_id": {
+                    "type": "integer"
+                },
+                "choices_id": {
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Candidate": {
             "type": "object",
             "required": [
                 "email"
@@ -161,11 +378,43 @@ var doc = `{
                 "id": {
                     "type": "integer"
                 },
-                "testId": {
-                    "type": "integer"
+                "name": {
+                    "type": "string"
+                },
+                "test_candidate": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.TestCandidate"
+                    }
                 },
                 "updatedAt": {
                     "type": "string"
+                }
+            }
+        },
+        "models.Choices": {
+            "type": "object",
+            "required": [
+                "is_answer"
+            ],
+            "properties": {
+                "answer_choices": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.AnswerChoices"
+                    }
+                },
+                "choice_text": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_answer": {
+                    "type": "boolean"
+                },
+                "question_id": {
+                    "type": "integer"
                 }
             }
         },
@@ -174,10 +423,23 @@ var doc = `{
             "required": [
                 "difficulty",
                 "expected_time",
+                "max_points",
                 "name",
-                "points"
+                "question_text"
             ],
             "properties": {
+                "answer": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Answer"
+                    }
+                },
+                "choices": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Choices"
+                    }
+                },
                 "createdAt": {
                     "type": "string"
                 },
@@ -196,11 +458,11 @@ var doc = `{
                 "id": {
                     "type": "integer"
                 },
+                "max_points": {
+                    "type": "number"
+                },
                 "name": {
                     "type": "string"
-                },
-                "points": {
-                    "type": "integer"
                 },
                 "question_text": {
                     "type": "string"
@@ -216,6 +478,35 @@ var doc = `{
                 },
                 "type": {
                     "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Skill": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "question": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Question"
+                    }
                 },
                 "updatedAt": {
                     "type": "string"
@@ -252,10 +543,7 @@ var doc = `{
                     "type": "string"
                 },
                 "notifyEmails": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.NotifyEmails"
-                    }
+                    "type": "string"
                 },
                 "passingScore": {
                     "type": "integer"
@@ -263,10 +551,10 @@ var doc = `{
                 "showScore": {
                     "type": "boolean"
                 },
-                "testCondidat": {
+                "test_candidate": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.TestCondidat"
+                        "$ref": "#/definitions/models.TestCandidate"
                     }
                 },
                 "test_questions": {
@@ -283,7 +571,46 @@ var doc = `{
                 }
             }
         },
-        "models.TestCondidat": {
+        "models.TestCandidate": {
+            "type": "object",
+            "required": [
+                "candidate_id",
+                "test_id"
+            ],
+            "properties": {
+                "answer": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Answer"
+                    }
+                },
+                "candidate_id": {
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "score": {
+                    "type": "number"
+                },
+                "test_id": {
+                    "type": "integer"
+                },
+                "test_status": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.TestQuestion": {
             "type": "object",
             "required": [
                 "question_id",
@@ -310,33 +637,27 @@ var doc = `{
                 }
             }
         },
-        "models.TestQuestion": {
+        "models.User": {
             "type": "object",
             "required": [
-                "question_id",
-                "test_id"
+                "email",
+                "password"
             ],
             "properties": {
-                "answer": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.Answer"
-                    }
-                },
                 "createdAt": {
                     "type": "string"
                 },
                 "deletedAt": {
                     "$ref": "#/definitions/gorm.DeletedAt"
                 },
+                "email": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
-                "question_id": {
-                    "type": "integer"
-                },
-                "test_id": {
-                    "type": "integer"
+                "password": {
+                    "type": "string"
                 },
                 "updatedAt": {
                     "type": "string"
@@ -369,7 +690,7 @@ var SwaggerInfo = swaggerInfo{
 	BasePath:    "/api",
 	Schemes:     []string{},
 	Title:       "tekab-test",
-	Description: "is an application web of interview assessment tests for interviewing out of the box .",
+	Description: "this is an application web of interview assessment tests for interviewing out of the box .",
 }
 
 type s struct{}

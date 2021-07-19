@@ -10,8 +10,14 @@ definitions:
     type: object
   models.Answer:
     properties:
-      candidat_id:
-        type: integer
+      answer_choices:
+        items:
+          $ref: '#/definitions/models.AnswerChoices'
+        type: array
+      answer_file:
+        type: string
+      answer_text:
+        type: string
       createdAt:
         type: string
       deletedAt:
@@ -19,17 +25,36 @@ definitions:
       id:
         type: integer
       point:
+        type: number
+      question_id:
         type: integer
-      test_id:
+      test_candidate_id:
         type: integer
       updatedAt:
         type: string
     required:
-    - candidat_id
-    - point
-    - test_id
+    - question_id
+    - test_candidate_id
     type: object
-  models.NotifyEmails:
+  models.AnswerChoices:
+    properties:
+      answer_id:
+        type: integer
+      choices_id:
+        type: integer
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: integer
+      updatedAt:
+        type: string
+    required:
+    - answer_id
+    - choices_id
+    type: object
+  models.Candidate:
     properties:
       createdAt:
         type: string
@@ -39,15 +64,44 @@ definitions:
         type: string
       id:
         type: integer
-      testId:
-        type: integer
+      name:
+        type: string
+      test_candidate:
+        items:
+          $ref: '#/definitions/models.TestCandidate'
+        type: array
       updatedAt:
         type: string
     required:
     - email
     type: object
+  models.Choices:
+    properties:
+      answer_choices:
+        items:
+          $ref: '#/definitions/models.AnswerChoices'
+        type: array
+      choice_text:
+        type: string
+      id:
+        type: integer
+      is_answer:
+        type: boolean
+      question_id:
+        type: integer
+    required:
+    - is_answer
+    type: object
   models.Question:
     properties:
+      answer:
+        items:
+          $ref: '#/definitions/models.Answer'
+        type: array
+      choices:
+        items:
+          $ref: '#/definitions/models.Choices'
+        type: array
       createdAt:
         type: string
       deletedAt:
@@ -60,10 +114,10 @@ definitions:
         type: string
       id:
         type: integer
+      max_points:
+        type: number
       name:
         type: string
-      points:
-        type: integer
       question_text:
         type: string
       skill_id:
@@ -79,8 +133,28 @@ definitions:
     required:
     - difficulty
     - expected_time
+    - max_points
     - name
-    - points
+    - question_text
+    type: object
+  models.Skill:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: integer
+      name:
+        type: string
+      question:
+        items:
+          $ref: '#/definitions/models.Question'
+        type: array
+      updatedAt:
+        type: string
+    required:
+    - name
     type: object
   models.Test:
     properties:
@@ -97,20 +171,18 @@ definitions:
       name:
         type: string
       notifyEmails:
-        items:
-          $ref: '#/definitions/models.NotifyEmails'
-        type: array
+        type: string
       passingScore:
         type: integer
       showScore:
         type: boolean
+      test_candidate:
+        items:
+          $ref: '#/definitions/models.TestCandidate'
+        type: array
       test_questions:
         items:
           $ref: '#/definitions/models.TestQuestion'
-        type: array
-      testCondidat:
-        items:
-          $ref: '#/definitions/models.TestCondidat'
         type: array
       timingPolicy:
         type: string
@@ -124,30 +196,34 @@ definitions:
     - showScore
     - timingPolicy
     type: object
-  models.TestCondidat:
-    properties:
-      createdAt:
-        type: string
-      deletedAt:
-        $ref: '#/definitions/gorm.DeletedAt'
-      id:
-        type: integer
-      question_id:
-        type: integer
-      test_id:
-        type: integer
-      updatedAt:
-        type: string
-    required:
-    - question_id
-    - test_id
-    type: object
-  models.TestQuestion:
+  models.TestCandidate:
     properties:
       answer:
         items:
           $ref: '#/definitions/models.Answer'
         type: array
+      candidate_id:
+        type: integer
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: integer
+      score:
+        type: number
+      test_id:
+        type: integer
+      test_status:
+        type: string
+      updatedAt:
+        type: string
+    required:
+    - candidate_id
+    - test_id
+    type: object
+  models.TestQuestion:
+    properties:
       createdAt:
         type: string
       deletedAt:
@@ -164,13 +240,100 @@ definitions:
     - question_id
     - test_id
     type: object
+  models.User:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      email:
+        type: string
+      id:
+        type: integer
+      password:
+        type: string
+      updatedAt:
+        type: string
+    required:
+    - email
+    - password
+    type: object
 info:
   contact: {}
-  description: is an application web of interview assessment tests for interviewing
+  description: this is an application web of interview assessment tests for interviewing
     out of the box .
   title: tekab-test
   version: "1.0"
 paths:
+  /candidate:
+    post:
+      consumes:
+      - application/json
+      description: create new candidate by json
+      parameters:
+      - description: Add candidate
+        in: body
+        name: candidate
+        required: true
+        schema:
+          $ref: '#/definitions/models.Candidate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Candidate'
+      summary: add new  candidate
+      tags:
+      - candidate
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Login to the app
+      parameters:
+      - description: Login
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: Login to the app
+  /my-tests/candidates/:id:
+    post:
+      consumes:
+      - application/json
+      description: create test_candidate by json and path
+      parameters:
+      - description: Add candidate
+        in: path
+        name: test_id
+        required: true
+        type: integer
+      - description: Add candidate
+        in: body
+        name: test_candidate
+        required: true
+        schema:
+          $ref: '#/definitions/models.TestCandidate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.TestCandidate'
+      summary: add new  test_candidate
+      tags:
+      - test_candidate
   /questions:
     get:
       consumes:
@@ -219,6 +382,52 @@ paths:
       summary: add new  question
       tags:
       - question
+  /skill:
+    post:
+      consumes:
+      - application/json
+      description: create new skill by json
+      parameters:
+      - description: Add Skill
+        in: body
+        name: skill
+        required: true
+        schema:
+          $ref: '#/definitions/models.Skill'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Question'
+      summary: add new  skill
+      tags:
+      - skill
+  /tests:
+    get:
+      consumes:
+      - application/json
+      description: get tests by skill
+      parameters:
+      - description: tests search by type
+        in: query
+        name: type
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Test'
+            type: array
+      security:
+      - Authorization: []
+      summary: get tests
+      tags:
+      - tests
 securityDefinitions:
   ApiKeyAuth:
     in: header

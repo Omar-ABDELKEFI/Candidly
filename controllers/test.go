@@ -49,7 +49,7 @@ func CreateTest(ctx *fiber.Ctx) error {
 // @Produce  json
 // @Success 200 {array} models.Test
 // @Security Authorization
-// @Router /questions [get]
+// @Router /tests [get]
 func FindTests(ctx *fiber.Ctx) error {
 	skillsId := ctx.Query("skills")
 	tests, err := services.FindTests(skillsId)

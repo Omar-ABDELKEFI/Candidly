@@ -58,3 +58,36 @@ func CreateTestCandidate(ctx *fiber.Ctx) error {
 		"test":   newTestCandidat,
 	})
 }
+
+// CalculateScore godoc
+// @Summary calculate a test score
+// @Description calculate score by query and update a status test
+// @Param test_candidate_id query int true "calculate score"
+// @Tags test_candidate
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} models.TestCandidate
+// @Router /score [post]
+func CalculateScore(ctx *fiber.Ctx) error {
+	var testCandidate models.TestCandidate
+	log.Println("Hello from testCandidate")
+	id, err := strconv.ParseUint(ctx.Params("id"), 10, 64)
+	if err != nil {
+		log.Println("Error ", err.Error())
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	testCandidate, err = services.CalculateScore(id)
+	if err != nil {
+		log.Println("Error ", err.Error())
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status": "SUCCESS",
+		"test":   testCandidate,
+	})
+}
