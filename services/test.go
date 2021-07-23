@@ -8,8 +8,9 @@ import (
 	"strings"
 )
 
-func CreateTest(test models.Test) (models.Test, error) {
+func CreateTest(input models.CreateTestInput) (models.Test, error) {
 	//Create new test
+	test := models.NewTest(input)
 	newTest, err := repositories.CreateTest(test)
 	if err != nil {
 		return test, err
