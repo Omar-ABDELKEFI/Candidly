@@ -15,12 +15,12 @@ type Test struct {
 	TestCandidate []TestCandidate `json:"test_candidate" swaggerignore:"true"`
 }
 type CreateTestInput struct {
-	Name         string  `json:"name" validate:"required"`
+	Name         string  `json:"name"`
 	Description  string  `json:"description"`
-	TimingPolicy string  `json:"timing_policy" validate:"required,oneof=Normal Strict Relaxed"`
-	ShowScore    *bool   `json:"show_score" validate:"required"`
+	TimingPolicy string  `json:"timing_policy"`
+	ShowScore    *bool   `json:"show_score"`
 	Archived     *bool   `json:"archived"`
-	PassingScore *uint16 `json:"passing_score" validate:"required"`
+	PassingScore *uint16 `json:"passing_score"`
 	NotifyEmails string  `json:"notify_emails"`
 }
 
