@@ -14,3 +14,12 @@ func CreateSkill(skill models.Skill) (err error) {
 	}
 	return nil
 }
+func FindSkills() ([]models.Skill, error) {
+	var skills []models.Skill
+	//Get all skills
+	skills, err := repositories.FindSkills()
+	if err != nil {
+		return skills, err
+	}
+	return skills, nil
+}

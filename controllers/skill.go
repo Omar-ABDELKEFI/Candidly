@@ -15,7 +15,7 @@ import (
 // @Tags skill
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} models.Question
+// @Success 200 {object} models.Skill
 // @Router /skill [post]
 func CreateSkill(ctx *fiber.Ctx) error {
 	var skill models.Skill
@@ -47,4 +47,27 @@ func CreateSkill(ctx *fiber.Ctx) error {
 		"status": "succes",
 		"data":   skill,
 	})
+}
+
+// FindSkills godoc
+// @Summary get skills
+// @Description get all skills
+// @Tags skill
+// @Accept  json
+// @Produce  json
+// @Success 200 {array} models.Skill
+// @Security Authorization
+// @Router /skills [get]
+func FindSkills(ctx *fiber.Ctx) error {
+	skills, err := services.FindSkills()
+	if err != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status": "succes",
+		"data":   skills,
+	})
+
 }

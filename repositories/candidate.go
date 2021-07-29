@@ -10,7 +10,7 @@ func CreateCandidate(candidate models.Candidate) (models.Candidate, error) {
 	log.Println("Creating Candidate ...")
 	db := database.DB
 
-	err := db.Create(&candidat).Error
+	err := db.Create(&candidate).Error
 
 	if err != nil {
 		return candidate, err
