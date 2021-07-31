@@ -11,18 +11,18 @@ import (
 // CreateSkill godoc
 // @Summary add new  skill
 // @Description create new skill by json
-// @Param skill body models.Skill true "Add Skill"
+// @Param skill body models.CreateSkillInput true "Add Skill"
 // @Tags skill
 // @Accept  json
 // @Produce  json
 // @Success 200 {object} models.Skill
 // @Router /skill [post]
 func CreateSkill(ctx *fiber.Ctx) error {
-	var skill models.Skill
+	var input models.CreateSkillInput
 	validate := validator.New()
 	log.Println("Hello from server")
-	err := ctx.BodyParser(&skill)
-	validationError := validate.Struct(skill)
+	err := ctx.BodyParser(&input)
+	validationError := validate.Struct(input)
 	log.Println(validationError, "validationError")
 	if validationError != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -37,7 +37,8 @@ func CreateSkill(ctx *fiber.Ctx) error {
 	}
 	// Create skill
 
-	if err := services.CreateSkill(skill); err != nil {
+	newSkill, err := services.CreateSkill(input)
+	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": err,
 		})
@@ -45,7 +46,7 @@ func CreateSkill(ctx *fiber.Ctx) error {
 
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status": "succes",
-		"data":   skill,
+		"data":   newSkill,
 	})
 }
 

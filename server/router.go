@@ -25,7 +25,7 @@ func Router(app *fiber.App) {
 
 	app.Post("/my-tests/candidates/:id", controllers.CreateTestCandidate)
 	questionController := new(controllers.QuestionController)
-	question := app.Group("/question")
+	question := app.Group("/questions")
 	{
 		question.Post("/edit", questionController.CreateQuestion)
 		question.Get("/", questionController.FindQuestion)

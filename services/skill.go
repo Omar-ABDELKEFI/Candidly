@@ -6,13 +6,15 @@ import (
 	"log"
 )
 
-func CreateSkill(skill models.Skill) (err error) {
-	err = repositories.CreateSkill(skill)
-	log.Println("test")
+func CreateSkill(input models.CreateSkillInput) (models.Skill, error) {
+	//Create new test
+	skill := models.NewSkill(input)
+	newSkill, err := repositories.CreateSkill(skill)
+	log.Println("skill")
 	if err != nil {
-		return err
+		return skill, err
 	}
-	return nil
+	return newSkill, nil
 }
 func FindSkills() ([]models.Skill, error) {
 	var skills []models.Skill

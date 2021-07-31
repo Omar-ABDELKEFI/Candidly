@@ -4,6 +4,15 @@ import "gorm.io/gorm"
 
 type Skill struct {
 	gorm.Model
-	Name     string `json:"name" validate:"required,min=1"`
+	Name     string `json:"name"`
 	Question []Question
+}
+type CreateSkillInput struct {
+	Name string `json:"name" validate:"required,min=1"`
+}
+
+func NewSkill(input CreateSkillInput) Skill {
+	return Skill{
+		Name: input.Name,
+	}
 }

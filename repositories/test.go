@@ -35,20 +35,19 @@ func FindTests(skillsID []int64) ([]models.Test, error) {
 	var tests []models.Test
 	if len(skillsID) == 0 {
 		if err := db.Table("tests").Find(&tests).Error; err != nil {
-			log.Println("question", err)
+			log.Println("tests", err)
 
 			return nil, err
 
 		}
 		return tests, nil
 	}
-	log.Println(len(skillsID), "len(skillsID)")
 	if err := db.
 		Joins("inner JOIN test_questions ON tests.id = test_questions.test_id ").
 		Joins("inner JOIN questions ON questions.id = test_questions.question_id AND questions.id IN ?", skillsID).
 		Group("tests.id").
 		Find(&tests).Error; err != nil {
-		log.Println("question", err)
+		log.Println("tests", err)
 
 		return nil, err
 	}

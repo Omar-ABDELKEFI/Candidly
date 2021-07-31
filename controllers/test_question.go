@@ -9,6 +9,16 @@ import (
 	"strconv"
 )
 
+// CreateTestQuestion godoc
+// @Summary add a question to test
+// @Description add a question to test by json
+// @Param test_id path int true "test id"
+// @Param test_question body models.TestQuestion true "Add question to test"
+// @Tags question_test
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} models.TestQuestion
+// @Router /my-tests/:id/questions [post]
 func CreateTestQuestion(ctx *fiber.Ctx) error {
 	var testQuestion models.TestQuestion
 	log.Println("Hello from server")
