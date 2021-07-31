@@ -6,19 +6,20 @@ import (
 	"github.com/tekab-dev/tekab-test/models"
 	"github.com/tekab-dev/tekab-test/services"
 	"log"
+	"strconv"
 )
 
 // CreateTest godoc
 // @Summary add new Test
 // @Description create new Test by json
-// @Param Test body models.CreateTestInput true "Add Test"
+// @Param Test body models.Test true "Add Test"
 // @Tags test
 // @Accept  json
 // @Produce  json
 // @Success 200 {object} models.Test
 // @Router /my-tests [post]
 func CreateTest(ctx *fiber.Ctx) error {
-	var input models.CreateTestInput
+	var input models.Test
 	log.Println("Hello from server")
 	err := ctx.BodyParser(&input)
 	validate := validator.New()
@@ -71,4 +72,53 @@ func FindTests(ctx *fiber.Ctx) error {
 		"data":   tests,
 	})
 
+}
+
+// UpdateTest godoc
+// @Summary update Test
+// @id updateTest
+// @Description update Test by json and path
+// @Param Test body models.Test true "Update Test"
+// @Param test_id path int true "Update Test"
+// @Tags test
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} models.Test
+// @Router /my-tests/{test_id} [post]
+func UpdateTest(ctx *fiber.Ctx) error {
+	var input models.Test
+	log.Println("Hello from server")
+	err := ctx.BodyParser(&input)
+
+	validate := validator.New()
+	if err != nil {
+		log.Println("Error : Invalid Json format")
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "cannot parse json",
+		})
+	}
+	validationError := validate.Struct(input)
+	if validationError != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": validationError.Error(),
+		})
+	}
+	testId, err := strconv.ParseUint(ctx.Params("idTest"), 10, 64)
+	if err != nil {
+		log.Println("Error ", err.Error())
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	newTest, err := services.UpdateTest(input, testId)
+	if err != nil {
+		log.Println("Error ", err.Error())
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status": "SUCCESS",
+		"test":   newTest,
+	})
 }

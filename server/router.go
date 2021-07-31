@@ -12,11 +12,11 @@ func Router(app *fiber.App) {
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 	app.Get("/swagger/*", swagger.Handler)
 	app.Post("/login", controllers.Login)
-
 	//app.Get("/question/:type?")
 	app.Post("/skill", controllers.CreateSkill)
 	app.Get("/skills", controllers.FindSkills)
 	app.Post("/my-tests", controllers.CreateTest)
+	app.Post("/my-tests/:idTest", controllers.UpdateTest)
 	app.Get("/tests", controllers.FindTests)
 	app.Post("/candidate", controllers.CreateCandidate)
 	app.Post("/my-tests/:id/questions", controllers.CreateTestQuestion)

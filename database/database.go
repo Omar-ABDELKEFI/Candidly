@@ -32,6 +32,7 @@ func MigrateDatabase() {
 
 	}
 	log.Println("Connected to database")
+	db.SetupJoinTable(&models.Candidate{}, "Test", &models.TestCandidate{})
 	db.AutoMigrate(
 		&models.User{},
 		&models.Skill{},
@@ -41,7 +42,6 @@ func MigrateDatabase() {
 		&models.Candidate{},
 		&models.TestQuestion{},
 		&models.Answer{},
-		&models.TestCandidate{},
 		&models.AnswerChoices{},
 	)
 

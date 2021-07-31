@@ -19,6 +19,16 @@ func CreateTest(test models.Test) (models.Test, error) {
 
 	return test, nil
 }
+func UpdateTest(test models.Test, idTest uint64) (models.Test, error) {
+	log.Println("Creating test ...")
+	var getTest models.Test
+	db := database.DB
+	if err := db.Model(&getTest).Where("id = ?", idTest).Updates(&test).First(&getTest, idTest).Error; err != nil {
+		return getTest, err
+	}
+
+	return getTest, nil
+}
 
 func FindTests(skillsID []int64) ([]models.Test, error) {
 	db := database.DB

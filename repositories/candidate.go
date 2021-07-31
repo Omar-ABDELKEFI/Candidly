@@ -6,7 +6,7 @@ import (
 	"log"
 )
 
-func CreateCandidate(candidate models.Candidate) (models.Candidate, error) {
+func CreateCandidate(candidate []models.Candidate) ([]models.Candidate, error) {
 	log.Println("Creating Candidate ...")
 	db := database.DB
 

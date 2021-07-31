@@ -8,10 +8,18 @@ import (
 	"strings"
 )
 
-func CreateTest(input models.CreateTestInput) (models.Test, error) {
+func CreateTest(test models.Test) (models.Test, error) {
 	//Create new test
-	test := models.NewTest(input)
+
 	newTest, err := repositories.CreateTest(test)
+	if err != nil {
+		return test, err
+	}
+	return newTest, err
+}
+func UpdateTest(test models.Test, idTest uint64) (models.Test, error) {
+	//Create new test
+	newTest, err := repositories.UpdateTest(test, idTest)
 	if err != nil {
 		return test, err
 	}

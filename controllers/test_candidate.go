@@ -61,8 +61,8 @@ func CreateTestCandidate(ctx *fiber.Ctx) error {
 
 // CalculateScore godoc
 // @Summary calculate a test score
-// @Description calculate score by query and update a status test
-// @Param test_candidate_id query int true "calculate score"
+// @Description calculate score by path  and update a status test
+// @Param test_candidate_id path  int true "calculate score"
 // @Tags test_candidate
 // @Accept  json
 // @Produce  json
