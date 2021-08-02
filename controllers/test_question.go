@@ -12,7 +12,7 @@ import (
 // CreateTestQuestion godoc
 // @Summary add a question to test
 // @Description add a question to test by json
-// @Param test_id path int true "test id"
+// @Param id path string true "id"
 // @Param test_question body models.TestQuestion true "Add question to test"
 // @Tags question_test
 // @Accept  json
@@ -55,6 +55,35 @@ func CreateTestQuestion(ctx *fiber.Ctx) error {
 	}
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status": "SUCCESS",
-		"test":   newTestQuestion,
+		"data":   newTestQuestion,
+	})
+}
+
+// DeleteTestQuestion godoc
+// @Summary delete a question from test
+// @Description delete a question from test by json
+// @Param id path string true "id"
+// @Tags question_test
+// @Accept  json
+// @Produce  json
+// @Success 200 {string} string	"ok"
+// @Router /my-tests/questions/:id [Delete]
+func DeleteTestQuestion(ctx *fiber.Ctx) error {
+	id, err := strconv.ParseUint(ctx.Params("id"), 10, 64)
+	if err != nil {
+		log.Println("Error ", err.Error())
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	err = services.DeleteTestQuestion(id)
+	if err != nil {
+		log.Println("Error ", err.Error())
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status": "SUCCESS",
 	})
 }

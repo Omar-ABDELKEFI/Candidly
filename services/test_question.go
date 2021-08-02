@@ -13,3 +13,11 @@ func CreateTestQuestion(testQuestion models.TestQuestion) (models.TestQuestion, 
 	}
 	return newTest, err
 }
+func DeleteTestQuestion(id uint64) error {
+	//Delete testQuestion
+	err := repositories.DeleteTestQuestion(id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
