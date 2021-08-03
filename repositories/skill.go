@@ -23,3 +23,12 @@ func FindSkills() (skills []models.Skill, err error) {
 	}
 	return skills, nil
 }
+func FindOrCreateSkill(skillName string) (uint, error) {
+	db := database.DB
+	var skill models.Skill
+	err := db.FirstOrCreate(&skill, models.Skill{Name: skillName}).Error
+	if err != nil {
+		return 0, err
+	}
+	return skill.ID, err
+}

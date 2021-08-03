@@ -25,18 +25,19 @@ func FindQuestion(sort []string, difficulty []string) ([]models.Question, error)
 		if err := db.Table("questions").Find(&question).Error; err != nil {
 			log.Println("question", err)
 			return nil, err
-
 		}
 		return question, nil
 	}
 	if err := db.Table("questions").Where("type IN ?", sort).Where("difficulty IN ?", difficulty).Find(&question).Error; err != nil {
 		log.Println("question", err)
-
 		return nil, err
 	}
 	*/
-	if err := db.Preload("TestQuestions").Find(&question).Error; err != nil {
+	err := db.Preload("TestQuestions").Find(&question).Error
+	log.Println("question ", question)
+	if err != nil {
 		log.Println("question", err)
+
 		return nil, err
 	}
 

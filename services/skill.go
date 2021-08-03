@@ -16,6 +16,14 @@ func CreateSkill(input models.CreateSkillInput) (models.Skill, error) {
 	}
 	return newSkill, nil
 }
+func FindOrCreateSkill(skillName string) (uint, error) {
+	skillId, err := repositories.FindOrCreateSkill(skillName)
+	if err != nil {
+		log.Println(err)
+		return 0, err
+	}
+	return skillId, nil
+}
 func FindSkills() ([]models.Skill, error) {
 	var skills []models.Skill
 	//Get all skills

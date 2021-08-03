@@ -39,7 +39,16 @@ func (h QuestionController) CreateQuestion(ctx *fiber.Ctx) error {
 			"error": "cannot parse json",
 		})
 	}
-	// Create skill
+	// Create question
+	if input.SkillName != "" {
+		skillId, err := services.FindOrCreateSkill(input.SkillName)
+		if err != nil {
+			return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": err,
+			})
+		}
+		input.SkillId = uint64(skillId)
+	}
 	question, err := services.CreateQuestion(input)
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
