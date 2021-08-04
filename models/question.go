@@ -1,9 +1,7 @@
 package models
 
-import "gorm.io/gorm"
-
 type Question struct {
-	gorm.Model
+	OwnModel
 	Difficulty    string   `json:"difficulty"`
 	MaxPoints     *float64 `json:"max_points"`
 	Name          string   `json:"name" gorm:"unique"`
@@ -15,7 +13,7 @@ type Question struct {
 	FileReadMe    string         `json:"file_read_me"`
 	TestQuestions []TestQuestion `json:"test_questions"`
 	Choices       []Choices      `json:"choices"`
-	Answer        []Answer       `json:"answer"`
+	Answer        []Answer       `json:"answer" swaggerignore:"true"`
 }
 type CreateQuestionInput struct {
 	Difficulty   string    `json:"difficulty" validate:"required,oneof=hard easy"`
