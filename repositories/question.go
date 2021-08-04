@@ -33,8 +33,7 @@ func FindQuestion(sort []string, difficulty []string) ([]models.Question, error)
 		return nil, err
 	}
 	*/
-	err := db.Preload("TestQuestions").Find(&question).Error
-	log.Println("question ", question)
+	err := db.Table("questions").Preload("TestQuestions").Joins("Skill").Find(&question).Error
 	if err != nil {
 		log.Println("question", err)
 

@@ -47,7 +47,7 @@ func (h QuestionController) CreateQuestion(ctx *fiber.Ctx) error {
 				"error": err,
 			})
 		}
-		input.SkillId = uint64(skillId)
+		input.SkillID = uint64(skillId)
 	}
 	question, err := services.CreateQuestion(input)
 	if err != nil {

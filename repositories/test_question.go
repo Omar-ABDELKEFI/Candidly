@@ -23,7 +23,7 @@ func DeleteTestQuestion(id uint64) error {
 	log.Println("Deleting testQuestion ...")
 	db := database.DB
 	var testQuestion models.TestQuestion
-	err := db.Table("test_questions").Where("id = ?", id).First(&testQuestion).Error
+	err := db.Table("test_questions").Where("test_questions.id = ?", id).First(&testQuestion).Error
 	if err != nil {
 		return err
 	}
