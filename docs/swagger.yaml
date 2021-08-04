@@ -51,7 +51,6 @@ definitions:
       updatedAt:
         type: string
     required:
-    - answer_id
     - choices_id
     type: object
   models.Candidate:
@@ -72,8 +71,6 @@ definitions:
         type: array
       updatedAt:
         type: string
-    required:
-    - email
     type: object
   models.Choices:
     properties:
@@ -90,7 +87,57 @@ definitions:
       question_id:
         type: integer
     required:
+    - choice_text
     - is_answer
+    type: object
+  models.CreateCandidateInput:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+    required:
+    - email
+    type: object
+  models.CreateQuestionInput:
+    properties:
+      choices:
+        items:
+          $ref: '#/definitions/models.Choices'
+        type: array
+      difficulty:
+        type: string
+      expected_time:
+        type: integer
+      file_read_me:
+        type: string
+      max_points:
+        type: number
+      name:
+        type: string
+      question_text:
+        type: string
+      skill_id:
+        type: integer
+      type:
+        type: string
+    required:
+    - difficulty
+    - expected_time
+    - max_points
+    - name
+    - question_text
+    - type
+    type: object
+  models.LoginInput:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
     type: object
   models.Question:
     properties:
@@ -130,12 +177,6 @@ definitions:
         type: string
       updatedAt:
         type: string
-    required:
-    - difficulty
-    - expected_time
-    - max_points
-    - name
-    - question_text
     type: object
   models.Skill:
     properties:
@@ -240,24 +281,6 @@ definitions:
     - question_id
     - test_id
     type: object
-  models.User:
-    properties:
-      createdAt:
-        type: string
-      deletedAt:
-        $ref: '#/definitions/gorm.DeletedAt'
-      email:
-        type: string
-      id:
-        type: integer
-      password:
-        type: string
-      updatedAt:
-        type: string
-    required:
-    - email
-    - password
-    type: object
 info:
   contact: {}
   description: this is an application web of interview assessment tests for interviewing
@@ -269,14 +292,14 @@ paths:
     post:
       consumes:
       - application/json
-      description: create new candidate by json
+      description: create new Candidate by json
       parameters:
-      - description: Add candidate
+      - description: candidate data
         in: body
         name: candidate
         required: true
         schema:
-          $ref: '#/definitions/models.Candidate'
+          $ref: '#/definitions/models.CreateCandidateInput'
       produces:
       - application/json
       responses:
@@ -284,9 +307,9 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.Candidate'
-      summary: add new  candidate
+      summary: add new  Candidate
       tags:
-      - candidate
+      - Candidate
   /login:
     post:
       consumes:
@@ -298,7 +321,7 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/models.User'
+          $ref: '#/definitions/models.LoginInput'
       produces:
       - application/json
       responses:
@@ -307,6 +330,30 @@ paths:
           schema:
             type: string
       summary: Login to the app
+      tags:
+      - Login
+  /my-tests:
+    post:
+      consumes:
+      - application/json
+      description: create new Test by json
+      parameters:
+      - description: Add Test
+        in: body
+        name: Test
+        required: true
+        schema:
+          $ref: '#/definitions/models.Test'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Test'
+      summary: add new Test
+      tags:
+      - test
   /my-tests/candidates/:id:
     post:
       consumes:
@@ -371,7 +418,7 @@ paths:
         name: question
         required: true
         schema:
-          $ref: '#/definitions/models.Question'
+          $ref: '#/definitions/models.CreateQuestionInput'
       produces:
       - application/json
       responses:
@@ -382,6 +429,27 @@ paths:
       summary: add new  question
       tags:
       - question
+  /score:
+    post:
+      consumes:
+      - application/json
+      description: calculate score by query and update a status test
+      parameters:
+      - description: calculate score
+        in: query
+        name: test_candidate_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.TestCandidate'
+      summary: calculate a test score
+      tags:
+      - test_candidate
   /skill:
     post:
       consumes:
@@ -427,7 +495,7 @@ paths:
       - Authorization: []
       summary: get tests
       tags:
-      - tests
+      - test
 securityDefinitions:
   ApiKeyAuth:
     in: header

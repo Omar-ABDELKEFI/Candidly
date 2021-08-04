@@ -11,11 +11,11 @@ import (
 // CreateCandidate godoc
 // @Summary add new  Candidate
 // @Description create new Candidate by json
-// @Param candidate body models.Candidate true "candidate data"
+// @Param candidate body models.CandidateRequest true "candidate data"
 // @Tags Candidate
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} models.Candidate
+// @Success 200 {object} models.CandidateResponse
 // @Router /candidate [post]
 func CreateCandidate(ctx *fiber.Ctx) error {
 	var candidate []models.Candidate
@@ -28,6 +28,7 @@ func CreateCandidate(ctx *fiber.Ctx) error {
 			"error": "cannot parse json",
 		})
 	}
+	// todo create Candidate validation
 	//validationError := validate.Struct(candidate)
 	//if validationError != nil {
 	//	return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{

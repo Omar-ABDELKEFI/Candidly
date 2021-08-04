@@ -6,3 +6,15 @@ type Candidate struct {
 	Email string  `json:"email" gorm:"unique"`
 	Test  []*Test `gorm:"many2many:test_candidates;"`
 }
+
+type CandidateResponse struct {
+	Name  string  `json:"name"`
+	Email string  `json:"email" gorm:"unique"`
+	Test  []*Test `gorm:"many2many:test_candidates;"`
+}
+type CandidateRequest struct {
+	OwnModel
+	Name  string  `json:"name"`
+	Email string  `json:"email" gorm:"unique"`
+	Test  []*Test `gorm:"many2many:test_candidates;"`
+}

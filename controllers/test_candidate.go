@@ -18,7 +18,7 @@ import (
 // @Accept  json
 // @Produce  json
 // @Success 200 {object} models.TestCandidate
-// @Router /my-tests/candidates/:id [post]
+// @Router /my-tests/candidates/:test_id [post]
 func CreateTestCandidate(ctx *fiber.Ctx) error {
 	var testCandidate models.TestCandidate
 	log.Println("Hello from testCandidate")

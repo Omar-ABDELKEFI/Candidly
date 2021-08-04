@@ -20,10 +20,10 @@ func CreateTestCandidate(testCandidate models.TestCandidate) (models.TestCandida
 	return testCandidate, nil
 }
 
-type sum struct {
-	Score      float64 `json:"score"`
-	TestStatus string  `json:"test_status"`
-}
+//type sum struct {
+//	Score      float64 `json:"score"`
+//	TestStatus string  `json:"test_status"`
+//}
 
 func CalculateScore(idTestCandidate uint64) (models.TestCandidate, error) {
 	db := database.DB

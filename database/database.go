@@ -20,18 +20,13 @@ func GetDb() {
 	}
 	DB = db
 	log.Println("Connected to database")
+	//migration
+	MigrateDatabase(db)
 
 }
-func MigrateDatabase() {
-	const DNS = "root:dnVh9M9g3Q@tcp(mysql_rest:3306)/tekabTest?parseTime=true"
-	log.Println("before connection ..")
-	db, err := gorm.Open(mysql.Open(DNS), &gorm.Config{})
-	if err != nil {
-		log.Println(err.Error())
-		panic("Cannot connect to Database")
+func MigrateDatabase(db *gorm.DB) {
+	log.Println("before migration ..")
 
-	}
-	log.Println("Connected to database")
 	db.SetupJoinTable(&models.Candidate{}, "Test", &models.TestCandidate{})
 	db.AutoMigrate(
 		&models.User{},
@@ -44,5 +39,5 @@ func MigrateDatabase() {
 		&models.Answer{},
 		&models.AnswerChoices{},
 	)
-
+	log.Println("after to database")
 }

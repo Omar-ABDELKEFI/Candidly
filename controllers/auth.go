@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"github.com/go-playground/validator"
 	"github.com/gofiber/fiber/v2"
 	"github.com/tekab-dev/tekab-test/models"
 	"github.com/tekab-dev/tekab-test/services"
@@ -20,10 +19,30 @@ import (
 func Login(ctx *fiber.Ctx) error {
 	var user models.LoginInput
 	log.Println("Hello from server")
-	validate := validator.New()
+	//validate := validator.New()
 	err := ctx.BodyParser(&user)
-	validationError := validate.Struct(user)
-	if err != nil || validationError != nil {
+	//validationError := validate.Struct(user)
+	//element:=validationError
+	if user.Password == "" && user.Email == "" {
+		log.Println("Error : password and email required")
+		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error": "password_and_email_required",
+		})
+	}
+	if user.Password == "" {
+		log.Println("Error : password required")
+		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error": "password_required",
+		})
+	}
+	if user.Email == "" {
+		log.Println("Error : password required")
+		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error": "email_required",
+		})
+	}
+
+	if err != nil {
 		log.Println("Error : Invalid Json format")
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "cannot parse json",
@@ -32,8 +51,8 @@ func Login(ctx *fiber.Ctx) error {
 	token, err := services.ValidateLogin(user.Email, user.Password)
 	if err != nil {
 		log.Println("Error ", err.Error())
-		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"error": err.Error(),
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "invalid_login",
 		})
 	}
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
