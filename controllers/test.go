@@ -12,11 +12,11 @@ import (
 // CreateTest godoc
 // @Summary add new Test
 // @Description create new Test by json
-// @Param Test body models.Test true "Add Test"
+// @Param Test body models.TestRequest true "Add Test"
 // @Tags test
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} models.Test
+// @Success 200 {object} models.TestResponse
 // @Router /my-tests [post]
 func CreateTest(ctx *fiber.Ctx) error {
 	var input models.Test
@@ -56,7 +56,7 @@ func CreateTest(ctx *fiber.Ctx) error {
 // @Tags test
 // @Accept  json
 // @Produce  json
-// @Success 200 {array} models.Test
+// @Success 200 {array} models.TestResponse
 // @Security Authorization
 // @Router /tests [get]
 func FindTests(ctx *fiber.Ctx) error {
@@ -78,12 +78,12 @@ func FindTests(ctx *fiber.Ctx) error {
 // @Summary update Test
 // @id updateTest
 // @Description update Test by json and path
-// @Param Test body models.Test true "Update Test"
+// @Param Test body models.TestRequest true "Update Test"
 // @Param test_id path int true "Update Test"
 // @Tags test
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} models.Test
+// @Success 200 {object} models.TestResponse
 // @Router /my-tests/{test_id} [post]
 func UpdateTest(ctx *fiber.Ctx) error {
 	var input models.Test

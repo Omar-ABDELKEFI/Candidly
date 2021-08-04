@@ -26,7 +26,7 @@ var doc = `{
     "paths": {
         "/candidate": {
             "post": {
-                "description": "create new candidate by json",
+                "description": "create new Candidate by json",
                 "consumes": [
                     "application/json"
                 ],
@@ -34,17 +34,17 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "candidate"
+                    "Candidate"
                 ],
-                "summary": "add new  candidate",
+                "summary": "add new  Candidate",
                 "parameters": [
                     {
-                        "description": "Add candidate",
+                        "description": "candidate data",
                         "name": "candidate",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Candidate"
+                            "$ref": "#/definitions/models.CreateCandidateInput"
                         }
                     }
                 ],
@@ -67,6 +67,9 @@ var doc = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "Login"
+                ],
                 "summary": "Login to the app",
                 "parameters": [
                     {
@@ -75,7 +78,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/models.LoginInput"
                         }
                     }
                 ],
@@ -84,6 +87,40 @@ var doc = `{
                         "description": "ok",
                         "schema": {
                             "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/my-tests": {
+            "post": {
+                "description": "create new Test by json",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "test"
+                ],
+                "summary": "add new Test",
+                "parameters": [
+                    {
+                        "description": "Add Test",
+                        "name": "Test",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Test"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Test"
                         }
                     }
                 }
@@ -190,7 +227,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Question"
+                            "$ref": "#/definitions/models.CreateQuestionInput"
                         }
                     }
                 ],
@@ -199,6 +236,38 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/models.Question"
+                        }
+                    }
+                }
+            }
+        },
+        "/score": {
+            "post": {
+                "description": "calculate score by query and update a status test",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "test_candidate"
+                ],
+                "summary": "calculate a test score",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "calculate score",
+                        "name": "test_candidate_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.TestCandidate"
                         }
                     }
                 }
@@ -253,7 +322,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "tests"
+                    "test"
                 ],
                 "summary": "get tests",
                 "parameters": [
@@ -336,7 +405,6 @@ var doc = `{
         "models.AnswerChoices": {
             "type": "object",
             "required": [
-                "answer_id",
                 "choices_id"
             ],
             "properties": {
@@ -362,9 +430,6 @@ var doc = `{
         },
         "models.Candidate": {
             "type": "object",
-            "required": [
-                "email"
-            ],
             "properties": {
                 "createdAt": {
                     "type": "string"
@@ -395,6 +460,7 @@ var doc = `{
         "models.Choices": {
             "type": "object",
             "required": [
+                "choice_text",
                 "is_answer"
             ],
             "properties": {
@@ -418,15 +484,80 @@ var doc = `{
                 }
             }
         },
-        "models.Question": {
+        "models.CreateCandidateInput": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.CreateQuestionInput": {
             "type": "object",
             "required": [
                 "difficulty",
                 "expected_time",
                 "max_points",
                 "name",
-                "question_text"
+                "question_text",
+                "type"
             ],
+            "properties": {
+                "choices": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Choices"
+                    }
+                },
+                "difficulty": {
+                    "type": "string"
+                },
+                "expected_time": {
+                    "type": "integer"
+                },
+                "file_read_me": {
+                    "type": "string"
+                },
+                "max_points": {
+                    "type": "number"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "question_text": {
+                    "type": "string"
+                },
+                "skill_id": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.LoginInput": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Question": {
+            "type": "object",
             "properties": {
                 "answer": {
                     "type": "array",
@@ -631,33 +762,6 @@ var doc = `{
                 },
                 "test_id": {
                     "type": "integer"
-                },
-                "updatedAt": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.User": {
-            "type": "object",
-            "required": [
-                "email",
-                "password"
-            ],
-            "properties": {
-                "createdAt": {
-                    "type": "string"
-                },
-                "deletedAt": {
-                    "$ref": "#/definitions/gorm.DeletedAt"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "password": {
-                    "type": "string"
                 },
                 "updatedAt": {
                     "type": "string"

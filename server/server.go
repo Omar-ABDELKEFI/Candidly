@@ -8,10 +8,10 @@ import (
 
 func Init() {
 	app := fiber.New()
+	// enable Cross-Origin
 	app.Use(cors.New())
 	database.GetDb()
 	Router(app)
-	database.MigrateDatabase()
 	app.Listen(":8080")
 
 }
