@@ -7,6 +7,8 @@ import (
 	"log"
 )
 
+type AuthController struct{}
+
 // Login godoc
 // @Summary Login to the app
 // @Description Login to the app
@@ -16,7 +18,7 @@ import (
 // @Produce  json
 // @Success 200 {string} string "ok"
 // @Router /login [post]
-func Login(ctx *fiber.Ctx) error {
+func (h AuthController) Login(ctx *fiber.Ctx) error {
 	var user models.LoginInput
 	log.Println("Hello from server")
 	//validate := validator.New()

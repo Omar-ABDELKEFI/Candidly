@@ -9,6 +9,8 @@ import (
 	"strconv"
 )
 
+type TestQuestionController struct{}
+
 // CreateTestQuestion godoc
 // @Summary add a question to test
 // @Description add a question to test by json
@@ -19,7 +21,7 @@ import (
 // @Produce  json
 // @Success 200 {object} models.TestQuestion
 // @Router /my-tests/:id/questions [post]
-func CreateTestQuestion(ctx *fiber.Ctx) error {
+func (h TestQuestionController) CreateTestQuestion(ctx *fiber.Ctx) error {
 	var testQuestion models.TestQuestion
 	log.Println("Hello from server")
 	err := ctx.BodyParser(&testQuestion)
@@ -68,7 +70,7 @@ func CreateTestQuestion(ctx *fiber.Ctx) error {
 // @Produce  json
 // @Success 200 {string} string	"ok"
 // @Router /my-tests/questions/:id [Delete]
-func DeleteTestQuestion(ctx *fiber.Ctx) error {
+func (h TestQuestionController) DeleteTestQuestion(ctx *fiber.Ctx) error {
 	id, err := strconv.ParseUint(ctx.Params("id"), 10, 64)
 	if err != nil {
 		log.Println("Error ", err.Error())

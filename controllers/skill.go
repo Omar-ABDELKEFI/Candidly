@@ -8,6 +8,8 @@ import (
 	"log"
 )
 
+type SkillController struct{}
+
 // CreateSkill godoc
 // @Summary add new  skill
 // @Description create new skill by json
@@ -17,7 +19,7 @@ import (
 // @Produce  json
 // @Success 200 {object} models.Skill
 // @Router /skill [post]
-func CreateSkill(ctx *fiber.Ctx) error {
+func (h SkillController) CreateSkill(ctx *fiber.Ctx) error {
 	var input models.CreateSkillInput
 	validate := validator.New()
 	log.Println("Hello from server")
@@ -59,7 +61,7 @@ func CreateSkill(ctx *fiber.Ctx) error {
 // @Success 200 {array} models.Skill
 // @Security Authorization
 // @Router /skills [get]
-func FindSkills(ctx *fiber.Ctx) error {
+func (h SkillController) FindSkills(ctx *fiber.Ctx) error {
 	skills, err := services.FindSkills()
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{

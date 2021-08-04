@@ -8,7 +8,9 @@ import (
 	"log"
 )
 
-func CreateAnswer(ctx *fiber.Ctx) error {
+type AnswerController struct{}
+
+func (h AnswerController) CreateAnswer(ctx *fiber.Ctx) error {
 	var answer models.Answer
 	log.Println("Hello from server")
 	err := ctx.BodyParser(&answer)

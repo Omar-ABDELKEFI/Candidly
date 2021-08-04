@@ -8,6 +8,8 @@ import (
 	"log"
 )
 
+type CandidateController struct{}
+
 // CreateCandidate godoc
 // @Summary add new  Candidate
 // @Description create new Candidate by json
@@ -17,7 +19,7 @@ import (
 // @Produce  json
 // @Success 200 {object} models.CandidateResponse
 // @Router /candidate [post]
-func CreateCandidate(ctx *fiber.Ctx) error {
+func (h CandidateController) CreateCandidate(ctx *fiber.Ctx) error {
 	var candidate []models.Candidate
 	log.Println("server is running")
 	err := ctx.BodyParser(&candidate)

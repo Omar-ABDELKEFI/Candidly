@@ -11,25 +11,63 @@ func Router(app *fiber.App) {
 	docs.SwaggerInfo.BasePath = ""
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 	app.Get("/swagger/*", swagger.Handler)
-	app.Post("/login", controllers.Login)
 	//app.Get("/question/:type?")
-	app.Post("/skill", controllers.CreateSkill)
-	app.Get("/skills", controllers.FindSkills)
-	app.Post("/my-tests", controllers.CreateTest)
-	app.Post("/my-tests/:idTest", controllers.UpdateTest)
-	app.Get("/tests", controllers.FindTests)
-	app.Post("/candidate", controllers.CreateCandidate)
-	app.Post("/my-tests/:id/questions", controllers.CreateTestQuestion)
-	app.Post("/score/:id", controllers.CalculateScore)
-	app.Post("/answers", controllers.CreateAnswer)
-	app.Delete("/my-tests/questions/:id", controllers.DeleteTestQuestion)
 
-	app.Post("/my-tests/candidates/:id", controllers.CreateTestCandidate)
+	skillController := new(controllers.SkillController)
 	questionController := new(controllers.QuestionController)
+	testController := new(controllers.TestController)
+	authController := new(controllers.AuthController)
+	answerController := new(controllers.AnswerController)
+	candidateController := new(controllers.CandidateController)
+	testCandidateController := new(controllers.TestCandidateController)
+	testQuestionController := new(controllers.TestQuestionController)
+
+	score := app.Group("/score")
+	{
+		score.Post("/:id", testCandidateController.CalculateScore)
+
+	}
+
+	auth := app.Group("/login")
+	{
+		auth.Post("/", authController.Login)
+	}
+	answers := app.Group("/answers")
+	{
+		answers.Post("/answers", answerController.CreateAnswer)
+	}
+	myTest := app.Group("/my-tests")
+	{
+		myTest.Post("/", testController.CreateTest)
+		myTest.Post("/:idTest", testController.UpdateTest)
+		myTest.Delete("/questions/:id", testQuestionController.DeleteTestQuestion)
+		myTest.Post("/:id/questions", testQuestionController.CreateTestQuestion)
+
+	}
+	candidates := app.Group("/candidates")
+	{
+		candidates.Post("/:id", testCandidateController.CreateTestCandidate)
+	}
+	tests := app.Group("/tests")
+	{
+		tests.Get("/", testController.FindTests)
+	}
+	skill := app.Group("/skill")
+	{
+		skill.Post("/", skillController.CreateSkill)
+	}
+	skills := app.Group("/skills")
+	{
+		skills.Get("/", skillController.FindSkills)
+	}
 	question := app.Group("/questions")
 	{
 		question.Post("/edit", questionController.CreateQuestion)
 		question.Get("/", questionController.FindQuestion)
+	}
+	candidate := app.Group("/candidate")
+	{
+		candidate.Post("/", candidateController.CreateCandidate)
 	}
 
 }

@@ -9,6 +9,8 @@ import (
 	"strconv"
 )
 
+type TestController struct{}
+
 // CreateTest godoc
 // @Summary add new Test
 // @Description create new Test by json
@@ -18,7 +20,7 @@ import (
 // @Produce  json
 // @Success 200 {object} models.TestResponse
 // @Router /my-tests [post]
-func CreateTest(ctx *fiber.Ctx) error {
+func (h TestController) CreateTest(ctx *fiber.Ctx) error {
 	var input models.Test
 	log.Println("Hello from server")
 	err := ctx.BodyParser(&input)
@@ -59,7 +61,7 @@ func CreateTest(ctx *fiber.Ctx) error {
 // @Success 200 {array} models.TestResponse
 // @Security Authorization
 // @Router /tests [get]
-func FindTests(ctx *fiber.Ctx) error {
+func (h TestController) FindTests(ctx *fiber.Ctx) error {
 	skillsId := ctx.Query("skills")
 	tests, err := services.FindTests(skillsId)
 	if err != nil {
@@ -85,7 +87,7 @@ func FindTests(ctx *fiber.Ctx) error {
 // @Produce  json
 // @Success 200 {object} models.TestResponse
 // @Router /my-tests/{test_id} [post]
-func UpdateTest(ctx *fiber.Ctx) error {
+func (h TestController) UpdateTest(ctx *fiber.Ctx) error {
 	var input models.Test
 	log.Println("Hello from server")
 	err := ctx.BodyParser(&input)

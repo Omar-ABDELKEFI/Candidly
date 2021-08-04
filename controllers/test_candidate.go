@@ -9,6 +9,8 @@ import (
 	"strconv"
 )
 
+type TestCandidateController struct{}
+
 // CreateTestCandidate godoc
 // @Summary add new  test_candidate
 // @Description create test_candidate by json and path
@@ -19,7 +21,7 @@ import (
 // @Produce  json
 // @Success 200 {object} models.TestCandidate
 // @Router /my-tests/candidates/:test_id [post]
-func CreateTestCandidate(ctx *fiber.Ctx) error {
+func (h TestCandidateController) CreateTestCandidate(ctx *fiber.Ctx) error {
 	var testCandidate models.TestCandidate
 	log.Println("Hello from testCandidate")
 	err := ctx.BodyParser(&testCandidate)
@@ -68,7 +70,7 @@ func CreateTestCandidate(ctx *fiber.Ctx) error {
 // @Produce  json
 // @Success 200 {object} models.TestCandidate
 // @Router /score [post]
-func CalculateScore(ctx *fiber.Ctx) error {
+func (h TestCandidateController) CalculateScore(ctx *fiber.Ctx) error {
 	var testCandidate models.TestCandidate
 	log.Println("Hello from testCandidate")
 	id, err := strconv.ParseUint(ctx.Params("id"), 10, 64)
