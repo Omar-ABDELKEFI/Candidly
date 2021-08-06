@@ -102,7 +102,7 @@ func (h TestCandidateController) CalculateScore(ctx *fiber.Ctx) error {
 // @Produce  json
 // @Success 200 {array} models.TestResponse
 // @Security Authorization
-// @Router /tests [get]
+// @Router /testscandidates [get]
 func (h TestCandidateController) FindTestsCandidates(ctx *fiber.Ctx) error {
 	testsCandidates, err := services.FindTestsCandidates()
 	if err != nil {

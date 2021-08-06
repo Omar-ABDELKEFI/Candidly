@@ -44,9 +44,9 @@ func CalculateScore(idTestCandidate uint64) (models.TestCandidate, error) {
 
 	return testCandidate, nil
 }
-func FindTestsCandidates() ([]models.TestCandidateResponse, error) {
+func FindTestsCandidates() ([]models.TestsCandidatesResponse, error) {
 	db := database.DB
-	var testsCandidates []models.TestCandidateResponse
+	var testsCandidates []models.TestsCandidatesResponse
 	err := db.Table("test_candidates").
 		Joins("INNER JOIN tests on test_candidates.test_id = tests.id").
 		Joins("INNER JOIN candidates on test_candidates.candidate_id = candidates.id").

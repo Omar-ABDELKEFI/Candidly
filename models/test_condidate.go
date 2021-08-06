@@ -7,7 +7,7 @@ type TestCandidate struct {
 	TestStatus  string  `json:"test_status" gorm:"default:waiting"`
 	Score       float64 `json:"score"`
 }
-type TestCandidateResponse struct {
+type TestsCandidatesResponse struct {
 	ID             uint
 	TestName       string
 	CandidateName  string
