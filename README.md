@@ -17,6 +17,7 @@ tekab-test-api uses a number of open source projects to work properly:
 - [phpMyAdmin] - intended to handle the administration of MySQL
 ## Relation schema of database
 ![diagrammeDeClasse](https://user-images.githubusercontent.com/86954805/128239872-6c56dbf2-af87-4152-a339-5e5e3325d5ec.PNG)
-
+## Generate TypeScript Api module
+- npx swagger-typescript-api -p ./docs/swagger.json -o ./serviceTypescripte -n index.ts
 ## Credits
 tekab.dev 
