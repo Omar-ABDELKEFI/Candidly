@@ -124,3 +124,28 @@ func (h TestController) UpdateTest(ctx *fiber.Ctx) error {
 		"test":   newTest,
 	})
 }
+
+// getMyTests godoc
+// @Summary update Test
+// @id getMyTests
+// @Description get my-tests
+// @Tags test
+// @Produce  json
+// @Success 200 {object} models.MyTests
+// @Router /my-tests/GetMyTests [get]
+func (h TestController) GetMyTests(ctx *fiber.Ctx) error {
+
+	log.Println("Hello from server")
+
+	newTest, err := services.GetMyTests()
+	if err != nil {
+		log.Println("Error ", err.Error())
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status": "SUCCESS",
+		"test":   newTest,
+	})
+}

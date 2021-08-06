@@ -20,7 +20,7 @@ type TestQuestionController struct{}
 // @Accept  json
 // @Produce  json
 // @Success 200 {object} models.TestQuestion
-// @Router /my-tests/:id/questions [post]
+// @Router /my-tests/{id}/questions [post]
 func (h TestQuestionController) CreateTestQuestion(ctx *fiber.Ctx) error {
 	var testQuestion models.TestQuestion
 	log.Println("Hello from server")
@@ -69,7 +69,7 @@ func (h TestQuestionController) CreateTestQuestion(ctx *fiber.Ctx) error {
 // @Accept  json
 // @Produce  json
 // @Success 200 {string} string	"ok"
-// @Router /my-tests/questions/:id [Delete]
+// @Router /my-tests/questions/{id} [Delete]
 func (h TestQuestionController) DeleteTestQuestion(ctx *fiber.Ctx) error {
 	id, err := strconv.ParseUint(ctx.Params("id"), 10, 64)
 	if err != nil {

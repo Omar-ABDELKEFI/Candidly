@@ -30,6 +30,29 @@ func UpdateTest(test models.Test, idTest uint64) (models.Test, error) {
 	return getTest, nil
 }
 
+func GetMyTests() ([]models.MyTests, error) {
+
+	var getTest []models.MyTests
+	db := database.DB
+	if err := db.Raw("SELECT SUM(questions.expected_time) as expected_time ," +
+		" COUNT(DISTINCT test_questions.question_id) number_question," +
+		" tests.id AS test_id," +
+		" tests.name AS test_name," +
+		" (SELECT COUNT(test_candidates.candidate_id) FROM test_candidates WHERE test_candidates.test_id=tests.id) AS number_candidate" +
+		" FROM" +
+		" test_questions" +
+		" RIGHT JOIN tests ON tests.id = test_questions.test_id" +
+		" LEFT JOIN questions ON questions.id = test_questions.question_id" +
+		" GROUP BY" +
+		" tests.id;").
+		Scan(&getTest).
+		Error; err != nil {
+		return getTest, err
+	}
+
+	return getTest, nil
+}
+
 func FindTests(skillsID []int64) ([]models.Test, error) {
 	db := database.DB
 	var tests []models.Test

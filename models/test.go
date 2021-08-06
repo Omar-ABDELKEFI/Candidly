@@ -10,7 +10,7 @@ type Test struct {
 	PassingScore *uint16        `json:"passing_score"`
 	NotifyEmails string         `json:"notify_emails"`
 	TestQuestion []TestQuestion `json:"test_questions"`
-	Candidate    []*Candidate   `gorm:"many2many:test_candidate;"`
+	Candidate    []*Candidate   `json:"candidate" gorm:"many2many:test_candidates;"`
 }
 type TestRequest struct {
 	Name         string  `json:"name"`
@@ -30,4 +30,11 @@ type TestResponse struct {
 	Archived     *bool   `json:"archived"`
 	PassingScore *uint16 `json:"passing_score"`
 	NotifyEmails string  `json:"notify_emails"`
+}
+type MyTests struct {
+	TestId          *int    `json:"test_id"`
+	NumberQuestion  *int    `json:"number_Question"`
+	NumberCandidate *int    `json:"number_candidate"`
+	TestName        *string `json:"test_name"`
+	ExpectedTime    *int    `json:"expected_time"`
 }

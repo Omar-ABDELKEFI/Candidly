@@ -13,7 +13,7 @@ type CandidateController struct{}
 // CreateCandidate godoc
 // @Summary add new  Candidate
 // @Description create new Candidate by json
-// @Param candidate body models.CandidateRequest true "candidate data"
+// @Param candidate body []models.CandidateRequest true "candidate data"
 // @Tags Candidate
 // @Accept  json
 // @Produce  json

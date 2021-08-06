@@ -37,7 +37,9 @@ func Router(app *fiber.App) {
 		answers.Post("/answers", answerController.CreateAnswer)
 	}
 	myTest := app.Group("/my-tests")
+
 	{
+		myTest.Get("/getTest", testController.GetMyTests)
 		myTest.Post("/", testController.CreateTest)
 		myTest.Post("/:idTest", testController.UpdateTest)
 		myTest.Delete("/questions/:id", testQuestionController.DeleteTestQuestion)

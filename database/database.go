@@ -18,6 +18,7 @@ func GetDb() {
 		log.Println("Cannot connect to Database")
 		return
 	}
+
 	DB = db
 	log.Println("Connected to database")
 	//migration
@@ -28,6 +29,7 @@ func MigrateDatabase(db *gorm.DB) {
 	log.Println("before migration ..")
 
 	db.SetupJoinTable(&models.Candidate{}, "Test", &models.TestCandidate{})
+	db.SetupJoinTable(&models.Test{}, "Candidate", &models.TestCandidate{})
 	db.AutoMigrate(
 		&models.User{},
 		&models.Skill{},

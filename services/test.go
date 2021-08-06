@@ -48,3 +48,12 @@ func FindTests(skillsId string) ([]models.Test, error) {
 
 	return tests, nil
 }
+
+func GetMyTests() ([]models.MyTests, error) {
+	//Create new test
+	newTest, err := repositories.GetMyTests()
+	if err != nil {
+		return nil, err
+	}
+	return newTest, err
+}
