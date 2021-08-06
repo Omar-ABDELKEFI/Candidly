@@ -69,5 +69,6 @@ func Router(app *fiber.App) {
 	{
 		candidate.Post("/", candidateController.CreateCandidate)
 	}
+	app.Get("/testcandidate", testCandidateController.FindTestCandidate)
 
 }

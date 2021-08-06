@@ -7,3 +7,11 @@ type TestCandidate struct {
 	TestStatus  string  `json:"test_status" gorm:"default:waiting"`
 	Score       float64 `json:"score"`
 }
+type TestCandidateResponse struct {
+	ID             uint
+	TestName       string
+	CandidateName  string
+	CandidateEmail string
+	Score          float64
+	TestStatus     string
+}

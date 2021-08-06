@@ -44,3 +44,19 @@ func CalculateScore(idTestCandidate uint64) (models.TestCandidate, error) {
 
 	return testCandidate, nil
 }
+func FindTestsCandidates() ([]models.TestCandidateResponse, error) {
+	db := database.DB
+	var testsCandidates []models.TestCandidateResponse
+	err := db.Table("test_candidates").
+		Joins("INNER JOIN tests on test_candidates.test_id = tests.id").
+		Joins("INNER JOIN candidates on test_candidates.candidate_id = candidates.id").
+		Select("tests.name as test_name ,candidates.name as candidate_name , candidates.email as candidate_email , test_candidates.score ,test_candidates.test_status, test_candidates.id").
+		Find(&testsCandidates).Error
+	if err != nil {
+		return testsCandidates, err
+	}
+	log.Println("created testQuestion : ", testsCandidates)
+
+	return testsCandidates, nil
+
+}

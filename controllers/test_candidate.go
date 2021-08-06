@@ -93,3 +93,26 @@ func (h TestCandidateController) CalculateScore(ctx *fiber.Ctx) error {
 		"test":   testCandidate,
 	})
 }
+
+// FindTests godoc
+// @Summary get tests candidates
+// @Description get tests by skill
+// @Tags test
+// @Accept  json
+// @Produce  json
+// @Success 200 {array} models.TestResponse
+// @Security Authorization
+// @Router /tests [get]
+func (h TestCandidateController) FindTestsCandidates(ctx *fiber.Ctx) error {
+	testsCandidates, err := services.FindTestsCandidates()
+	if err != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status": "succes",
+		"data":   testsCandidates,
+	})
+
+}
