@@ -46,7 +46,7 @@ func (h CandidateController) CreateCandidate(ctx *fiber.Ctx) error {
 		})
 	}
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
-		"status":   "SUCCESS",
-		"candidat": newCandidate,
+		"status":    "SUCCESS",
+		"candidate": newCandidate,
 	})
 }
