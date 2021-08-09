@@ -14,7 +14,7 @@ func Send(candidates []models.Candidate) {
 		to := candidate.Email
 		testId := strconv.FormatUint(uint64(candidate.Test[0].ID), 10)
 		candidateId := strconv.FormatUint(uint64(candidate.ID), 10)
-		link := "http://51.68.81.16:3000/testId=" + testId + "&&candidateId=" + candidateId
+		link := "http://51.68.81.16:3000/exam/testId=" + testId + "&&candidateId=" + candidateId
 		msg := "MIME-version: 1.0;\nContent-Type: text/html; charset=\"UTF-8\";\r\n" + "From: " + from + "\n" +
 			"To: " + to + "\n" +
 			"Subject: Hello there\n\n" +
