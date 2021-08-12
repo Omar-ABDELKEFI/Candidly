@@ -13,7 +13,7 @@ type Question struct {
 	FileReadMe    string         `json:"file_read_me"`
 	TestQuestions []TestQuestion `json:"test_questions"`
 	Choices       []Choices      `json:"choices"`
-	Answer        []Answer       `json:"answer" swaggerignore:"true"`
+	Answer        []Answer       `json:"answer"`
 }
 type CreateQuestionInput struct {
 	Difficulty   string    `json:"difficulty" validate:"required,oneof=hard easy"`

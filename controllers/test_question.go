@@ -38,7 +38,7 @@ func (h TestQuestionController) CreateTestQuestion(ctx *fiber.Ctx) error {
 			"error": err.Error(),
 		})
 	}
-	testQuestion.TestId = id
+	testQuestion.TestID = id
 	validate := validator.New()
 	validationError := validate.Struct(testQuestion)
 	if validationError != nil {

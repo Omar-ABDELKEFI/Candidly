@@ -31,12 +31,13 @@ func CreateAnswer(answer models.Answer) (models.Answer, error) {
 				}
 			}
 			correctAnswerScore := float64(100) / float64(correctAnswerCount)
+			log.Println("correctAnswerScore", correctAnswerScore)
 			//calculate Wrong answer coast
 			wrongAnswerScore := float64(100) / float64(len(questionChoices)-correctAnswerCount)
 			//calculate score
 			for i := 0; i < len(answer.AnswerChoices); i++ {
 				// getting current choice index
-				choiceIndex := common.ChoiceIndex(questionChoices, answer.AnswerChoices[i].ChoicesId)
+				choiceIndex := common.ChoiceIndex(questionChoices, answer.AnswerChoices[i].ChoicesID)
 				if choiceIndex == -1 {
 					log.Println("choice not found")
 					indexError := errors.New("could not find choice")
@@ -53,7 +54,7 @@ func CreateAnswer(answer models.Answer) (models.Answer, error) {
 			}
 		} else {
 			// calculate mcq score
-			choiceIndex := common.ChoiceIndex(questionChoices, answer.AnswerChoices[0].ChoicesId)
+			choiceIndex := common.ChoiceIndex(questionChoices, answer.AnswerChoices[0].ChoicesID)
 			if choiceIndex == -1 {
 				log.Println("choice not found")
 				indexError := errors.New("could not find choice")

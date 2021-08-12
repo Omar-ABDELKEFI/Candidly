@@ -38,7 +38,7 @@ func (h TestCandidateController) CreateTestCandidate(ctx *fiber.Ctx) error {
 			"error": err.Error(),
 		})
 	}
-	testCandidate.TestId = id
+	testCandidate.TestID = id
 	validate := validator.New()
 	validationError := validate.Struct(testCandidate)
 	if validationError != nil {
@@ -113,6 +113,34 @@ func (h TestCandidateController) FindTestsCandidates(ctx *fiber.Ctx) error {
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status": "succes",
 		"data":   testsCandidates,
+	})
+
+}
+
+// FindTestCandidate godoc
+// @Summary get tests candidates
+// @Description get questions of a test
+// @Tags test
+// @Param testID query int true "testID"
+// @Accept  json
+// @Produce  json
+// @Success 200 {array} models.Question
+// @Security Authorization
+// @Router /quiz [get]
+func (h TestCandidateController) FindQuiz(ctx *fiber.Ctx) error {
+	testId, err := strconv.ParseUint(ctx.Query("testID"), 10, 64)
+	if err != nil {
+		log.Println("could not find testID")
+	}
+	quiz, err := services.FindQuiz(testId)
+	if err != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status": "succes",
+		"data":   quiz,
 	})
 
 }

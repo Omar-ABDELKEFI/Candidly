@@ -1,9 +1,7 @@
 package models
 
-import "gorm.io/gorm"
-
 type Skill struct {
-	gorm.Model
+	OwnModel
 	Name string `json:"name"`
 }
 type CreateSkillInput struct {

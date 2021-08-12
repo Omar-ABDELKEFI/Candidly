@@ -10,6 +10,15 @@ import (
 
 type AnswerController struct{}
 
+// CreateAnswer godoc
+// @Summary add new Answer
+// @Description create new Answer by json
+// @Param Answer body models.Answer true "Add Answer"
+// @Tags Answer
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} models.Answer
+// @Router /answers [post]
 func (h AnswerController) CreateAnswer(ctx *fiber.Ctx) error {
 	var answer models.Answer
 	log.Println("Hello from server")

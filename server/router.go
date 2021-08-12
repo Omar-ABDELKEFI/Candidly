@@ -34,7 +34,7 @@ func Router(app *fiber.App) {
 	}
 	answers := app.Group("/answers")
 	{
-		answers.Post("/answers", answerController.CreateAnswer)
+		answers.Post("/", answerController.CreateAnswer)
 	}
 	myTest := app.Group("/my-tests")
 
@@ -72,5 +72,6 @@ func Router(app *fiber.App) {
 		candidate.Post("/", candidateController.CreateCandidate)
 	}
 	app.Get("/testscandidates", testCandidateController.FindTestsCandidates)
+	app.Get("/quiz", testCandidateController.FindQuiz)
 
 }

@@ -60,3 +60,20 @@ func FindTestsCandidates() ([]models.TestsCandidatesResponse, error) {
 	return testsCandidates, nil
 
 }
+func FindQuiz(testId uint64) (models.Test, error) {
+	db := database.DB
+	var quiz models.Test
+	err := db.Table("tests").
+		Preload("Questions").
+		Preload("Questions.Choices").
+		Where("tests.id = ?", testId).
+		Find(&quiz).Error
+
+	if err != nil {
+		return quiz, err
+	}
+	log.Println("created testQuestion : ", testId)
+
+	return quiz, nil
+
+}
