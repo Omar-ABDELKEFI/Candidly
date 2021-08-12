@@ -132,7 +132,7 @@ func (h TestController) UpdateTest(ctx *fiber.Ctx) error {
 // @Tags test
 // @Produce  json
 // @Success 200 {object} models.MyTests
-// @Router /my-tests/GetMyTests [get]
+// @Router /my-tests/getTest [get]
 func (h TestController) GetMyTests(ctx *fiber.Ctx) error {
 
 	log.Println("Hello from server")

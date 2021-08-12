@@ -33,8 +33,8 @@ func MigrateDatabase(db *gorm.DB) {
 
 	db.SetupJoinTable(&models.Candidate{}, "Test", &models.TestCandidate{})
 	db.SetupJoinTable(&models.Test{}, "Candidate", &models.TestCandidate{})
-	db.SetupJoinTable(&models.Test{}, "Questions", &models.TestQuestion{})
 	db.SetupJoinTable(&models.Question{}, "Test", &models.TestQuestion{})
+	db.SetupJoinTable(&models.Test{}, "Question", &models.TestQuestion{})
 	db.AutoMigrate(
 		&models.User{},
 		&models.Skill{},

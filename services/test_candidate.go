@@ -30,6 +30,13 @@ func FindTestsCandidates() ([]models.TestsCandidatesResponse, error) {
 	}
 	return testsCandidates, nil
 }
+func StartTest(testId uint64, candidateId uint64) (models.StartTest, error) {
+	results, err := repositories.StartTest(testId, candidateId)
+	if err != nil {
+		return results, err
+	}
+	return results, nil
+}
 
 func FindQuiz(testID uint64) (models.Test, error) {
 	var quiz models.Test

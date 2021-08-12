@@ -14,6 +14,7 @@ type Question struct {
 	TestQuestions []TestQuestion `json:"test_questions"`
 	Choices       []Choices      `json:"choices"`
 	Answer        []Answer       `json:"answer"`
+	Test          []*Test        `gorm:"many2many:test_questions;"`
 }
 type CreateQuestionInput struct {
 	Difficulty   string    `json:"difficulty" validate:"required,oneof=hard easy"`

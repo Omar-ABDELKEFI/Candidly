@@ -7,6 +7,7 @@ import (
 	"github.com/tekab-dev/tekab-test/services"
 	"log"
 	"strconv"
+	"strings"
 )
 
 type TestCandidateController struct{}
@@ -113,6 +114,30 @@ func (h TestCandidateController) FindTestsCandidates(ctx *fiber.Ctx) error {
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status": "succes",
 		"data":   testsCandidates,
+	})
+}
+func StartTest(ctx *fiber.Ctx) error {
+	idTestcandidat := ctx.Params("idTestCandidate")
+	log.Println(idTestcandidat, "idTestcandidat")
+	idTest, errIdTest := strconv.ParseUint(idTestcandidat[strings.Index(idTestcandidat, "=")+1:strings.Index(idTestcandidat, "&")], 10, 64)
+	idCandidate, errIdCandidate := strconv.ParseUint(idTestcandidat[strings.LastIndex(idTestcandidat, "=")+1:], 10, 64)
+	if errIdTest != nil || errIdCandidate != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"errorIdTest":      errIdTest,
+			"errorIdCandidate": errIdCandidate,
+		})
+	}
+	log.Println(idTest, "idTestidTest")
+	log.Println(idCandidate, "idCandidateidCandidate")
+	testCandidate, err := services.StartTest(idTest, idCandidate)
+	if err != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status": "succes",
+		"data":   testCandidate,
 	})
 
 }

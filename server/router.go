@@ -21,7 +21,7 @@ func Router(app *fiber.App) {
 	candidateController := new(controllers.CandidateController)
 	testCandidateController := new(controllers.TestCandidateController)
 	testQuestionController := new(controllers.TestQuestionController)
-
+	app.Get("/startTest/:idTestCandidate", controllers.StartTest)
 	score := app.Group("/score")
 	{
 		score.Post("/:id", testCandidateController.CalculateScore)

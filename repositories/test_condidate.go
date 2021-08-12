@@ -60,6 +60,25 @@ func FindTestsCandidates() ([]models.TestsCandidatesResponse, error) {
 	return testsCandidates, nil
 
 }
+func StartTest(testId uint64, candidateId uint64) (models.StartTest, error) {
+	var results models.StartTest
+
+	db := database.DB
+	raw := db.Table("tests").Select("tests.name as name", "candidates.email as email").Where("tests.id = ?", testId).Joins("inner join candidates on candidates.id= ?", candidateId).Row()
+	if raw.Err() != nil {
+
+	}
+	raw.Scan(&results.Name, &results.Email)
+	rows, _ := db.Table("test_questions").Select("questions.name", "questions.type", "questions.expected_time").Where("test_id = ?", testId).Joins("inner join questions on test_questions.question_id=questions.id ").Rows()
+	defer rows.Close()
+	for rows.Next() {
+		db.ScanRows(rows, &results.Questions)
+
+		// do something
+	}
+	return results, nil
+}
+
 func FindQuiz(testId uint64) (models.Test, error) {
 	db := database.DB
 	var quiz models.Test
