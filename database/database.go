@@ -4,6 +4,7 @@ import (
 	"github.com/tekab-dev/tekab-test/models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"log"
 )
 
@@ -12,7 +13,9 @@ var DB *gorm.DB
 func GetDb() {
 	const DNS = "root:dnVh9M9g3Q@tcp(mysql_rest:3306)/tekabTest?parseTime=true"
 	log.Println("before connection ..")
-	db, err := gorm.Open(mysql.Open(DNS), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open(DNS), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	})
 	if err != nil {
 		log.Println(err.Error())
 		log.Println("Cannot connect to Database")
@@ -30,6 +33,8 @@ func MigrateDatabase(db *gorm.DB) {
 
 	db.SetupJoinTable(&models.Candidate{}, "Test", &models.TestCandidate{})
 	db.SetupJoinTable(&models.Test{}, "Candidate", &models.TestCandidate{})
+	db.SetupJoinTable(&models.Test{}, "Question", &models.TestQuestion{})
+	db.SetupJoinTable(&models.Question{}, "Test", &models.TestQuestion{})
 	db.AutoMigrate(
 		&models.User{},
 		&models.Skill{},
@@ -37,7 +42,6 @@ func MigrateDatabase(db *gorm.DB) {
 		&models.Choices{},
 		&models.Test{},
 		&models.Candidate{},
-		&models.TestQuestion{},
 		&models.Answer{},
 		&models.AnswerChoices{},
 	)
