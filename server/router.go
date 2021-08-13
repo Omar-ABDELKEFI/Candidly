@@ -21,10 +21,9 @@ func Router(app *fiber.App) {
 	candidateController := new(controllers.CandidateController)
 	testCandidateController := new(controllers.TestCandidateController)
 	testQuestionController := new(controllers.TestQuestionController)
-	app.Get("/startTest/:idTestCandidate", controllers.StartTest)
 	score := app.Group("/score")
 	{
-		score.Post("/:id", testCandidateController.CalculateScore)
+		score.Post("/:idTestCandidate", testCandidateController.CalculateScore)
 
 	}
 
@@ -32,7 +31,7 @@ func Router(app *fiber.App) {
 	{
 		auth.Post("/", authController.Login)
 	}
-	answers := app.Group("/answers")
+	answers := app.Group("/answers/:idTestCandidate")
 	{
 		answers.Post("/", answerController.CreateAnswer)
 	}
@@ -72,6 +71,6 @@ func Router(app *fiber.App) {
 		candidate.Post("/", candidateController.CreateCandidate)
 	}
 	app.Get("/testscandidates", testCandidateController.FindTestsCandidates)
-	app.Get("/quiz", testCandidateController.FindQuiz)
-
+	app.Get("/quiz/:idTestCandidate", testCandidateController.FindQuiz)
+	app.Get("/startTest/:idTestCandidate", controllers.StartTest)
 }

@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/go-playground/validator"
 	"github.com/gofiber/fiber/v2"
+	"github.com/tekab-dev/tekab-test/common"
 	"github.com/tekab-dev/tekab-test/models"
 	"github.com/tekab-dev/tekab-test/services"
 	"log"
@@ -14,15 +15,25 @@ type AnswerController struct{}
 // @Summary add new Answer
 // @Description create new Answer by json
 // @Param Answer body models.Answer true "Add Answer"
+// @Param idTestCandidate path string true "idTestCandidate"
 // @Tags Answer
 // @Accept  json
 // @Produce  json
 // @Success 200 {object} models.Answer
-// @Router /answers [post]
+// @Router /answers/{idTestCandidate} [post]
 func (h AnswerController) CreateAnswer(ctx *fiber.Ctx) error {
 	var answer models.Answer
 	log.Println("Hello from server")
 	err := ctx.BodyParser(&answer)
+	testId, errIdTest, candidateId, errIdCandidate := common.GetTestCandidate(ctx.Params("idTestCandidate"))
+	if errIdTest != nil || errIdCandidate != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"errorIdTest":      errIdTest,
+			"errorIdCandidate": errIdCandidate,
+		})
+	}
+	answer.TestID = testId
+	answer.CandidateID = candidateId
 	validate := validator.New()
 	if err != nil {
 		log.Println("Error : Invalid Json format")

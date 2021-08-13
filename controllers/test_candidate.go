@@ -3,11 +3,11 @@ package controllers
 import (
 	"github.com/go-playground/validator"
 	"github.com/gofiber/fiber/v2"
+	"github.com/tekab-dev/tekab-test/common"
 	"github.com/tekab-dev/tekab-test/models"
 	"github.com/tekab-dev/tekab-test/services"
 	"log"
 	"strconv"
-	"strings"
 )
 
 type TestCandidateController struct{}
@@ -65,24 +65,23 @@ func (h TestCandidateController) CreateTestCandidate(ctx *fiber.Ctx) error {
 // CalculateScore godoc
 // @Summary calculate a test score
 // @Description calculate score by path  and update a status test
-// @Param test_candidate_id path  int true "calculate score"
+// @Param idTestCandidate path string true "idTestCandidate"
 // @Tags test_candidate
 // @Accept  json
 // @Produce  json
 // @Success 200 {object} models.TestCandidate
-// @Router /score [post]
+// @Router /score/{idTestCandidate} [post]
 func (h TestCandidateController) CalculateScore(ctx *fiber.Ctx) error {
 	var testCandidate models.TestCandidate
 	log.Println("Hello from testCandidate")
-	id, err := strconv.ParseUint(ctx.Params("id"), 10, 64)
-	if err != nil {
-		log.Println("Error ", err.Error())
+	testId, errIdTest, candidateId, errIdCandidate := common.GetTestCandidate(ctx.Params("idTestCandidate"))
+	if errIdTest != nil || errIdCandidate != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": err.Error(),
+			"errorIdTest":      errIdTest,
+			"errorIdCandidate": errIdCandidate,
 		})
 	}
-
-	testCandidate, err = services.CalculateScore(id)
+	testCandidate, err := services.CalculateScore(candidateId, testId)
 	if err != nil {
 		log.Println("Error ", err.Error())
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -91,7 +90,7 @@ func (h TestCandidateController) CalculateScore(ctx *fiber.Ctx) error {
 	}
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status": "SUCCESS",
-		"test":   testCandidate,
+		"data":   testCandidate,
 	})
 }
 
@@ -130,8 +129,7 @@ func (h TestCandidateController) FindTestsCandidates(ctx *fiber.Ctx) error {
 func StartTest(ctx *fiber.Ctx) error {
 	idTestcandidat := ctx.Params("idTestCandidate")
 	log.Println(idTestcandidat, "idTestcandidat")
-	idTest, errIdTest := strconv.ParseUint(idTestcandidat[strings.Index(idTestcandidat, "=")+1:strings.Index(idTestcandidat, "&")], 10, 64)
-	idCandidate, errIdCandidate := strconv.ParseUint(idTestcandidat[strings.LastIndex(idTestcandidat, "=")+1:], 10, 64)
+	idTest, errIdTest, idCandidate, errIdCandidate := common.GetTestCandidate(idTestcandidat)
 	if errIdTest != nil || errIdCandidate != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"errorIdTest":      errIdTest,
@@ -157,14 +155,14 @@ func StartTest(ctx *fiber.Ctx) error {
 // @Summary get tests candidates
 // @Description get questions of a test
 // @Tags test
-// @Param testID query int true "testID"
+// @Param idTestCandidate path string true "idTestCandidate"
 // @Accept  json
 // @Produce  json
 // @Success 200 {array} models.Question
 // @Security Authorization
-// @Router /quiz [get]
+// @Router /quiz/{idTestCandidate} [get]
 func (h TestCandidateController) FindQuiz(ctx *fiber.Ctx) error {
-	testId, err := strconv.ParseUint(ctx.Query("testID"), 10, 64)
+	testId, err, _, _ := common.GetTestCandidate(ctx.Params("idTestCandidate"))
 	if err != nil {
 		log.Println("could not find testID")
 	}

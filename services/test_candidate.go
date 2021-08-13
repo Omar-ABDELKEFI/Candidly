@@ -14,9 +14,9 @@ func CreateTestCandidate(testCandidate models.TestCandidate) (models.TestCandida
 	return newTestCandidate, err
 }
 
-func CalculateScore(idTestCandidate uint64) (models.TestCandidate, error) {
+func CalculateScore(candidateId uint64, testId uint64) (models.TestCandidate, error) {
 	var TestCandidate models.TestCandidate
-	TestCandidate, err := repositories.CalculateScore(idTestCandidate)
+	TestCandidate, err := repositories.CalculateScore(candidateId, testId)
 	if err != nil {
 		return TestCandidate, err
 	}

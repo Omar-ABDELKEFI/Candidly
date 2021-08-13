@@ -9,7 +9,7 @@ type Test struct {
 	Archived     *bool        `json:"archived"`
 	PassingScore *uint16      `json:"passing_score"`
 	NotifyEmails string       `json:"notify_emails"`
-	Question     []*Question  `json:"question" gorm:"many2many:test_questions;"`
+	Questions    []*Question  `json:"questions" gorm:"many2many:test_questions;"`
 	Candidate    []*Candidate `json:"candidate" gorm:"many2many:test_candidates;"`
 }
 type TestRequest struct {

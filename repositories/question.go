@@ -38,7 +38,8 @@ func FindQuestion(sort []string, difficulty []string) ([]models.Question, error)
 		return db.Select("test_questions.id , test_questions.question_id , test_questions.test_id")
 	}).Preload("Skill", func(db *gorm.DB) *gorm.DB {
 		return db.Select("skills.id , skills.name")
-	}).Find(&question).Error
+	}).Order("questions.id DESC").
+		Find(&question).Error
 	if err != nil {
 		log.Println("question", err)
 
