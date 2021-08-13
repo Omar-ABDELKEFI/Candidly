@@ -116,6 +116,17 @@ func (h TestCandidateController) FindTestsCandidates(ctx *fiber.Ctx) error {
 		"data":   testsCandidates,
 	})
 }
+
+// StartTest godoc
+// @Summary get test information
+// @Description get test information
+// @id StartTest
+// @Tags test_candidate
+// @Param idTestCandidate path string true "idTestCandidate"
+// @Produce  json
+// @Success 200 {array} models.StartTest
+// @Security Authorization
+// @Router /startTest/{idTestCandidate} [get]
 func StartTest(ctx *fiber.Ctx) error {
 	idTestcandidat := ctx.Params("idTestCandidate")
 	log.Println(idTestcandidat, "idTestcandidat")
