@@ -46,3 +46,18 @@ func FindQuiz(testID uint64) (models.Test, error) {
 	}
 	return quiz, nil
 }
+func UpdateTestStatus(testId uint64, candidateId uint64, testStatus models.UpdateTestStatus) (models.UpdateTestStatus, error) {
+	testStatus, err := repositories.UpdateTestStatus(testId, candidateId, testStatus)
+	if err != nil {
+		return testStatus, err
+	}
+	return testStatus, nil
+}
+
+func UpdateCurrentQuestion(testId uint64, candidateId uint64, currentQuestion models.UpdateCurrentQuestion) (models.UpdateCurrentQuestion, error) {
+	currentQuestion, err := repositories.UpdateCurrentQuestion(testId, candidateId, currentQuestion)
+	if err != nil {
+		return currentQuestion, err
+	}
+	return currentQuestion, nil
+}

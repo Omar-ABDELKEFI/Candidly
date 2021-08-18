@@ -50,7 +50,7 @@ func FindTestsCandidates() ([]models.TestsCandidatesResponse, error) {
 	err := db.Table("test_candidates").
 		Joins("INNER JOIN tests on test_candidates.test_id = tests.id").
 		Joins("INNER JOIN candidates on test_candidates.candidate_id = candidates.id").
-		Select("tests.name as test_name ,candidates.name as candidate_name , candidates.email as candidate_email , test_candidates.score ,test_candidates.test_status, test_candidates.id").
+		Select("tests.name as test_name ,candidates.name as candidate_name , candidates.email as candidate_email , test_candidates.score ,test_candidates.test_status , CONCAT(test_candidates.test_id, test_candidates.candidate_id) as test_candidate_id").
 		Find(&testsCandidates).Error
 	if err != nil {
 		return testsCandidates, err
@@ -62,13 +62,13 @@ func FindTestsCandidates() ([]models.TestsCandidatesResponse, error) {
 }
 func StartTest(testId uint64, candidateId uint64) (models.StartTest, error) {
 	var results models.StartTest
-
 	db := database.DB
-	raw := db.Table("tests").Select("tests.name as name", "candidates.email as email").Where("tests.id = ?", testId).Joins("inner join candidates on candidates.id= ?", candidateId).Row()
+	raw := db.Table("tests").Select("tests.name as name", "candidates.email as email , test_candidates.test_status as test_status , test_candidates.score as score , test_candidates.current_question as current_question").Where("tests.id = ?", testId).Joins("inner join candidates on candidates.id= ?", candidateId).
+		Joins("inner join test_candidates on test_candidates.test_id = ? AND test_candidates.candidate_id = ?", testId, candidateId).Row()
 	if raw.Err() != nil {
 
 	}
-	raw.Scan(&results.Name, &results.Email)
+	raw.Scan(&results.Name, &results.Email, &results.TestStatus, &results.Score, &results.CurrentQuestion)
 	rows, _ := db.Table("test_questions").Select("questions.name", "questions.type", "questions.expected_time").Where("test_id = ?", testId).Joins("inner join questions on test_questions.question_id=questions.id ").Rows()
 	defer rows.Close()
 	for rows.Next() {
@@ -76,6 +76,7 @@ func StartTest(testId uint64, candidateId uint64) (models.StartTest, error) {
 
 		// do something
 	}
+
 	return results, nil
 }
 
@@ -94,5 +95,32 @@ func FindQuiz(testId uint64) (models.Test, error) {
 	log.Println("created testQuestion : ", testId)
 
 	return quiz, nil
+
+}
+
+func UpdateTestStatus(testId uint64, candidateId uint64, testStatus models.UpdateTestStatus) (models.UpdateTestStatus, error) {
+	db := database.DB
+	var quiz models.TestCandidate
+	err := db.Find(&quiz, "test_id = ? AND candidate_id = ?", testId, candidateId).Error
+	if err != nil {
+		return testStatus, err
+	}
+	quiz.TestStatus = testStatus.TestStatus
+	db.Save(&quiz)
+
+	return testStatus, nil
+
+}
+func UpdateCurrentQuestion(testId uint64, candidateId uint64, currentQuestion models.UpdateCurrentQuestion) (models.UpdateCurrentQuestion, error) {
+	db := database.DB
+	var quiz models.TestCandidate
+	err := db.Find(&quiz, "test_id = ? AND candidate_id = ?", testId, candidateId).Error
+	if err != nil {
+		return currentQuestion, err
+	}
+	quiz.CurrentQuestion = currentQuestion.CurrentQuestion
+	db.Save(&quiz)
+
+	return currentQuestion, nil
 
 }

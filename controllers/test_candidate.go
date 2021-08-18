@@ -94,13 +94,13 @@ func (h TestCandidateController) CalculateScore(ctx *fiber.Ctx) error {
 	})
 }
 
-// FindTests godoc
-// @Summary get tests candidates
-// @Description get tests by skill
-// @Tags test
+// FindTestsCandidates godoc
+// @Summary get candidates and their tests
+// @Description get candidates and their tests
+// @Tags test_candidate
 // @Accept  json
 // @Produce  json
-// @Success 200 {array} models.TestResponse
+// @Success 200 {array} models.TestsCandidatesResponse
 // @Security Authorization
 // @Router /testscandidates [get]
 func (h TestCandidateController) FindTestsCandidates(ctx *fiber.Ctx) error {
@@ -165,6 +165,10 @@ func (h TestCandidateController) FindQuiz(ctx *fiber.Ctx) error {
 	testId, err, _, _ := common.GetTestCandidate(ctx.Params("idTestCandidate"))
 	if err != nil {
 		log.Println("could not find testID")
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"errorIdTest": err,
+		})
+
 	}
 	quiz, err := services.FindQuiz(testId)
 	if err != nil {
@@ -175,6 +179,82 @@ func (h TestCandidateController) FindQuiz(ctx *fiber.Ctx) error {
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status": "succes",
 		"data":   quiz,
+	})
+
+}
+
+// Update Test Status godoc
+// @Summary Update test status
+// @Description Update test status
+// @Accept  json
+// @Produce  json
+// @Param idTestCandidate path string true "idTestCandidate"
+// @Param  testStatus body models.UpdateTestStatus true "test status"
+// @Success 200 {object} models.UpdateTestStatus
+// @Router /quiz/status/{idTestCandidate} [Put]
+func (h TestCandidateController) UpdateTestStatus(ctx *fiber.Ctx) error {
+	testId, errIdTest, candidateId, errIdCandidate := common.GetTestCandidate(ctx.Params("idTestCandidate"))
+	if errIdTest != nil || errIdCandidate != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"errorIdTest":      errIdTest,
+			"errorIdCandidate": errIdCandidate,
+		})
+	}
+	var testStatus models.UpdateTestStatus
+	err := ctx.BodyParser(&testStatus)
+	if err != nil {
+		log.Println("Error : Invalid Json format")
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "cannot parse json",
+		})
+	}
+	testStatus, err = services.UpdateTestStatus(testId, candidateId, testStatus)
+	if err != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status": "succes",
+		"data":   testStatus,
+	})
+
+}
+
+// Update Test Status godoc
+// @Summary Update current question
+// @Description Update current question
+// @Accept  json
+// @Produce  json
+// @Param idTestCandidate path string true "idTestCandidate"
+// @Param  currentQuestion body models.UpdateCurrentQuestion true "current question"
+// @Success 200 {object} models.UpdateCurrentQuestion
+// @Router /quiz/currentQuestion/{idTestCandidate} [Put]
+func (h TestCandidateController) UpdateCurrentQuestion(ctx *fiber.Ctx) error {
+	testId, errIdTest, candidateId, errIdCandidate := common.GetTestCandidate(ctx.Params("idTestCandidate"))
+	if errIdTest != nil || errIdCandidate != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"errorIdTest":      errIdTest,
+			"errorIdCandidate": errIdCandidate,
+		})
+	}
+	var currentQuestion models.UpdateCurrentQuestion
+	err := ctx.BodyParser(&currentQuestion)
+	if err != nil {
+		log.Println("Error : Invalid Json format")
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "cannot parse json",
+		})
+	}
+	currentQuestion, err = services.UpdateCurrentQuestion(testId, candidateId, currentQuestion)
+	if err != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status": "succes",
+		"data":   currentQuestion,
 	})
 
 }

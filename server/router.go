@@ -73,4 +73,7 @@ func Router(app *fiber.App) {
 	app.Get("/testscandidates", testCandidateController.FindTestsCandidates)
 	app.Get("/quiz/:idTestCandidate", testCandidateController.FindQuiz)
 	app.Get("/startTest/:idTestCandidate", controllers.StartTest)
+	app.Put("/quiz/status/:idTestCandidate", testCandidateController.UpdateTestStatus)
+	app.Put("/quiz/currentQuestion/:idTestCandidate", testCandidateController.UpdateCurrentQuestion)
+
 }
