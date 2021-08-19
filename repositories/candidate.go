@@ -9,7 +9,7 @@ import (
 func CreateCandidate(candidate []models.Candidate) ([]models.Candidate, error) {
 	log.Println("Creating Candidate ...")
 	db := database.DB
-
+	db.Model(&candidate).Association("test_candidate").Append()
 	err := db.Create(&candidate).Error
 
 	if err != nil {

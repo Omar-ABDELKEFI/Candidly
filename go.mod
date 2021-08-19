@@ -3,7 +3,6 @@ module github.com/tekab-dev/tekab-test
 go 1.16
 
 require (
-	github.com/BurntSushi/toml v0.3.1
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/andybalholm/brotli v1.0.3 // indirect
 	github.com/arsmn/fiber-swagger/v2 v2.13.0
@@ -24,6 +23,7 @@ require (
 	golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c // indirect
 	golang.org/x/tools v0.1.5 // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
+	gorm.io/datatypes v1.0.1
 	gorm.io/driver/mysql v1.1.1
 	gorm.io/gorm v1.21.11
 )

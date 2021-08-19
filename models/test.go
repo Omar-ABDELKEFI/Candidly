@@ -4,6 +4,7 @@ type Test struct {
 	OwnModel
 	Name         string       `json:"name"`
 	Description  string       `json:"description"`
+	TimeLimit    uint64       `json:"time_limit"`
 	TimingPolicy string       `json:"timing_policy"`
 	ShowScore    *bool        `json:"show_score"`
 	Archived     *bool        `json:"archived"`

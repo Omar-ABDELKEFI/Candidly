@@ -63,12 +63,13 @@ func FindTestsCandidates() ([]models.TestsCandidatesResponse, error) {
 func StartTest(testId uint64, candidateId uint64) (models.StartTest, error) {
 	var results models.StartTest
 	db := database.DB
-	raw := db.Table("tests").Select("tests.name as name", "candidates.email as email , test_candidates.test_status as test_status , test_candidates.score as score , test_candidates.current_question as current_question").Where("tests.id = ?", testId).Joins("inner join candidates on candidates.id= ?", candidateId).
+	raw := db.Table("tests").Select("tests.name as name", "test_candidates.created_at as created_at", "test_candidates.test_status as test_status", "test_candidates.score as score ", "candidates.email as email", "test_candidates.time_limit as time_limit", "test_candidates.current_question as current_question").Where("tests.id = ?", testId).Joins("inner join candidates on candidates.id= ?", candidateId).
 		Joins("inner join test_candidates on test_candidates.test_id = ? AND test_candidates.candidate_id = ?", testId, candidateId).Row()
 	if raw.Err() != nil {
 
 	}
-	raw.Scan(&results.Name, &results.Email, &results.TestStatus, &results.Score, &results.CurrentQuestion)
+
+	raw.Scan(&results.Name, &results.CreatedAt, &results.TestStatus, &results.Score, &results.Email, &results.TimeLimit, &results.CurrentQuestion)
 	rows, _ := db.Table("test_questions").Select("questions.name", "questions.type", "questions.expected_time").Where("test_id = ?", testId).Joins("inner join questions on test_questions.question_id=questions.id ").Rows()
 	defer rows.Close()
 	for rows.Next() {

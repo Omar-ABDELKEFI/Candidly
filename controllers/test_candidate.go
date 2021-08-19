@@ -8,6 +8,7 @@ import (
 	"github.com/tekab-dev/tekab-test/services"
 	"log"
 	"strconv"
+	"time"
 )
 
 type TestCandidateController struct{}
@@ -56,6 +57,7 @@ func (h TestCandidateController) CreateTestCandidate(ctx *fiber.Ctx) error {
 			"error": err.Error(),
 		})
 	}
+
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status": "SUCCESS",
 		"test":   newTestCandidat,
@@ -144,6 +146,25 @@ func StartTest(ctx *fiber.Ctx) error {
 			"error": err.Error(),
 		})
 	}
+	log.Println(testCandidate.CreatedAt, "testCandidate.CreatedAt")
+	layout := "2006-01-02T15:04:05.000Z"
+	createdAt := testCandidate.CreatedAt
+	timeOfCreation, err := time.Parse(layout, createdAt)
+	if err != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	if time.Now().Before(timeOfCreation.Add(time.Hour * 24 * 10)) {
+		var testStatus models.UpdateTestStatus
+		testStatus.TestStatus = "canceled"
+		_, _ = services.UpdateTestStatus(idTest, idCandidate, testStatus)
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"status": "canceled",
+			"time":   testCandidate.CreatedAt,
+		})
+	}
+
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status": "succes",
 		"data":   testCandidate,

@@ -10,7 +10,6 @@ type TestCandidate struct {
 	TestID          uint64         `json:"test_id" validate:"required"gorm:"primaryKey"`
 	TestStatus      string         `json:"test_status" gorm:"default:waiting"`
 	Score           float64        `json:"score"`
-	TimeLimit       uint64         `json:"time_limit"`
 	CurrentQuestion uint64         `json:"current_question"`
 	Answer          []Answer       `gorm:"ForeignKey:TestID,CandidateID;References:TestID,CandidateID"`
 	CreatedAt       time.Time      `swaggerignore:"true"`
@@ -32,6 +31,8 @@ type StartTest struct {
 	TestStatus      string               `json:"test_status"`
 	Score           float64              `json:"score"`
 	CurrentQuestion uint64               `json:"current_question"`
+	CreatedAt       string               `json:"created_at"`
+	TimeLimit       uint                 `json:"time_limit"`
 }
 type StartTestQuestions struct {
 	Name         string `json:"name"`
