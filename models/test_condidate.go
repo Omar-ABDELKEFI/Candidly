@@ -31,6 +31,7 @@ type StartTest struct {
 	TestStatus      string               `json:"test_status"`
 	Score           float64              `json:"score"`
 	CurrentQuestion uint64               `json:"current_question"`
+	UpdatedAt       time.Time            `json:"updated_at"`
 	CreatedAt       string               `json:"created_at"`
 	TimeLimit       uint                 `json:"time_limit"`
 }
@@ -45,6 +46,14 @@ type Quiz struct {
 type UpdateTestStatus struct {
 	TestStatus string `json:"test_status"`
 }
+type UpdateTestStatusOutput struct {
+	TestStatus string    `json:"test_status"`
+	UpdatedAt  time.Time `json:"updated_at"`
+}
 type UpdateCurrentQuestion struct {
 	CurrentQuestion uint64 `json:"current_question"`
+}
+type UpdateCurrentQuestionOutput struct {
+	CurrentQuestion uint64    `json:"current_question"`
+	UpdatedAt       time.Time `json:"updated_at"`
 }

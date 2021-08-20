@@ -211,8 +211,8 @@ func (h TestCandidateController) FindQuiz(ctx *fiber.Ctx) error {
 // @Produce  json
 // @Param idTestCandidate path string true "idTestCandidate"
 // @Param  testStatus body models.UpdateTestStatus true "test status"
-// @Success 200 {object} models.UpdateTestStatus
-// @Router /quiz/status/{idTestCandidate} [Put]
+// @Success 200 {object} models.UpdateTestStatusOutput
+// @Router /quiz/status/{idTestCandidate} [Patch]
 func (h TestCandidateController) UpdateTestStatus(ctx *fiber.Ctx) error {
 	testId, errIdTest, candidateId, errIdCandidate := common.GetTestCandidate(ctx.Params("idTestCandidate"))
 	if errIdTest != nil || errIdCandidate != nil {
@@ -229,7 +229,7 @@ func (h TestCandidateController) UpdateTestStatus(ctx *fiber.Ctx) error {
 			"error": "cannot parse json",
 		})
 	}
-	testStatus, err = services.UpdateTestStatus(testId, candidateId, testStatus)
+	testStatusOutput, err := services.UpdateTestStatus(testId, candidateId, testStatus)
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": err.Error(),
@@ -237,7 +237,7 @@ func (h TestCandidateController) UpdateTestStatus(ctx *fiber.Ctx) error {
 	}
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status": "succes",
-		"data":   testStatus,
+		"data":   testStatusOutput,
 	})
 
 }
@@ -249,8 +249,8 @@ func (h TestCandidateController) UpdateTestStatus(ctx *fiber.Ctx) error {
 // @Produce  json
 // @Param idTestCandidate path string true "idTestCandidate"
 // @Param  currentQuestion body models.UpdateCurrentQuestion true "current question"
-// @Success 200 {object} models.UpdateCurrentQuestion
-// @Router /quiz/currentQuestion/{idTestCandidate} [Put]
+// @Success 200 {object} models.UpdateCurrentQuestionOutput
+// @Router /quiz/currentQuestion/{idTestCandidate} [Patch]
 func (h TestCandidateController) UpdateCurrentQuestion(ctx *fiber.Ctx) error {
 	testId, errIdTest, candidateId, errIdCandidate := common.GetTestCandidate(ctx.Params("idTestCandidate"))
 	if errIdTest != nil || errIdCandidate != nil {
@@ -267,7 +267,7 @@ func (h TestCandidateController) UpdateCurrentQuestion(ctx *fiber.Ctx) error {
 			"error": "cannot parse json",
 		})
 	}
-	currentQuestion, err = services.UpdateCurrentQuestion(testId, candidateId, currentQuestion)
+	currentQuestionOutput, err := services.UpdateCurrentQuestion(testId, candidateId, currentQuestion)
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": err.Error(),
@@ -275,7 +275,7 @@ func (h TestCandidateController) UpdateCurrentQuestion(ctx *fiber.Ctx) error {
 	}
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status": "succes",
-		"data":   currentQuestion,
+		"data":   currentQuestionOutput,
 	})
 
 }
