@@ -58,7 +58,7 @@ func (h SkillController) CreateSkill(ctx *fiber.Ctx) error {
 // @Tags skill
 // @Accept  json
 // @Produce  json
-// @Success 200 {array} models.Skill
+// @Success 200 {array} models.SkillsResponse
 // @Security Authorization
 // @Router /skills [get]
 func (h SkillController) FindSkills(ctx *fiber.Ctx) error {

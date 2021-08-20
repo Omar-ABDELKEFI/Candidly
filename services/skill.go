@@ -24,8 +24,8 @@ func FindOrCreateSkill(skillName string) (uint, error) {
 	}
 	return skillId, nil
 }
-func FindSkills() ([]models.Skill, error) {
-	var skills []models.Skill
+func FindSkills() ([]models.SkillsResponse, error) {
+	var skills []models.SkillsResponse
 	//Get all skills
 	skills, err := repositories.FindSkills()
 	if err != nil {

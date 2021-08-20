@@ -13,3 +13,8 @@ func NewSkill(input CreateSkillInput) Skill {
 		Name: input.Name,
 	}
 }
+
+type SkillsResponse struct {
+	ID   uint64 `json:"ID" validate:"required"`
+	Name string `json:"name" validate:"required"`
+}

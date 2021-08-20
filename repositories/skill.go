@@ -15,10 +15,10 @@ func CreateSkill(skill models.Skill) (models.Skill, error) {
 	}
 	return skill, nil
 }
-func FindSkills() (skills []models.Skill, err error) {
+func FindSkills() (skills []models.SkillsResponse, err error) {
 	db := database.DB
 	//Find skills
-	if err := db.Table("skills").Find(&skills).Error; err != nil {
+	if err := db.Table("skills").Select("skills.id , skills.name").Find(&skills).Error; err != nil {
 		return skills, err
 	}
 	return skills, nil
