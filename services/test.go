@@ -57,3 +57,11 @@ func GetMyTests() ([]models.MyTests, error) {
 	}
 	return newTest, err
 }
+
+func GetTest(idTest uint64) (models.Test, error) {
+	test, err := repositories.GetTest(idTest)
+	if err != nil {
+		return test, err
+	}
+	return test, err
+}

@@ -149,3 +149,34 @@ func (h TestController) GetMyTests(ctx *fiber.Ctx) error {
 		"test":   newTest,
 	})
 }
+
+// getTest godoc
+// @Summary get test by id
+// @id getTest
+// @Description get test by id
+// @Param id path string true "test id"
+// @Tags test
+// @Produce  json
+// @Success 200 {object} models.MyTests
+// @Router /my-tests/{id} [get]
+func (h TestController) GetTest(ctx *fiber.Ctx) error {
+	testId, err := strconv.ParseUint(ctx.Params("id"), 10, 64)
+	if err != nil {
+		log.Println("could not find testID")
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"errorIdTest": err,
+		})
+	}
+
+	test, err := services.GetTest(testId)
+	if err != nil {
+		log.Println("Error ", err.Error())
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status": "SUCCESS",
+		"data":   test,
+	})
+}

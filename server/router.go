@@ -75,5 +75,6 @@ func Router(app *fiber.App) {
 	app.Get("/startTest/:idTestCandidate", controllers.StartTest)
 	app.Patch("/quiz/status/:idTestCandidate", testCandidateController.UpdateTestStatus)
 	app.Patch("/quiz/currentQuestion/:idTestCandidate", testCandidateController.UpdateCurrentQuestion)
+	app.Get("/my-tests/:id", testController.GetTest)
 
 }

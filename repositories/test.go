@@ -78,3 +78,18 @@ func FindTests(skillsID []int64) ([]models.Test, error) {
 
 	return tests, nil
 }
+
+func GetTest(testId uint64) (models.Test, error) {
+	db := database.DB
+	var test models.Test
+
+	if err := db.
+		Table("tests").Preload("Questions").Preload("Questions.Skill").Where("tests.id = ?", testId).
+		Find(&test).Error; err != nil {
+		log.Println("GetTest ", err)
+
+		return test, err
+	}
+
+	return test, nil
+}
