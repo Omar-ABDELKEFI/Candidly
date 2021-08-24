@@ -160,8 +160,9 @@ func StartTest(ctx *fiber.Ctx) error {
 		testStatus.TestStatus = "canceled"
 		_, _ = services.UpdateTestStatus(idTest, idCandidate, testStatus)
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"status": "canceled",
-			"time":   testCandidate.CreatedAt,
+			"status":        "canceled",
+			"testCandidate": testCandidate,
+			"time":          timeOfCreation.Add(time.Hour * 24 * 10),
 		})
 	}
 

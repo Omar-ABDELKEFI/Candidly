@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"github.com/go-playground/validator"
 	"github.com/gofiber/fiber/v2"
+	"github.com/tekab-dev/tekab-test/common"
 	_ "github.com/tekab-dev/tekab-test/database"
 	"github.com/tekab-dev/tekab-test/models"
 	"github.com/tekab-dev/tekab-test/services"
@@ -23,14 +23,13 @@ type QuestionController struct{}
 // @Router /questions/edit [post]
 func (h QuestionController) CreateQuestion(ctx *fiber.Ctx) error {
 	var input models.CreateQuestionInput
-	validate := validator.New()
 	log.Println("Hello from server")
 	err := ctx.BodyParser(&input)
-	validationError := validate.Struct(input)
-	log.Println(validationError, "validationError")
+	errors, validationError := common.ValidateStruct(&input)
+	log.Println(errors, "validationError")
 	if validationError != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": validationError.Error(),
+			"errors": errors,
 		})
 	}
 	if err != nil {
