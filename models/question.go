@@ -25,7 +25,7 @@ type CreateQuestionInput struct {
 	ExpectedTime *int      `json:"expected_time" validate:"required,oneof=1 2 3 5 7 10 15 20 30 40 60"`
 	QuestionText string    `json:"question_text" validate:"required" `
 	FileReadMe   string    `json:"file_read_me"`
-	Choices      []Choices `json:"choices" validate:"gt=2"`
+	Choices      []Choices `json:"choices" validate:"gt=1"`
 	SkillName    string    `json:"skill_name"`
 }
 

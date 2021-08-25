@@ -147,22 +147,19 @@ func StartTest(ctx *fiber.Ctx) error {
 		})
 	}
 	log.Println(testCandidate.CreatedAt, "testCandidate.CreatedAt")
-	layout := "2006-01-02T15:04:05.000Z"
+
 	createdAt := testCandidate.CreatedAt
-	timeOfCreation, err := time.Parse(layout, createdAt)
-	if err != nil {
-		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": err.Error(),
-		})
-	}
-	if time.Now().Before(timeOfCreation.Add(time.Hour * 24 * 10)) {
+	log.Println(createdAt, "createdAt")
+
+	log.Println(time.Duration(testCandidate.TimeLimit).Hours(), "testCandidate.TimeLimit")
+	if time.Now().After(createdAt.Add(time.Hour * 24 * time.Duration(testCandidate.TimeLimit))) {
 		var testStatus models.UpdateTestStatus
 		testStatus.TestStatus = "canceled"
 		_, _ = services.UpdateTestStatus(idTest, idCandidate, testStatus)
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"status":        "canceled",
 			"testCandidate": testCandidate,
-			"time":          timeOfCreation.Add(time.Hour * 24 * 10),
+			"time":          createdAt.Add(time.Hour * 24 * time.Duration(testCandidate.TimeLimit)),
 		})
 	}
 

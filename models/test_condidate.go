@@ -32,8 +32,8 @@ type StartTest struct {
 	Score           float64              `json:"score"`
 	CurrentQuestion uint64               `json:"current_question"`
 	UpdatedAt       time.Time            `json:"updated_at"`
-	CreatedAt       string               `json:"created_at"`
-	TimeLimit       uint                 `json:"time_limit"`
+	CreatedAt       time.Time            `json:"created_at"`
+	TimeLimit       int                  `json:"time_limit"`
 }
 type StartTestQuestions struct {
 	Name         string `json:"name"`
