@@ -76,5 +76,6 @@ func Router(app *fiber.App) {
 	app.Patch("/quiz/status/:idTestCandidate", testCandidateController.UpdateTestStatus)
 	app.Patch("/quiz/currentQuestion/:idTestCandidate", testCandidateController.UpdateCurrentQuestion)
 	app.Get("/my-tests/:id", testController.GetTest)
+	app.Post("/my-tests/clone/:id", testController.CloneTest)
 
 }

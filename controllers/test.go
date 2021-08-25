@@ -180,3 +180,49 @@ func (h TestController) GetTest(ctx *fiber.Ctx) error {
 		"data":   test,
 	})
 }
+
+// clone test godoc
+// @Summary clone a test
+// @id cloneTest
+// @Description clone test
+// @Param id path string true "test id"
+// @Param expectedTime body models.CloneTestInput true "expected Time"
+// @Tags test
+// @Produce  json
+// @Success 200 {object} models.MyTests
+// @Router /my-tests/clone/{id} [post]
+func (h TestController) CloneTest(ctx *fiber.Ctx) error {
+	testId, err := strconv.ParseUint(ctx.Params("id"), 10, 64)
+	if err != nil {
+		log.Println("could not find testID")
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"errorIdTest": err,
+		})
+	}
+	var input models.CloneTestInput
+	err = ctx.BodyParser(&input)
+	validate := validator.New()
+	if err != nil {
+		log.Println("Error : Invalid Json format")
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "cannot parse json",
+		})
+	}
+	validationError := validate.Struct(input)
+	if validationError != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": validationError.Error(),
+		})
+	}
+	clonedTest, err := services.CloneTest(testId, input)
+	if err != nil {
+		log.Println("Error ", err.Error())
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status": "SUCCESS",
+		"data":   clonedTest,
+	})
+}

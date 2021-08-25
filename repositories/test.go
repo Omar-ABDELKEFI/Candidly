@@ -4,6 +4,7 @@ import (
 	"github.com/tekab-dev/tekab-test/database"
 	"github.com/tekab-dev/tekab-test/models"
 	"log"
+	"time"
 )
 
 func CreateTest(test models.Test) (models.Test, error) {
@@ -44,7 +45,7 @@ func GetMyTests() ([]models.MyTests, error) {
 		" RIGHT JOIN tests ON tests.id = test_questions.test_id" +
 		" LEFT JOIN questions ON questions.id = test_questions.question_id" +
 		" GROUP BY" +
-		" tests.id;").
+		" tests.id order by tests.id desc").
 		Scan(&getTest).
 		Error; err != nil {
 		return getTest, err
@@ -57,7 +58,8 @@ func FindTests(skillsID []int64) ([]models.Test, error) {
 	db := database.DB
 	var tests []models.Test
 	if len(skillsID) == 0 {
-		if err := db.Table("tests").Find(&tests).Error; err != nil {
+		if err := db.Table("tests").
+			Find(&tests).Error; err != nil {
 			log.Println("tests", err)
 
 			return nil, err
@@ -92,4 +94,28 @@ func GetTest(testId uint64) (models.Test, error) {
 	}
 
 	return test, nil
+}
+
+func CloneTest(testId uint64, input models.CloneTestInput) (models.MyTests, error) {
+	db := database.DB
+	var test models.Test
+	var myTest models.MyTests
+	if err := db.
+		Table("tests").Where("tests.id = ?", testId).Preload("Questions").First(&test).Error; err != nil {
+		return myTest, err
+	}
+	test.ID = 0
+	test.Name = test.Name + " Cloned"
+	test.CreatedAt = time.Time{}
+	test.UpdatedAt = time.Time{}
+	err := db.Create(&test).Error
+	if err != nil {
+		return myTest, err
+	}
+	myTest.TestId = testId
+	myTest.ExpectedTime = input.ExpectedTime
+	myTest.TestName = test.Name
+	myTest.NumberQuestion = len(test.Questions)
+
+	return myTest, nil
 }

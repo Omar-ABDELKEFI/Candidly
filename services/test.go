@@ -65,3 +65,10 @@ func GetTest(idTest uint64) (models.Test, error) {
 	}
 	return test, err
 }
+func CloneTest(idTest uint64, input models.CloneTestInput) (models.MyTests, error) {
+	clonedTest, err := repositories.CloneTest(idTest, input)
+	if err != nil {
+		return clonedTest, err
+	}
+	return clonedTest, err
+}
