@@ -86,7 +86,7 @@ func GetTest(testId uint64) (models.Test, error) {
 	var test models.Test
 
 	if err := db.
-		Table("tests").Preload("Questions").Preload("Questions.Skill").Where("tests.id = ?", testId).
+		Table("tests").Preload("Questions").Preload("Questions.Skill").Preload("Questions.Choices").Where("tests.id = ?", testId).
 		Find(&test).Error; err != nil {
 		log.Println("GetTest ", err)
 
@@ -112,7 +112,7 @@ func CloneTest(testId uint64, input models.CloneTestInput) (models.MyTests, erro
 	if err != nil {
 		return myTest, err
 	}
-	myTest.TestId = testId
+	myTest.TestId = test.ID
 	myTest.ExpectedTime = input.ExpectedTime
 	myTest.TestName = test.Name
 	myTest.NumberQuestion = len(test.Questions)

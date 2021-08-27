@@ -33,7 +33,7 @@ type TestResponse struct {
 	NotifyEmails string  `json:"notify_emails"`
 }
 type MyTests struct {
-	TestId          uint64 `json:"test_id"`
+	TestId          uint   `json:"test_id"`
 	NumberQuestion  int    `json:"number_Question"`
 	NumberCandidate int    `json:"number_candidate"`
 	TestName        string `json:"test_name"`

@@ -34,7 +34,7 @@ func FindQuestion(sort []string, difficulty []string) ([]models.Question, error)
 		return nil, err
 	}
 	*/
-	err := db.Table("questions").Preload("TestQuestions", func(db *gorm.DB) *gorm.DB {
+	err := db.Table("questions").Preload("Choices").Preload("TestQuestions", func(db *gorm.DB) *gorm.DB {
 		return db.Select("test_questions.id , test_questions.question_id , test_questions.test_id")
 	}).Preload("Skill", func(db *gorm.DB) *gorm.DB {
 		return db.Select("skills.id , skills.name")

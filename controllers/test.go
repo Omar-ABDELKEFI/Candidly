@@ -14,7 +14,7 @@ type TestController struct{}
 // CreateTest godoc
 // @Summary add new Test
 // @Description create new Test by json
-// @Param Test body models.TestRequest true "Add Test"
+// @Param Test body models.Test true "Add Test"
 // @Tags test
 // @Accept  json
 // @Produce  json
