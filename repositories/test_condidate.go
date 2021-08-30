@@ -50,7 +50,7 @@ func FindTestsCandidates() ([]models.TestsCandidatesResponse, error) {
 	err := db.Table("test_candidates").
 		Joins("INNER JOIN tests on test_candidates.test_id = tests.id").
 		Joins("INNER JOIN candidates on test_candidates.candidate_id = candidates.id").
-		Select("tests.name as test_name ,candidates.name as candidate_name , candidates.email as candidate_email , test_candidates.score ,test_candidates.test_status , CONCAT(test_candidates.test_id, test_candidates.candidate_id) as test_candidate_id").
+		Select("tests.name as test_name ,candidates.name as candidate_name , candidates.email as candidate_email , test_candidates.score ,test_candidates.test_status , CONCAT(test_candidates.test_id, '-' ,test_candidates.candidate_id) as test_candidate_id").
 		Find(&testsCandidates).Error
 	if err != nil {
 		return testsCandidates, err
