@@ -64,21 +64,30 @@ func (h TestQuestionController) CreateTestQuestion(ctx *fiber.Ctx) error {
 // DeleteTestQuestion godoc
 // @Summary delete a question from test
 // @Description delete a question from test by json
-// @Param id path string true "id"
+// @Param test_question body models.TestQuestionDelete true "test_question"
 // @Tags question_test
 // @Accept  json
 // @Produce  json
 // @Success 200 {string} string	"ok"
-// @Router /my-tests/questions/{id} [Delete]
+// @Router /my-tests/questions/delete [Delete]
 func (h TestQuestionController) DeleteTestQuestion(ctx *fiber.Ctx) error {
-	id, err := strconv.ParseUint(ctx.Params("id"), 10, 64)
+	var input models.TestQuestionDelete
+	log.Println("Hello from server")
+	err := ctx.BodyParser(&input)
+	validate := validator.New()
 	if err != nil {
-		log.Println("Error ", err.Error())
+		log.Println("Error : Invalid Json format")
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": err.Error(),
+			"error": "cannot parse json",
 		})
 	}
-	err = services.DeleteTestQuestion(id)
+	validationError := validate.Struct(input)
+	if validationError != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": validationError.Error(),
+		})
+	}
+	err = services.DeleteTestQuestion(input.TestID, input.QuestionID)
 	if err != nil {
 		log.Println("Error ", err.Error())
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{

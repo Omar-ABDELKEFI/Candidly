@@ -41,7 +41,7 @@ func Router(app *fiber.App) {
 		myTest.Get("/getTest", testController.GetMyTests)
 		myTest.Post("/", testController.CreateTest)
 		myTest.Post("/:idTest", testController.UpdateTest)
-		myTest.Delete("/questions/:id", testQuestionController.DeleteTestQuestion)
+		myTest.Delete("/questions/delete", testQuestionController.DeleteTestQuestion)
 		myTest.Post("/:id/questions", testQuestionController.CreateTestQuestion)
 
 	}

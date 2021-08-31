@@ -9,3 +9,7 @@ type TestQuestion struct {
 	QuestionID uint64    `json:"question_id" validate:"required"`
 	TestID     uint64    `json:"test_id"`
 }
+type TestQuestionDelete struct {
+	QuestionID uint64 `json:"question_id" validate:"required"`
+	TestID     uint64 `json:"test_id" validate:"required"`
+}
