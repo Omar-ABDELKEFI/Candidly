@@ -25,6 +25,7 @@ type TestCandidateController struct{}
 // @Router /my-tests/candidates/:test_id [post]
 func (h TestCandidateController) CreateTestCandidate(ctx *fiber.Ctx) error {
 	var testCandidate models.TestCandidate
+	var testCandidates []models.TestCandidate
 	log.Println("Hello from testCandidate")
 	err := ctx.BodyParser(&testCandidate)
 	if err != nil {
@@ -41,6 +42,7 @@ func (h TestCandidateController) CreateTestCandidate(ctx *fiber.Ctx) error {
 		})
 	}
 	testCandidate.TestID = id
+
 	validate := validator.New()
 	validationError := validate.Struct(testCandidate)
 	if validationError != nil {
@@ -48,19 +50,20 @@ func (h TestCandidateController) CreateTestCandidate(ctx *fiber.Ctx) error {
 			"error": validationError.Error(),
 		})
 	}
-
+	testCandidates = append(testCandidates, testCandidate)
 	// Create testCandidate
-	newTestCandidat, err := services.CreateTestCandidate(testCandidate)
-	if err != nil {
-		log.Println("Error ", err.Error())
+	emailsDuplicate, newTestCandidate, errDuplicate := services.CreateTestCandidate(testCandidates)
+	if errDuplicate != nil {
+		log.Println("Error ", errDuplicate)
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": err.Error(),
+			"error":           errDuplicate,
+			"emailsDuplicate": emailsDuplicate,
 		})
 	}
 
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status": "SUCCESS",
-		"test":   newTestCandidat,
+		"test":   newTestCandidate,
 	})
 }
 
@@ -154,13 +157,17 @@ func StartTest(ctx *fiber.Ctx) error {
 	log.Println(time.Duration(testCandidate.TimeLimit).Hours(), "testCandidate.TimeLimit")
 	if time.Now().After(createdAt.Add(time.Hour * 24 * time.Duration(testCandidate.TimeLimit))) {
 		var testStatus models.UpdateTestStatus
+
 		testStatus.TestStatus = "canceled"
-		_, _ = services.UpdateTestStatus(idTest, idCandidate, testStatus)
-		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"status":        "canceled",
-			"testCandidate": testCandidate,
-			"time":          createdAt.Add(time.Hour * 24 * time.Duration(testCandidate.TimeLimit)),
-		})
+		testStatusOutput, _ := services.UpdateTestStatus(idTest, idCandidate, testStatus)
+		if testStatusOutput.TestStatus == testStatus.TestStatus {
+			return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"status":        "canceled",
+				"testCandidate": testCandidate,
+				"time":          createdAt.Add(time.Hour * 24 * time.Duration(testCandidate.TimeLimit)),
+			})
+		}
+
 	}
 
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{

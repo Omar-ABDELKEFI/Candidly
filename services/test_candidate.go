@@ -5,13 +5,13 @@ import (
 	"github.com/tekab-dev/tekab-test/repositories"
 )
 
-func CreateTestCandidate(testCandidate models.TestCandidate) (models.TestCandidate, error) {
+func CreateTestCandidate(testCandidate []models.TestCandidate) ([]string, []models.TestCandidate, []string) {
 	//Create new testCandidate
-	newTestCandidate, err := repositories.CreateTestCandidate(testCandidate)
-	if err != nil {
-		return newTestCandidate, err
+	emailsDuplicate, newTestCandidate, errDuplicate := repositories.CreateTestCandidate(testCandidate)
+	if errDuplicate != nil {
+		return emailsDuplicate, newTestCandidate, errDuplicate
 	}
-	return newTestCandidate, err
+	return nil, newTestCandidate, nil
 }
 
 func CalculateScore(candidateId uint64, testId uint64) (models.TestCandidate, error) {

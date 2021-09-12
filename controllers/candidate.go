@@ -38,15 +38,20 @@ func (h CandidateController) CreateCandidate(ctx *fiber.Ctx) error {
 	//	})
 	//}
 	// Create candidate
-	newCandidate, err := services.CreateCandidate(candidate)
-	if err != nil {
-		log.Println("Error ", err.Error())
+	newTestCandidate, newCandidate, emailsDuplicate, errDuplicate, err := services.CreateCandidate(candidate)
+	if len(errDuplicate) != 0 {
+		log.Println("sssssssssssssssssssssssssssssss")
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": err.Error(),
+			"error":            err,
+			"newCandidate":     newCandidate,
+			"errDuplicate":     errDuplicate,
+			"emailsDuplicate":  emailsDuplicate,
+			"newTestCandidate": newTestCandidate,
 		})
 	}
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
-		"status":    "SUCCESS",
-		"candidate": newCandidate,
+		"status":           "SUCCESS",
+		"candidate":        newCandidate,
+		"newTestCandidate": newTestCandidate,
 	})
 }

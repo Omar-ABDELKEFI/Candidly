@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/tekab-dev/tekab-test/models"
 	"github.com/tekab-dev/tekab-test/services"
@@ -57,8 +58,14 @@ func (h AuthController) Login(ctx *fiber.Ctx) error {
 			"error": "invalid_login",
 		})
 	}
+
+	fmt.Printf("%+v\n", ctx.Get("Authorization"))
+
+	log.Println(ctx.Request().Header.Header()[0], "ctx.Request().Header.IsGet()")
+	log.Println(ctx.Request().Header.Method(), "ffff")
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status": "success",
 		"token":  token,
+		"mm":     ctx.Request().Header.IsGet(),
 	})
 }

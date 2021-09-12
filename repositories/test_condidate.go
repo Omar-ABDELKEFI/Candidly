@@ -6,18 +6,29 @@ import (
 	"log"
 )
 
-func CreateTestCandidate(testCandidate models.TestCandidate) (models.TestCandidate, error) {
+func CreateTestCandidate(testCandidates []models.TestCandidate) ([]string, []models.TestCandidate, []string) {
 	log.Println("Creating testCandidate ...")
+	thereError := false
+	var emails []string
+	var candidateId []uint64
+	var errors []string
 	db := database.DB
-
-	err := db.Create(&testCandidate).Error
-
-	if err != nil {
-		return testCandidate, err
+	for _, testCandidate := range testCandidates {
+		if err := db.Create(&testCandidate).Error; err != nil {
+			thereError = true
+			candidateId = append(candidateId, testCandidate.CandidateID)
+			errors = append(errors, err.Error())
+		}
 	}
-	log.Println("created testQuestion : ", testCandidate)
+	log.Println(errors, "errorserrors")
+	if thereError == true {
+		db.Table("candidates").Select("email").Where("id IN ?", candidateId).Find(&emails)
+		return emails, testCandidates, errors
+	}
 
-	return testCandidate, nil
+	log.Println("created testQuestion : ", testCandidates)
+
+	return emails, testCandidates, errors
 }
 
 //type sum struct {
@@ -107,7 +118,10 @@ func UpdateTestStatus(testId uint64, candidateId uint64, testStatus models.Updat
 	if err != nil {
 		return testStatusOutput, err
 	}
-	db.Model(&quiz).Update("test_status", testStatus.TestStatus)
+	if quiz.TestStatus != "canceled" && quiz.TestStatus == "waiting" {
+		db.Model(&quiz).Update("test_status", testStatus.TestStatus)
+	}
+
 	testStatusOutput.TestStatus = quiz.TestStatus
 	testStatusOutput.UpdatedAt = quiz.UpdatedAt
 

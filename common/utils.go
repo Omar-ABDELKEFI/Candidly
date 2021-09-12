@@ -46,3 +46,11 @@ func ValidateStruct(str interface{}) ([]*ErrorResponse, error) {
 	}
 	return errors, err
 }
+func Contains(arr []string, str string) bool {
+	for _, a := range arr {
+		if a == str {
+			return true
+		}
+	}
+	return false
+}

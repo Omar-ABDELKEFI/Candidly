@@ -3,12 +3,15 @@ package services
 import (
 	"errors"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/tekab-dev/tekab-test/models"
 	"github.com/tekab-dev/tekab-test/repositories"
 	"golang.org/x/crypto/bcrypt"
 	"log"
 	"os"
 	"time"
 )
+
+var TOKEN string
 
 func ValidateLogin(email string, password string) (string, error) {
 	user := repositories.GetUser(email)
@@ -20,6 +23,7 @@ func ValidateLogin(email string, password string) (string, error) {
 		return "", err
 	}
 	token, err := CreateToken(email)
+	TOKEN = token
 	if err != nil {
 		return "", err
 	}
@@ -30,11 +34,15 @@ func CreateToken(userEmail string) (string, error) {
 	var err error
 	//Creating Access Token
 	os.Setenv("ACCESS_SECRET", "azert") //this should be in an env file
-	atClaims := jwt.MapClaims{}
-	atClaims["authorized"] = true
-	atClaims["user_email"] = userEmail
-	atClaims["exp"] = time.Now().Add(time.Hour * 8760).Unix()
-	at := jwt.NewWithClaims(jwt.SigningMethodHS256, atClaims)
+	expirationTime := time.Now().Add(time.Hour * 8760).Unix()
+	claims := &models.Claims{
+		UserEmail: userEmail,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: expirationTime,
+		},
+	}
+
+	at := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	token, err := at.SignedString([]byte(os.Getenv("ACCESS_SECRET")))
 	if err != nil {
 		return "", err

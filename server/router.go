@@ -5,6 +5,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/tekab-dev/tekab-test/controllers"
 	"github.com/tekab-dev/tekab-test/docs"
+	"github.com/tekab-dev/tekab-test/middleware"
 )
 
 func Router(app *fiber.App) {
@@ -35,8 +36,7 @@ func Router(app *fiber.App) {
 	{
 		answers.Post("/", answerController.CreateAnswer)
 	}
-	myTest := app.Group("/my-tests")
-
+	myTest := app.Group("/my-tests", middleware.TokenAuthMiddleware())
 	{
 		myTest.Get("/getTest", testController.GetMyTests)
 		myTest.Post("/", testController.CreateTest)
