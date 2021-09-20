@@ -7,6 +7,7 @@ import (
 	"github.com/tekab-dev/tekab-test/models"
 	"github.com/tekab-dev/tekab-test/services"
 	"log"
+	"os"
 	"strconv"
 	"time"
 )
@@ -132,7 +133,8 @@ func (h TestCandidateController) FindTestsCandidates(ctx *fiber.Ctx) error {
 // @Security Authorization
 // @Router /startTest/{idTestCandidate} [get]
 func StartTest(ctx *fiber.Ctx) error {
-	idTestcandidat := ctx.Params("idTestCandidate")
+	idTestcandidatEncrypter := ctx.Params("idTestCandidate")
+	idTestcandidat := common.AesDecrypt(idTestcandidatEncrypter, os.Getenv("key"))
 	log.Println(idTestcandidat, "idTestcandidat")
 	idTest, errIdTest, idCandidate, errIdCandidate := common.GetTestCandidate(idTestcandidat)
 	if errIdTest != nil || errIdCandidate != nil {
@@ -188,7 +190,9 @@ func StartTest(ctx *fiber.Ctx) error {
 // @Security Authorization
 // @Router /quiz/{idTestCandidate} [get]
 func (h TestCandidateController) FindQuiz(ctx *fiber.Ctx) error {
-	testId, err, _, _ := common.GetTestCandidate(ctx.Params("idTestCandidate"))
+	idTestcandidatEncrypter := ctx.Params("idTestCandidate")
+	idOfTestcandidat := common.AesDecrypt(idTestcandidatEncrypter, os.Getenv("key"))
+	testId, err, _, _ := common.GetTestCandidate(idOfTestcandidat)
 	if err != nil {
 		log.Println("could not find testID")
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -219,7 +223,9 @@ func (h TestCandidateController) FindQuiz(ctx *fiber.Ctx) error {
 // @Success 200 {object} models.UpdateTestStatusOutput
 // @Router /quiz/status/{idTestCandidate} [Patch]
 func (h TestCandidateController) UpdateTestStatus(ctx *fiber.Ctx) error {
-	testId, errIdTest, candidateId, errIdCandidate := common.GetTestCandidate(ctx.Params("idTestCandidate"))
+	idTestcandidatEncrypter := ctx.Params("idTestCandidate")
+	idOfTestcandidat := common.AesDecrypt(idTestcandidatEncrypter, os.Getenv("key"))
+	testId, errIdTest, candidateId, errIdCandidate := common.GetTestCandidate(idOfTestcandidat)
 	if errIdTest != nil || errIdCandidate != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"errorIdTest":      errIdTest,
@@ -257,7 +263,9 @@ func (h TestCandidateController) UpdateTestStatus(ctx *fiber.Ctx) error {
 // @Success 200 {object} models.UpdateCurrentQuestionOutput
 // @Router /quiz/currentQuestion/{idTestCandidate} [Patch]
 func (h TestCandidateController) UpdateCurrentQuestion(ctx *fiber.Ctx) error {
-	testId, errIdTest, candidateId, errIdCandidate := common.GetTestCandidate(ctx.Params("idTestCandidate"))
+	idTestcandidatEncrypter := ctx.Params("idTestCandidate")
+	idOfTestcandidat := common.AesDecrypt(idTestcandidatEncrypter, os.Getenv("key"))
+	testId, errIdTest, candidateId, errIdCandidate := common.GetTestCandidate(idOfTestcandidat)
 	if errIdTest != nil || errIdCandidate != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"errorIdTest":      errIdTest,

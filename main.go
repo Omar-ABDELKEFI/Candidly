@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/tekab-dev/tekab-test/server"
+	"os"
 )
 
 // @title tekab-test
@@ -13,7 +14,7 @@ import (
 // @BasePath /api
 
 func main() {
-
+	os.Setenv("key", "123456781234567812345678")
 	server.Init()
 
 }
