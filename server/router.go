@@ -53,11 +53,11 @@ func Router(app *fiber.App) {
 	{
 		tests.Get("/", testController.FindTests)
 	}
-	skill := app.Group("/skill")
+	skill := app.Group("/skill", middleware.TokenAuthMiddleware())
 	{
 		skill.Post("/", skillController.CreateSkill)
 	}
-	skills := app.Group("/skills")
+	skills := app.Group("/skills", middleware.TokenAuthMiddleware())
 	{
 		skills.Get("/", skillController.FindSkills)
 	}
@@ -66,11 +66,11 @@ func Router(app *fiber.App) {
 		question.Post("/edit", questionController.CreateQuestion)
 		question.Get("/", questionController.FindQuestion)
 	}
-	candidate := app.Group("/candidate")
+	candidate := app.Group("/candidate", middleware.TokenAuthMiddleware())
 	{
 		candidate.Post("/", candidateController.CreateCandidate)
 	}
-	app.Get("/testscandidates", testCandidateController.FindTestsCandidates)
+	app.Get("/testscandidates", middleware.TokenAuthMiddleware(), testCandidateController.FindTestsCandidates)
 	app.Get("/quiz/:idTestCandidate", testCandidateController.FindQuiz)
 	app.Get("/startTest/:idTestCandidate", controllers.StartTest)
 	app.Patch("/quiz/status/:idTestCandidate", testCandidateController.UpdateTestStatus)
