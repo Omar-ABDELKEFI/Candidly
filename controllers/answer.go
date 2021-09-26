@@ -7,6 +7,7 @@ import (
 	"github.com/tekab-dev/tekab-test/models"
 	"github.com/tekab-dev/tekab-test/services"
 	"log"
+	"os"
 )
 
 type AnswerController struct{}
@@ -23,9 +24,11 @@ type AnswerController struct{}
 // @Router /answers/{idTestCandidate} [post]
 func (h AnswerController) CreateAnswer(ctx *fiber.Ctx) error {
 	var answer models.Answer
+	idTestCandidateEncrypted := ctx.Params("idTestCandidate")
+	idOfTestCandidate := common.AesDecrypt(idTestCandidateEncrypted, os.Getenv("key"))
 	log.Println("Hello from server")
 	err := ctx.BodyParser(&answer)
-	testId, errIdTest, candidateId, errIdCandidate := common.GetTestCandidate(ctx.Params("idTestCandidate"))
+	testId, errIdTest, candidateId, errIdCandidate := common.GetTestCandidate(idOfTestCandidate)
 	if errIdTest != nil || errIdCandidate != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"errorIdTest":      errIdTest,
