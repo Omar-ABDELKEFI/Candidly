@@ -46,7 +46,7 @@ func CalculateScore(candidateId uint64, testId uint64) (models.TestCandidate, er
 		" inner join test_candidates on test_candidates.candidate_id =answers.candidate_id AND test_candidates.test_id = answers.test_id AND test_candidates.candidate_id = ? AND test_candidates.test_id = ?"+
 		" inner join tests on tests.id = test_candidates.test_id GROUP BY `test_candidates`.`candidate_id` , `test_candidates`.`test_id`) AS src ) AS srcScore"+
 		" SET `dest`.`score` = `srcScore`.`score`, `dest`.`test_status` = `srcScore`.`test_status`"+
-		" WHERE dest.candidate_id = ? AND dest.test_id = ?", candidateId, testId, candidateId, testId, candidateId, testId).Find(&testCandidate).Error; err != nil {
+		" WHERE dest.candidate_id = ? AND dest.test_id = ?", candidateId, testId, candidateId, testId, candidateId, testId).Where("candidate_id = ? and test_id = ?", candidateId, testId).Find(&testCandidate).Error; err != nil {
 		log.Println("scoreTest", err)
 
 		return testCandidate, err

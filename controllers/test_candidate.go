@@ -78,7 +78,7 @@ func (h TestCandidateController) CreateTestCandidate(ctx *fiber.Ctx) error {
 // @Success 200 {object} models.TestCandidate
 // @Router /score/{idTestCandidate} [post]
 func (h TestCandidateController) CalculateScore(ctx *fiber.Ctx) error {
-	var testCandidate models.TestCandidate
+
 	idTestCandidateEncrypted := ctx.Params("idTestCandidate")
 	idOfTestCandidate := common.AesDecrypt(idTestCandidateEncrypted, os.Getenv("key"))
 	log.Println("Hello from testCandidate")
