@@ -40,7 +40,7 @@ func (h CandidateController) CreateCandidate(ctx *fiber.Ctx) error {
 	// Create candidate
 	newTestCandidate, newCandidate, emailsDuplicate, errDuplicate, err := services.CreateCandidate(candidate)
 	if len(errDuplicate) != 0 {
-		log.Println("sssssssssssssssssssssssssssssss")
+
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error":            err,
 			"newCandidate":     newCandidate,

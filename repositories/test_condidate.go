@@ -20,7 +20,7 @@ func CreateTestCandidate(testCandidates []models.TestCandidate) ([]string, []mod
 			errors = append(errors, err.Error())
 		}
 	}
-	log.Println(errors, "errorserrors")
+	log.Println(errors, "errors in repositories/test_candidate (CreateTestCandidate) ")
 	if thereError == true {
 		db.Table("candidates").Select("email").Where("id IN ?", candidateId).Find(&emails)
 		return emails, testCandidates, errors

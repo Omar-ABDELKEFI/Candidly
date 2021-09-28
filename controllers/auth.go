@@ -61,11 +61,10 @@ func (h AuthController) Login(ctx *fiber.Ctx) error {
 
 	fmt.Printf("%+v\n", ctx.Get("Authorization"))
 
-	log.Println(ctx.Request().Header.Header()[0], "ctx.Request().Header.IsGet()")
-	log.Println(ctx.Request().Header.Method(), "ffff")
+	log.Println(ctx.Request().Header.Header()[0], "ctx.Request().Header.IsGet() in controllers/auth")
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status": "success",
 		"token":  token,
-		"mm":     ctx.Request().Header.IsGet(),
+		"ctx":    ctx.Request().Header.IsGet(),
 	})
 }

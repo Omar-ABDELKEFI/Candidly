@@ -110,7 +110,7 @@ func (h TestCandidateController) CalculateScore(ctx *fiber.Ctx) error {
 // @Produce  json
 // @Success 200 {array} models.TestsCandidatesResponse
 // @Security Authorization
-// @Router /testscandidates [get]
+// @Router /testsCandidates [get]
 func (h TestCandidateController) FindTestsCandidates(ctx *fiber.Ctx) error {
 	testsCandidates, err := services.FindTestsCandidates()
 	if err != nil {
@@ -119,7 +119,7 @@ func (h TestCandidateController) FindTestsCandidates(ctx *fiber.Ctx) error {
 		})
 	}
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
-		"status": "succes",
+		"status": "success",
 		"data":   testsCandidates,
 	})
 }
@@ -137,7 +137,6 @@ func (h TestCandidateController) FindTestsCandidates(ctx *fiber.Ctx) error {
 func StartTest(ctx *fiber.Ctx) error {
 	idTestCandidateEncrypted := ctx.Params("idTestCandidate")
 	idTestCandidate := common.AesDecrypt(idTestCandidateEncrypted, os.Getenv("key"))
-	log.Println(idTestCandidate, "idTestcandidat")
 	idTest, errIdTest, idCandidate, errIdCandidate := common.GetTestCandidate(idTestCandidate)
 	if errIdTest != nil || errIdCandidate != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -145,15 +144,13 @@ func StartTest(ctx *fiber.Ctx) error {
 			"errorIdCandidate": errIdCandidate,
 		})
 	}
-	log.Println(idTest, "idTestidTest")
-	log.Println(idCandidate, "idCandidateidCandidate")
+
 	testCandidate, err := services.StartTest(idTest, idCandidate)
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": err.Error(),
 		})
 	}
-	log.Println(testCandidate.CreatedAt, "testCandidate.CreatedAt")
 
 	createdAt := testCandidate.CreatedAt
 	log.Println(createdAt, "createdAt")
@@ -175,7 +172,7 @@ func StartTest(ctx *fiber.Ctx) error {
 	}
 
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
-		"status": "succes",
+		"status": "success",
 		"data":   testCandidate,
 	})
 
@@ -195,7 +192,7 @@ func (h TestCandidateController) FindQuiz(ctx *fiber.Ctx) error {
 	idTestCandidateEncrypted := ctx.Params("idTestCandidate")
 	idTestCandidate := common.AesDecrypt(idTestCandidateEncrypted, os.Getenv("key"))
 	testId, err, _, _ := common.GetTestCandidate(idTestCandidate)
-	println(testId, "testIdDinfquizcontrollers")
+
 	if err != nil {
 		log.Println("could not find testID")
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -210,7 +207,7 @@ func (h TestCandidateController) FindQuiz(ctx *fiber.Ctx) error {
 		})
 	}
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
-		"status": "succes",
+		"status": "success",
 		"data":   quiz,
 	})
 
@@ -250,7 +247,7 @@ func (h TestCandidateController) UpdateTestStatus(ctx *fiber.Ctx) error {
 		})
 	}
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
-		"status": "succes",
+		"status": "success",
 		"data":   testStatusOutput,
 	})
 
@@ -290,7 +287,7 @@ func (h TestCandidateController) UpdateCurrentQuestion(ctx *fiber.Ctx) error {
 		})
 	}
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
-		"status": "succes",
+		"status": "success",
 		"data":   currentQuestionOutput,
 	})
 

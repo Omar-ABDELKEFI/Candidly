@@ -26,7 +26,7 @@ func TokenAuthMiddleware() func(ctx *fiber.Ctx) error {
 			return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 				"error":       "token invalid",
 				"OriginToken": services.TOKEN,
-				"LockalToken": authHeader,
+				"LocalToken":  authHeader,
 			})
 		}
 	}

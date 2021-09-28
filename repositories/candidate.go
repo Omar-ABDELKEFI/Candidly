@@ -12,7 +12,7 @@ func CreateCandidate(candidate []models.Candidate) ([]models.Candidate, error) {
 	db := database.DB
 
 	fmt.Println("created candidate : ", candidate)
-	log.Println(candidate, "candidateCandidateCandidate\"")
+
 	err := db.Create(&candidate).Error
 
 	if err != nil {
@@ -20,7 +20,7 @@ func CreateCandidate(candidate []models.Candidate) ([]models.Candidate, error) {
 	}
 	for _, s := range candidate {
 		fmt.Printf("%+v\n", s.Email)
-		log.Println("oooo")
+
 	}
 	return candidate, nil
 }
@@ -29,7 +29,7 @@ func SelectCandidateEmails() ([]string, error) {
 	var emails []string
 	db := database.DB
 	err := db.Table("candidates").Select("email").Scan(&emails).Error
-	log.Println(emails, "emailsemails")
+
 	if err != nil {
 		return emails, err
 	}
@@ -40,13 +40,13 @@ func FindCandidate(emails []string) ([]models.Candidate, error) {
 	var candidatesId []models.Candidate
 	db := database.DB
 	err := db.Table("candidates").Where("email In ?", emails).Find(&candidatesId).Error
-	log.Println(emails, "aaaa")
+
 	if err != nil {
 		return candidatesId, err
 	}
 
-	for _, s := range candidatesId {
-		fmt.Printf("%+v\n candidatesId", s)
+	for _, candidateId := range candidatesId {
+		fmt.Printf("%+v\n candidatesId", candidateId)
 	}
 	return candidatesId, nil
 }

@@ -39,7 +39,7 @@ func FindTests(skillsId string) ([]models.Test, error) {
 		}
 		tabSkillsInteger = append(tabSkillsInteger, j)
 	}
-	log.Println(tabSkillsInteger, "ssssssssssss")
+
 	tests, err := repositories.FindTests(tabSkillsInteger)
 	if err != nil {
 		log.Println("error db")

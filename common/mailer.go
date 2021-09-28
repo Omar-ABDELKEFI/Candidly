@@ -17,11 +17,11 @@ func Send(candidates []models.Candidate, testId uint) {
 		testId := strconv.FormatUint(uint64(testId), 10)
 		candidateId := strconv.FormatUint(uint64(candidate.ID), 10)
 		valueTestCandidateId := "testId=" + testId + "&&candidateId=" + candidateId
-		TestCandidateIdEncrypter := AesEncrypt(valueTestCandidateId, os.Getenv("key"))
-		idTestcandidat := AesDecrypt(TestCandidateIdEncrypter, os.Getenv("key"))
-		log.Println(TestCandidateIdEncrypter, "TestCandidateIdEncrypterTestCandidateIdEncrypter")
-		log.Println(idTestcandidat, "idTestcandidatidTestcandidatidTestcandidat")
-		link := "http://51.68.81.16:3000/quiz/" + TestCandidateIdEncrypter
+		TestCandidateIdEncrypted := AesEncrypt(valueTestCandidateId, os.Getenv("key"))
+		idTestCandidate := AesDecrypt(TestCandidateIdEncrypted, os.Getenv("key"))
+		log.Println(TestCandidateIdEncrypted, "TestCandidateIdEncrypted in common/mailer")
+		log.Println(idTestCandidate, "idTestCandidate in common/mailer")
+		link := "http://51.68.81.16:3000/quiz/" + TestCandidateIdEncrypted
 		msg := "MIME-version: 1.0;\nContent-Type: text/html; charset=\"UTF-8\";\r\n" + "From: " + from + "\n" +
 			"To: " + to + "\n" +
 			"Subject: Hello there\n\n" +
@@ -37,6 +37,5 @@ func Send(candidates []models.Candidate, testId uint) {
 			return
 		}
 
-		log.Print("sent, visit http://foobarbazz.mailinator.com")
 	}
 }

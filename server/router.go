@@ -70,7 +70,7 @@ func Router(app *fiber.App) {
 	{
 		candidate.Post("/", candidateController.CreateCandidate)
 	}
-	app.Get("/testscandidates", middleware.TokenAuthMiddleware(), testCandidateController.FindTestsCandidates)
+	app.Get("/testsCandidates", middleware.TokenAuthMiddleware(), testCandidateController.FindTestsCandidates)
 	app.Get("/quiz/:idTestCandidate", testCandidateController.FindQuiz)
 	app.Get("/startTest/:idTestCandidate", controllers.StartTest)
 	app.Patch("/quiz/status/:idTestCandidate", testCandidateController.UpdateTestStatus)

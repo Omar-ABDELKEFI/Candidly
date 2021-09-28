@@ -73,8 +73,8 @@ func (h QuestionController) CreateQuestion(ctx *fiber.Ctx) error {
 func (h QuestionController) FindQuestion(ctx *fiber.Ctx) error {
 	var tabSort []string
 	var tabDifficulty []string
-	log.Println(tabSort, "tabSorttabSort")
-	log.Println(len(tabSort), "(len(tabSort)(len(tabSort)")
+	log.Println(tabSort, "tabSort in controllers/question")
+	log.Println(len(tabSort), "(len(tabSort) in controllers/question ")
 	if sort := ctx.Query("types"); len(sort) != 0 {
 		tabSort = strings.Split(sort, ",")
 
@@ -90,7 +90,7 @@ func (h QuestionController) FindQuestion(ctx *fiber.Ctx) error {
 		})
 	}
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
-		"status": "succes",
+		"status": "success",
 		"data":   questions,
 	})
 }
