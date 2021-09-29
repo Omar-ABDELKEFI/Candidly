@@ -24,6 +24,47 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/answers/{idTestCandidate}": {
+            "post": {
+                "description": "create new Answer by json",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Answer"
+                ],
+                "summary": "add new Answer",
+                "parameters": [
+                    {
+                        "description": "Add Answer",
+                        "name": "Answer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Answer"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "idTestCandidate",
+                        "name": "idTestCandidate",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Answer"
+                        }
+                    }
+                }
+            }
+        },
         "/candidate": {
             "post": {
                 "description": "create new Candidate by json",
@@ -44,7 +85,10 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CreateCandidateInput"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.CandidateRequest"
+                            }
                         }
                     }
                 ],
@@ -52,7 +96,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Candidate"
+                            "$ref": "#/definitions/models.CandidateResponse"
                         }
                     }
                 }
@@ -120,13 +164,13 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Test"
+                            "$ref": "#/definitions/models.TestResponse"
                         }
                     }
                 }
             }
         },
-        "/my-tests/candidates/:id": {
+        "/my-tests/candidates/:test_id": {
             "post": {
                 "description": "create test_candidate by json and path",
                 "consumes": [
@@ -162,6 +206,213 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/models.TestCandidate"
+                        }
+                    }
+                }
+            }
+        },
+        "/my-tests/clone/{id}": {
+            "post": {
+                "description": "clone test",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "test"
+                ],
+                "summary": "clone a test",
+                "operationId": "cloneTest",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "test id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "expected Time",
+                        "name": "expectedTime",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CloneTestInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.MyTests"
+                        }
+                    }
+                }
+            }
+        },
+        "/my-tests/getTest": {
+            "get": {
+                "description": "get my-tests",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "test"
+                ],
+                "summary": "update Test",
+                "operationId": "getMyTests",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.MyTests"
+                        }
+                    }
+                }
+            }
+        },
+        "/my-tests/questions/delete": {
+            "delete": {
+                "description": "delete a question from test by json",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "question_test"
+                ],
+                "summary": "delete a question from test",
+                "parameters": [
+                    {
+                        "description": "test_question",
+                        "name": "test_question",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.TestQuestionDelete"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/my-tests/{id}": {
+            "get": {
+                "description": "get test by id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "test"
+                ],
+                "summary": "get test by id",
+                "operationId": "getTest",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "test id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.MyTests"
+                        }
+                    }
+                }
+            }
+        },
+        "/my-tests/{id}/questions": {
+            "post": {
+                "description": "add a question to test by json",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "question_test"
+                ],
+                "summary": "add a question to test",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Add question to test",
+                        "name": "test_question",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.TestQuestion"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.TestQuestion"
+                        }
+                    }
+                }
+            }
+        },
+        "/my-tests/{test_id}": {
+            "post": {
+                "description": "update Test by json and path",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "test"
+                ],
+                "summary": "update Test",
+                "operationId": "updateTest",
+                "parameters": [
+                    {
+                        "description": "Update Test",
+                        "name": "Test",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.TestRequest"
+                        }
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Update Test",
+                        "name": "test_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.TestResponse"
                         }
                     }
                 }
@@ -241,9 +492,125 @@ var doc = `{
                 }
             }
         },
-        "/score": {
+        "/quiz/currentQuestion/{idTestCandidate}": {
+            "patch": {
+                "description": "Update current question",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Update current question",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "idTestCandidate",
+                        "name": "idTestCandidate",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "current question",
+                        "name": "currentQuestion",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateCurrentQuestion"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateCurrentQuestionOutput"
+                        }
+                    }
+                }
+            }
+        },
+        "/quiz/status/{idTestCandidate}": {
+            "patch": {
+                "description": "Update test status",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Update test status",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "idTestCandidate",
+                        "name": "idTestCandidate",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "test status",
+                        "name": "testStatus",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateTestStatus"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateTestStatusOutput"
+                        }
+                    }
+                }
+            }
+        },
+        "/quiz/{idTestCandidate}": {
+            "get": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
+                "description": "get questions of a test",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "test"
+                ],
+                "summary": "get tests candidates",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "idTestCandidate",
+                        "name": "idTestCandidate",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Question"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/score/{idTestCandidate}": {
             "post": {
-                "description": "calculate score by query and update a status test",
+                "description": "calculate score by path  and update a status test",
                 "consumes": [
                     "application/json"
                 ],
@@ -256,10 +623,10 @@ var doc = `{
                 "summary": "calculate a test score",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "calculate score",
-                        "name": "test_candidate_id",
-                        "in": "query",
+                        "type": "string",
+                        "description": "idTestCandidate",
+                        "name": "idTestCandidate",
+                        "in": "path",
                         "required": true
                     }
                 ],
@@ -293,7 +660,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Skill"
+                            "$ref": "#/definitions/models.CreateSkillInput"
                         }
                     }
                 ],
@@ -301,7 +668,76 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Question"
+                            "$ref": "#/definitions/models.Skill"
+                        }
+                    }
+                }
+            }
+        },
+        "/skills": {
+            "get": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
+                "description": "get all skills",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "skill"
+                ],
+                "summary": "get skills",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.SkillsResponse"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/startTest/{idTestCandidate}": {
+            "get": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
+                "description": "get test information",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "test_candidate"
+                ],
+                "summary": "get test information",
+                "operationId": "StartTest",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "idTestCandidate",
+                        "name": "idTestCandidate",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.StartTest"
+                            }
                         }
                     }
                 }
@@ -339,7 +775,38 @@ var doc = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Test"
+                                "$ref": "#/definitions/models.TestResponse"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/testsCandidates": {
+            "get": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
+                "description": "get candidates and their tests",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "test_candidate"
+                ],
+                "summary": "get candidates and their tests",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.TestsCandidatesResponse"
                             }
                         }
                     }
@@ -363,8 +830,7 @@ var doc = `{
         "models.Answer": {
             "type": "object",
             "required": [
-                "question_id",
-                "test_candidate_id"
+                "question_id"
             ],
             "properties": {
                 "answer_choices": {
@@ -378,6 +844,9 @@ var doc = `{
                 },
                 "answer_text": {
                     "type": "string"
+                },
+                "candidate_id": {
+                    "type": "integer"
                 },
                 "createdAt": {
                     "type": "string"
@@ -394,7 +863,7 @@ var doc = `{
                 "question_id": {
                     "type": "integer"
                 },
-                "test_candidate_id": {
+                "test_id": {
                     "type": "integer"
                 },
                 "updatedAt": {
@@ -431,12 +900,6 @@ var doc = `{
         "models.Candidate": {
             "type": "object",
             "properties": {
-                "createdAt": {
-                    "type": "string"
-                },
-                "deletedAt": {
-                    "$ref": "#/definitions/gorm.DeletedAt"
-                },
                 "email": {
                     "type": "string"
                 },
@@ -446,14 +909,48 @@ var doc = `{
                 "name": {
                     "type": "string"
                 },
-                "test_candidate": {
+                "test": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.TestCandidate"
+                        "$ref": "#/definitions/models.Test"
                     }
-                },
-                "updatedAt": {
+                }
+            }
+        },
+        "models.CandidateRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
                     "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "test": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.TestResponse"
+                    }
+                }
+            }
+        },
+        "models.CandidateResponse": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "test": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Test"
+                    }
                 }
             }
         },
@@ -464,37 +961,19 @@ var doc = `{
                 "is_answer"
             ],
             "properties": {
-                "answer_choices": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.AnswerChoices"
-                    }
-                },
                 "choice_text": {
                     "type": "string"
                 },
-                "id": {
-                    "type": "integer"
-                },
                 "is_answer": {
                     "type": "boolean"
-                },
-                "question_id": {
-                    "type": "integer"
                 }
             }
         },
-        "models.CreateCandidateInput": {
+        "models.CloneTestInput": {
             "type": "object",
-            "required": [
-                "email"
-            ],
             "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
+                "expected_time": {
+                    "type": "integer"
                 }
             }
         },
@@ -506,7 +985,7 @@ var doc = `{
                 "max_points",
                 "name",
                 "question_text",
-                "type"
+                "skill_name"
             ],
             "properties": {
                 "choices": {
@@ -536,7 +1015,21 @@ var doc = `{
                 "skill_id": {
                     "type": "integer"
                 },
+                "skill_name": {
+                    "type": "string"
+                },
                 "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.CreateSkillInput": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
                     "type": "string"
                 }
             }
@@ -556,8 +1049,32 @@ var doc = `{
                 }
             }
         },
+        "models.MyTests": {
+            "type": "object",
+            "properties": {
+                "expected_time": {
+                    "type": "integer"
+                },
+                "number_Question": {
+                    "type": "integer"
+                },
+                "number_candidate": {
+                    "type": "integer"
+                },
+                "test_id": {
+                    "type": "integer"
+                },
+                "test_name": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Question": {
             "type": "object",
+            "required": [
+                "name",
+                "question_text"
+            ],
             "properties": {
                 "answer": {
                     "type": "array",
@@ -570,12 +1087,6 @@ var doc = `{
                     "items": {
                         "$ref": "#/definitions/models.Choices"
                     }
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "deletedAt": {
-                    "$ref": "#/definitions/gorm.DeletedAt"
                 },
                 "difficulty": {
                     "type": "string"
@@ -598,8 +1109,17 @@ var doc = `{
                 "question_text": {
                     "type": "string"
                 },
+                "skill": {
+                    "$ref": "#/definitions/models.Skill"
+                },
                 "skill_id": {
                     "type": "integer"
+                },
+                "test": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Test"
+                    }
                 },
                 "test_questions": {
                     "type": "array",
@@ -609,60 +1129,95 @@ var doc = `{
                 },
                 "type": {
                     "type": "string"
-                },
-                "updatedAt": {
-                    "type": "string"
                 }
             }
         },
         "models.Skill": {
             "type": "object",
-            "required": [
-                "name"
-            ],
             "properties": {
-                "createdAt": {
-                    "type": "string"
-                },
-                "deletedAt": {
-                    "$ref": "#/definitions/gorm.DeletedAt"
-                },
                 "id": {
                     "type": "integer"
                 },
                 "name": {
                     "type": "string"
+                }
+            }
+        },
+        "models.SkillsResponse": {
+            "type": "object",
+            "required": [
+                "ID",
+                "name"
+            ],
+            "properties": {
+                "ID": {
+                    "type": "integer"
                 },
-                "question": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.StartTest": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "current_question": {
+                    "type": "integer"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "questions": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.Question"
+                        "$ref": "#/definitions/models.StartTestQuestions"
                     }
                 },
-                "updatedAt": {
+                "score": {
+                    "type": "number"
+                },
+                "test_status": {
+                    "type": "string"
+                },
+                "time_limit": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.StartTestQuestions": {
+            "type": "object",
+            "properties": {
+                "expected_time": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "type": {
                     "type": "string"
                 }
             }
         },
         "models.Test": {
             "type": "object",
-            "required": [
-                "archived",
-                "description",
-                "name",
-                "passingScore",
-                "showScore",
-                "timingPolicy"
-            ],
             "properties": {
                 "archived": {
                     "type": "boolean"
                 },
-                "createdAt": {
-                    "type": "string"
-                },
-                "deletedAt": {
-                    "$ref": "#/definitions/gorm.DeletedAt"
+                "candidate": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Candidate"
+                    }
                 },
                 "description": {
                     "type": "string"
@@ -673,31 +1228,25 @@ var doc = `{
                 "name": {
                     "type": "string"
                 },
-                "notifyEmails": {
+                "notify_emails": {
                     "type": "string"
                 },
-                "passingScore": {
+                "passing_score": {
                     "type": "integer"
                 },
-                "showScore": {
+                "questions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Question"
+                    }
+                },
+                "show_score": {
                     "type": "boolean"
                 },
-                "test_candidate": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.TestCandidate"
-                    }
+                "time_limit": {
+                    "type": "integer"
                 },
-                "test_questions": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.TestQuestion"
-                    }
-                },
-                "timingPolicy": {
-                    "type": "string"
-                },
-                "updatedAt": {
+                "timing_policy": {
                     "type": "string"
                 }
             }
@@ -718,13 +1267,7 @@ var doc = `{
                 "candidate_id": {
                     "type": "integer"
                 },
-                "createdAt": {
-                    "type": "string"
-                },
-                "deletedAt": {
-                    "$ref": "#/definitions/gorm.DeletedAt"
-                },
-                "id": {
+                "current_question": {
                     "type": "integer"
                 },
                 "score": {
@@ -735,25 +1278,15 @@ var doc = `{
                 },
                 "test_status": {
                     "type": "string"
-                },
-                "updatedAt": {
-                    "type": "string"
                 }
             }
         },
         "models.TestQuestion": {
             "type": "object",
             "required": [
-                "question_id",
-                "test_id"
+                "question_id"
             ],
             "properties": {
-                "createdAt": {
-                    "type": "string"
-                },
-                "deletedAt": {
-                    "$ref": "#/definitions/gorm.DeletedAt"
-                },
                 "id": {
                     "type": "integer"
                 },
@@ -762,8 +1295,136 @@ var doc = `{
                 },
                 "test_id": {
                     "type": "integer"
+                }
+            }
+        },
+        "models.TestQuestionDelete": {
+            "type": "object",
+            "required": [
+                "question_id",
+                "test_id"
+            ],
+            "properties": {
+                "question_id": {
+                    "type": "integer"
                 },
-                "updatedAt": {
+                "test_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.TestRequest": {
+            "type": "object",
+            "properties": {
+                "archived": {
+                    "type": "boolean"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "notify_emails": {
+                    "type": "string"
+                },
+                "passing_score": {
+                    "type": "integer"
+                },
+                "show_score": {
+                    "type": "boolean"
+                },
+                "timing_policy": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.TestResponse": {
+            "type": "object",
+            "properties": {
+                "archived": {
+                    "type": "boolean"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "notify_emails": {
+                    "type": "string"
+                },
+                "passing_score": {
+                    "type": "integer"
+                },
+                "show_score": {
+                    "type": "boolean"
+                },
+                "timing_policy": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.TestsCandidatesResponse": {
+            "type": "object",
+            "properties": {
+                "candidate_email": {
+                    "type": "string"
+                },
+                "candidate_name": {
+                    "type": "string"
+                },
+                "score": {
+                    "type": "number"
+                },
+                "test_candidate_id": {
+                    "type": "string"
+                },
+                "test_name": {
+                    "type": "string"
+                },
+                "test_status": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UpdateCurrentQuestion": {
+            "type": "object",
+            "properties": {
+                "current_question": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.UpdateCurrentQuestionOutput": {
+            "type": "object",
+            "properties": {
+                "current_question": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UpdateTestStatus": {
+            "type": "object",
+            "properties": {
+                "test_status": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UpdateTestStatusOutput": {
+            "type": "object",
+            "properties": {
+                "test_status": {
+                    "type": "string"
+                },
+                "updated_at": {
                     "type": "string"
                 }
             }
