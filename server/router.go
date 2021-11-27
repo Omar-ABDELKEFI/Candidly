@@ -61,10 +61,13 @@ func Router(app *fiber.App) {
 	{
 		skills.Get("/", skillController.FindSkills)
 	}
-	question := app.Group("/questions")
+	question := app.Group("/questions", middleware.TokenAuthMiddleware())
 	{
 		question.Post("/edit", questionController.CreateQuestion)
 		question.Get("/", questionController.FindQuestion)
+		question.Get("/edit/:id", questionController.GetQuestion)
+		question.Post("/edit/:id", questionController.UpdateQuestion)
+
 	}
 	candidate := app.Group("/candidate", middleware.TokenAuthMiddleware())
 	{

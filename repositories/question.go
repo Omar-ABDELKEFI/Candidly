@@ -17,7 +17,7 @@ func CreateQuestion(question models.Question) (models.Question, error) {
 	return question, nil
 }
 
-func FindQuestion(sort []string, difficulty []string) ([]models.Question, error) {
+func FindQuestions(sort []string, difficulty []string) ([]models.Question, error) {
 	db := database.DB
 	var question []models.Question
 
@@ -46,5 +46,36 @@ func FindQuestion(sort []string, difficulty []string) ([]models.Question, error)
 		return nil, err
 	}
 
+	return question, nil
+}
+func GetQuestion(questionId uint64) (models.Question, error) {
+	db := database.DB
+	var question models.Question
+
+	err := db.Table("questions").Preload("Choices").
+		Preload("Skill", func(db *gorm.DB) *gorm.DB {
+			return db.Select("skills.id , skills.name")
+		}).Order("questions.id DESC").
+		Where("questions.id = ?", questionId).
+		Find(&question).Error
+	if err != nil {
+		log.Println("question", err)
+		return question, err
+
+	}
+	return question, nil
+}
+func UpdateQuestion(questionId uint64, question models.Question) (models.Question, error) {
+	db := database.DB
+	log.Println("quessssss", question)
+	question.ID = uint(questionId)
+	err := db.Delete(models.Choices{}, "question_id = ?", questionId).Error
+	if err != nil {
+		return question, err
+	}
+	err = db.Model(&question).Where("id = ?", questionId).Updates(&question).Error
+	if err != nil {
+		return question, err
+	}
 	return question, nil
 }

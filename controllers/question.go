@@ -7,6 +7,7 @@ import (
 	"github.com/tekab-dev/tekab-test/models"
 	"github.com/tekab-dev/tekab-test/services"
 	"log"
+	"strconv"
 	"strings"
 )
 
@@ -20,6 +21,7 @@ type QuestionController struct{}
 // @Accept  json
 // @Produce  json
 // @Success 200 {object} models.Question
+// @Security Authorization
 // @Router /questions/edit [post]
 func (h QuestionController) CreateQuestion(ctx *fiber.Ctx) error {
 	var input models.CreateQuestionInput
@@ -68,6 +70,7 @@ func (h QuestionController) CreateQuestion(ctx *fiber.Ctx) error {
 // @Tags question
 // @Accept  json
 // @Produce  json
+// @Security Authorization
 // @Success 200 {array} models.Question
 // @Router /questions [get]
 func (h QuestionController) FindQuestion(ctx *fiber.Ctx) error {
@@ -83,7 +86,7 @@ func (h QuestionController) FindQuestion(ctx *fiber.Ctx) error {
 		tabDifficulty = strings.Split(difficulty, ",")
 	}
 
-	questions, err := services.FindQuestion(tabSort, tabDifficulty)
+	questions, err := services.FindQuestions(tabSort, tabDifficulty)
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": err.Error(),
@@ -92,5 +95,88 @@ func (h QuestionController) FindQuestion(ctx *fiber.Ctx) error {
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status": "success",
 		"data":   questions,
+	})
+}
+
+// GetQuestion godoc
+// @Summary find a question
+// @Description find a question to edit
+// @Param id path string true "question id"
+// @Tags question
+// @Accept  json
+// @Produce  json
+// @Security Authorization
+// @Success 200 {object} models.Question
+// @Router /questions/edit/{id} [get]
+func (h QuestionController) GetQuestion(ctx *fiber.Ctx) error {
+	questionId, err := strconv.ParseUint(ctx.Params("id"), 10, 64)
+	if err != nil {
+		log.Println("could not find question")
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"errorQuestionId": err,
+		})
+	}
+
+	question, err := services.GetQuestion(questionId)
+	if err != nil {
+		log.Println("Error ", err.Error())
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status": "SUCCESS",
+		"data":   question,
+	})
+}
+
+// UpdateQuestion godoc
+// @Summary update a question
+// @Description update a question
+// @Param question body models.CreateQuestionInput true "Update question"
+// @Param id path string true "question id"
+// @Tags question
+// @Accept  json
+// @Produce  json
+// @Security Authorization
+// @Success 200 {object} models.Question
+// @Router /questions/edit/{id} [post]
+func (h QuestionController) UpdateQuestion(ctx *fiber.Ctx) error {
+	var input models.CreateQuestionInput
+	questionId, err := strconv.ParseUint(ctx.Params("id"), 10, 64)
+	if err != nil {
+		log.Println("could not find question")
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"errorQuestionId": err,
+		})
+	}
+	log.Println("Hello from server")
+	err = ctx.BodyParser(&input)
+	if err != nil {
+		log.Println("Error : Invalid Json format")
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "cannot parse json",
+		})
+	}
+	if input.SkillName != "" {
+		skillId, err := services.FindOrCreateSkill(input.SkillName)
+		if err != nil {
+			return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": err,
+			})
+		}
+		input.SkillID = uint64(skillId)
+	}
+
+	question, err := services.UpdateQuestion(questionId, input)
+	if err != nil {
+		log.Println("Error ", err.Error())
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status": "SUCCESS",
+		"data":   question,
 	})
 }
