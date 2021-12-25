@@ -103,8 +103,10 @@ func (h TestCandidateController) CalculateScore(ctx *fiber.Ctx) error {
 }
 
 // FindTestsCandidates godoc
+// @id TestsCandidatesList
 // @Summary get candidates and their tests
 // @Description get candidates and their tests
+// @Param idTest query string true "idTest"
 // @Tags test_candidate
 // @Accept  json
 // @Produce  json
@@ -112,7 +114,15 @@ func (h TestCandidateController) CalculateScore(ctx *fiber.Ctx) error {
 // @Security Authorization
 // @Router /testsCandidates [get]
 func (h TestCandidateController) FindTestsCandidates(ctx *fiber.Ctx) error {
-	testsCandidates, err := services.FindTestsCandidates()
+	var testId string
+	var isNil = true
+	log.Println("TestCandidateController : ", ctx.Query("idTest"))
+	if ctx.Query("idTest") != "" {
+		testId = ctx.Query("idTest")
+		isNil = false
+	}
+
+	testsCandidates, err := services.FindTestsCandidates(testId, isNil)
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": err.Error(),

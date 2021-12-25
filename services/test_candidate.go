@@ -22,9 +22,9 @@ func CalculateScore(candidateId uint64, testId uint64) (models.TestCandidate, er
 	}
 	return TestCandidate, err
 }
-func FindTestsCandidates() ([]models.TestsCandidatesResponse, error) {
+func FindTestsCandidates(testId string, isNil bool) ([]models.TestsCandidatesResponse, error) {
 	var testsCandidates []models.TestsCandidatesResponse
-	testsCandidates, err := repositories.FindTestsCandidates()
+	testsCandidates, err := repositories.FindTestsCandidates(testId, isNil)
 	if err != nil {
 		return testsCandidates, err
 	}

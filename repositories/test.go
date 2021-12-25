@@ -86,7 +86,7 @@ func GetTest(testId uint64) (models.Test, error) {
 	var test models.Test
 
 	if err := db.
-		Table("tests").Preload("Questions").Preload("Questions.Skill").Preload("Questions.Choices").Where("tests.id = ?", testId).
+		Table("tests").Preload("Candidate").Preload("Questions").Preload("Questions.Skill").Preload("Questions.Choices").Where("tests.id = ?", testId).
 		Find(&test).Error; err != nil {
 		log.Println("GetTest ", err)
 

@@ -136,7 +136,6 @@ definitions:
     - max_points
     - name
     - question_text
-    - skill_name
     type: object
   models.CreateSkillInput:
     properties:
@@ -693,6 +692,8 @@ paths:
             items:
               $ref: '#/definitions/models.Question'
             type: array
+      security:
+      - Authorization: []
       summary: find a question
       tags:
       - question
@@ -715,7 +716,60 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.Question'
+      security:
+      - Authorization: []
       summary: add new  question
+      tags:
+      - question
+  /questions/edit/{id}:
+    get:
+      consumes:
+      - application/json
+      description: find a question to edit
+      parameters:
+      - description: question id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Question'
+      security:
+      - Authorization: []
+      summary: find a question
+      tags:
+      - question
+    post:
+      consumes:
+      - application/json
+      description: update a question
+      parameters:
+      - description: Update question
+        in: body
+        name: question
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateQuestionInput'
+      - description: question id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Question'
+      security:
+      - Authorization: []
+      summary: update a question
       tags:
       - question
   /quiz/{idTestCandidate}:
@@ -903,11 +957,17 @@ paths:
       summary: get tests
       tags:
       - test
-  /testsCandidates:
+  /testsCandidates/{idTest}:
     get:
       consumes:
       - application/json
       description: get candidates and their tests
+      parameters:
+      - description: idTest
+        in: path
+        name: idTestCandidate
+        required: true
+        type: string
       produces:
       - application/json
       responses:

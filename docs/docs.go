@@ -420,6 +420,11 @@ var doc = `{
         },
         "/questions": {
             "get": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
                 "description": "find a question by type or difficulty",
                 "consumes": [
                     "application/json"
@@ -460,6 +465,11 @@ var doc = `{
         },
         "/questions/edit": {
             "post": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
                 "description": "create new question by json",
                 "consumes": [
                     "application/json"
@@ -480,6 +490,87 @@ var doc = `{
                         "schema": {
                             "$ref": "#/definitions/models.CreateQuestionInput"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Question"
+                        }
+                    }
+                }
+            }
+        },
+        "/questions/edit/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
+                "description": "find a question to edit",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "question"
+                ],
+                "summary": "find a question",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "question id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Question"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
+                "description": "update a question",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "question"
+                ],
+                "summary": "update a question",
+                "parameters": [
+                    {
+                        "description": "Update question",
+                        "name": "question",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateQuestionInput"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "question id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -782,7 +873,7 @@ var doc = `{
                 }
             }
         },
-        "/testsCandidates": {
+        "/testsCandidates/{idTest}": {
             "get": {
                 "security": [
                     {
@@ -800,6 +891,15 @@ var doc = `{
                     "test_candidate"
                 ],
                 "summary": "get candidates and their tests",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "idTest",
+                        "name": "idTestCandidate",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -984,8 +1084,7 @@ var doc = `{
                 "expected_time",
                 "max_points",
                 "name",
-                "question_text",
-                "skill_name"
+                "question_text"
             ],
             "properties": {
                 "choices": {

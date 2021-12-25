@@ -14,6 +14,7 @@ import (
 // @BasePath /api
 
 func main() {
+
 	os.Setenv("key", "123456781234567812345678")
 	server.Init()
 

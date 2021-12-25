@@ -55,11 +55,20 @@ func CalculateScore(candidateId uint64, testId uint64) (models.TestCandidate, er
 
 	return testCandidate, nil
 }
-func FindTestsCandidates() ([]models.TestsCandidatesResponse, error) {
+func FindTestsCandidates(testId string, isNil bool) ([]models.TestsCandidatesResponse, error) {
+	var conditionJoin string
+	if isNil {
+		conditionJoin = ""
+	} else {
+		conditionJoin = " and test_candidates.test_id = " + testId
+
+	}
+	log.Println("conditionJoin : ", conditionJoin)
 	db := database.DB
+
 	var testsCandidates []models.TestsCandidatesResponse
 	err := db.Table("test_candidates").
-		Joins("INNER JOIN tests on test_candidates.test_id = tests.id").
+		Joins("INNER JOIN tests on test_candidates.test_id = tests.id" + conditionJoin).
 		Joins("INNER JOIN candidates on test_candidates.candidate_id = candidates.id").
 		Select("tests.name as test_name ,candidates.name as candidate_name , candidates.email as candidate_email , test_candidates.score ,test_candidates.test_status , CONCAT(test_candidates.test_id, '-' ,test_candidates.candidate_id) as test_candidate_id").
 		Find(&testsCandidates).Error
