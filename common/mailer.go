@@ -24,9 +24,9 @@ func Send(candidates []models.Candidate, testId uint) {
 		link := "http://51.68.81.16:3000/quiz/" + TestCandidateIdEncrypted
 		msg := "MIME-version: 1.0;\nContent-Type: text/html; charset=\"UTF-8\";\r\n" + "From: " + from + "\n" +
 			"To: " + to + "\n" +
-			"Subject: Hello there\n\n" +
-			"welcome to tekab test" +
-			"<br><a href=" + link + ">here</a>"
+			"Subject: Test invitation\n\n" +
+			"Hi,<br><br>We are pleased to invite you to our online test. Use the URL below to take the test from the comfort of your home   " +
+			"<br><br><a href=" + link + ">test (click to start)</a><br><br> Good luck<br><br> Cordially, "
 
 		err := smtp.SendMail("smtp.gmail.com:587",
 			smtp.PlainAuth("", from, pass, "smtp.gmail.com"),
