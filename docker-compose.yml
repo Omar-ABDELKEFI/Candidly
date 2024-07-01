@@ -1,4 +1,3 @@
-version: "3"
 services:
   rest-api:
     build:
@@ -47,4 +46,5 @@ services:
     container_name: phpmyadmin-app
 networks:
   rest-api:
+    name: rest-api
     external: true

@@ -873,7 +873,7 @@ var doc = `{
                 }
             }
         },
-        "/testsCandidates/{idTest}": {
+        "/testsCandidates": {
             "get": {
                 "security": [
                     {
@@ -891,12 +891,13 @@ var doc = `{
                     "test_candidate"
                 ],
                 "summary": "get candidates and their tests",
+                "operationId": "TestsCandidatesList",
                 "parameters": [
                     {
                         "type": "string",
                         "description": "idTest",
-                        "name": "idTestCandidate",
-                        "in": "path",
+                        "name": "idTest",
+                        "in": "query",
                         "required": true
                     }
                 ],

@@ -21,7 +21,7 @@ func Send(candidates []models.Candidate, testId uint) {
 		idTestCandidate := AesDecrypt(TestCandidateIdEncrypted, os.Getenv("key"))
 		log.Println(TestCandidateIdEncrypted, "TestCandidateIdEncrypted in common/mailer")
 		log.Println(idTestCandidate, "idTestCandidate in common/mailer")
-		link := "http://51.68.81.16:3000/quiz/" + TestCandidateIdEncrypted
+		link := "http://127.0.0.1:3000/quiz/" + TestCandidateIdEncrypted
 		msg := "MIME-version: 1.0;\nContent-Type: text/html; charset=\"UTF-8\";\r\n" + "From: " + from + "\n" +
 			"To: " + to + "\n" +
 			"Subject: Test invitation\n\n" +

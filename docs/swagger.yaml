@@ -957,15 +957,16 @@ paths:
       summary: get tests
       tags:
       - test
-  /testsCandidates/{idTest}:
+  /testsCandidates:
     get:
       consumes:
       - application/json
       description: get candidates and their tests
+      operationId: TestsCandidatesList
       parameters:
       - description: idTest
-        in: path
-        name: idTestCandidate
+        in: query
+        name: idTest
         required: true
         type: string
       produces:
