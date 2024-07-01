@@ -48,3 +48,4 @@ networks:
   rest-api:
     name: rest-api
     external: true
+
