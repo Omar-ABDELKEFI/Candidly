@@ -3,9 +3,9 @@ package server
 import (
 	swagger "github.com/arsmn/fiber-swagger/v2"
 	"github.com/gofiber/fiber/v2"
-	"github.com/tekab-dev/tekab-test/controllers"
-	"github.com/tekab-dev/tekab-test/docs"
-	"github.com/tekab-dev/tekab-test/middleware"
+	"github.com/dev/test/controllers"
+	"github.com/dev/test/docs"
+	"github.com/dev/test/middleware"
 )
 
 func Router(app *fiber.App) {

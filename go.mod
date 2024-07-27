@@ -1,4 +1,4 @@
-module github.com/tekab-dev/tekab-test
+module github.com/dev/test
 
 go 1.16
 

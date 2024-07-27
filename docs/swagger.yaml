@@ -407,7 +407,7 @@ info:
   contact: {}
   description: this is an application web of interview assessment tests for interviewing
     out of the box .
-  title: tekab-test
+  title: test
   version: "1.0"
 paths:
   /answers/{idTestCandidate}:

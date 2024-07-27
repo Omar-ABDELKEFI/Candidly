@@ -1,8 +1,8 @@
 package repositories
 
 import (
-	"github.com/tekab-dev/tekab-test/database"
-	"github.com/tekab-dev/tekab-test/models"
+	"github.com/dev/test/database"
+	"github.com/dev/test/models"
 	"log"
 	"time"
 )

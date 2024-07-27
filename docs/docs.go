@@ -1554,7 +1554,7 @@ var SwaggerInfo = swaggerInfo{
 	Host:        "",
 	BasePath:    "/api",
 	Schemes:     []string{},
-	Title:       "tekab-test",
+	Title:       "test",
 	Description: "this is an application web of interview assessment tests for interviewing out of the box .",
 }
 

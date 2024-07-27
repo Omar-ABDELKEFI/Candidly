@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/tekab-dev/tekab-test/server"
+	"github.com/dev/test/server"
 	"os"
 )
 
-// @title tekab-test
+// @title test
 // @version 1.0
 // @description this is an application web of interview assessment tests for interviewing out of the box .
 // @securityDefinitions.apikey ApiKeyAuth

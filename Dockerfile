@@ -1,6 +1,6 @@
 FROM golang:1.16.5
 
-WORKDIR /go/src/tekab-test/
+WORKDIR /go/src/test/
 
 COPY . .
 COPY go.mod .

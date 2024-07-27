@@ -3,7 +3,7 @@ package server
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/tekab-dev/tekab-test/database"
+	"github.com/dev/test/database"
 )
 
 func Init() {

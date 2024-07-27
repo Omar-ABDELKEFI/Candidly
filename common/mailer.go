@@ -1,7 +1,7 @@
 package common
 
 import (
-	"github.com/tekab-dev/tekab-test/models"
+	"github.com/dev/test/models"
 	"log"
 	"net/smtp"
 	"os"

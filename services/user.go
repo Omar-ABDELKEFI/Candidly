@@ -3,8 +3,8 @@ package services
 import (
 	"errors"
 	"github.com/dgrijalva/jwt-go"
-	"github.com/tekab-dev/tekab-test/models"
-	"github.com/tekab-dev/tekab-test/repositories"
+	"github.com/dev/test/models"
+	"github.com/dev/test/repositories"
 	"golang.org/x/crypto/bcrypt"
 	"log"
 	"os"

@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/tekab-dev/tekab-test/models"
-	"github.com/tekab-dev/tekab-test/repositories"
+	"github.com/dev/test/models"
+	"github.com/dev/test/repositories"
 )
 
 func CreateTestQuestion(testQuestion models.TestQuestion) (models.TestQuestion, error) {

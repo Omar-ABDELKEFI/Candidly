@@ -2,10 +2,10 @@ package controllers
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/tekab-dev/tekab-test/common"
-	_ "github.com/tekab-dev/tekab-test/database"
-	"github.com/tekab-dev/tekab-test/models"
-	"github.com/tekab-dev/tekab-test/services"
+	"github.com/dev/test/common"
+	_ "github.com/dev/test/database"
+	"github.com/dev/test/models"
+	"github.com/dev/test/services"
 	"log"
 	"strconv"
 	"strings"

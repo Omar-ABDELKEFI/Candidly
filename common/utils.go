@@ -7,7 +7,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"github.com/go-playground/validator"
-	"github.com/tekab-dev/tekab-test/models"
+	"github.com/dev/test/models"
 	"strconv"
 	"strings"
 )

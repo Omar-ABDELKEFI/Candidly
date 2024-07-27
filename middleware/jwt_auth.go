@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/tekab-dev/tekab-test/services"
+	"github.com/dev/test/services"
 	"strings"
 )
 

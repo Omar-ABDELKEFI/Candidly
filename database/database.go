@@ -1,7 +1,7 @@
 package database
 
 import (
-	"github.com/tekab-dev/tekab-test/models"
+	"github.com/dev/test/models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

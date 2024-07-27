@@ -2,9 +2,9 @@ package services
 
 import (
 	"errors"
-	"github.com/tekab-dev/tekab-test/common"
-	"github.com/tekab-dev/tekab-test/models"
-	"github.com/tekab-dev/tekab-test/repositories"
+	"github.com/dev/test/common"
+	"github.com/dev/test/models"
+	"github.com/dev/test/repositories"
 	"log"
 )
 

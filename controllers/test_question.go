@@ -3,8 +3,8 @@ package controllers
 import (
 	"github.com/go-playground/validator"
 	"github.com/gofiber/fiber/v2"
-	"github.com/tekab-dev/tekab-test/models"
-	"github.com/tekab-dev/tekab-test/services"
+	"github.com/dev/test/models"
+	"github.com/dev/test/services"
 	"log"
 	"strconv"
 )
